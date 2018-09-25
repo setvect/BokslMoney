@@ -25,7 +25,7 @@
 					<a href="${pageContext.request.contextPath}/item/page.do"><i class="fa fa-building-o"></i> 항목관리 </a>
 				</li>
 				<li>
-					<a><i class="fa fa-money"></i> 계좌 관리 </a>
+					<a href="${pageContext.request.contextPath}/account/page.do"><i class="fa fa-money"></i> 계좌 관리 </a>
 				</li>
 				<li>
 					<a href="${pageContext.request.contextPath}/code/page.do?codeMainId=KIND_CODE"><i class="fa fa-book"></i> 코드 관리</a>

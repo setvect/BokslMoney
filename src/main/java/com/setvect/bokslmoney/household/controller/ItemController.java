@@ -25,9 +25,6 @@ public class ItemController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(ItemController.class);
 
-	/** 루트 Parent */
-	private static int ROOT_PARENT = 0;
-
 	@Autowired
 	private ItemRepository itemRepository;
 
@@ -54,7 +51,6 @@ public class ItemController {
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
 	public List<ItemVo> list(@RequestParam("kind") final KindType kindType, @RequestParam("parent") final int parent) {
-		System.out.println(kindType);
 		return itemRepository.list(kindType, parent);
 	}
 

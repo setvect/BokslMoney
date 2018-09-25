@@ -36,7 +36,6 @@ CommonUtil.dialogInfo = function(title, message){
 	});
 }
 
-
 /**
  * twbsPagination 페이징 처리 관련 옵션
  */
@@ -83,14 +82,6 @@ CommonUtil.removeWhiteSpace = function(val){
 	}else{
 		return val.replace(/\s/gi, "");
 	}
-}
-
-//$route.query 값을 deep copy
-CommonUtil.copyParam = function(param){
-	var result = $.extend(true, {}, param);
-	// route path 변경 설정을 위해 임의의 값을 줌.
-	result["_dummy"] = Date.now();
-	return result;
 }
 
 // context root path
@@ -142,7 +133,6 @@ Date.prototype.format = function(f) {
 		}
 	});
 };
-
 
 /*******************************************************************************
  * Vue에서 전역적으로 사용하는 필더 정의

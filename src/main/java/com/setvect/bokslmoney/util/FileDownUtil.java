@@ -34,7 +34,7 @@ public abstract class FileDownUtil {
 		String filename = fileName;
 
 		String result = "";
-		if (header.contains("MSIE") || header.contains("Trident")) { // IE 11버전부터 Trident로 변경되었기때문에 추가해준다.
+		if (header.contains("MSIE") || header.contains("Trident")) {
 			filename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
 			result = "attachment;filename=" + filename + ";";
 		} else if (header.contains("Chrome")) {
