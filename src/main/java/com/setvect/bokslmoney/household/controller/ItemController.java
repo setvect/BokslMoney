@@ -1,0 +1,109 @@
+package com.setvect.bokslmoney.household.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.setvect.bokslmoney.household.repository.ItemRepository;
+import com.setvect.bokslmoney.household.vo.ItemVo;
+import com.setvect.bokslmoney.household.vo.KindType;
+
+/**
+ * 항목관리 컨트롤러
+ */
+@Controller
+@RequestMapping(value = "/item")
+public class ItemController {
+	/** 로깅 */
+	private static Logger logger = LoggerFactory.getLogger(ItemController.class);
+
+	/** 루트 Parent */
+	private static int ROOT_PARENT = 0;
+
+	@Autowired
+	private ItemRepository itemRepository;
+
+	// ============== 뷰==============
+
+	/**
+	 * @param request
+	 *            servlet
+	 * @return view 페이지
+	 */
+	@RequestMapping(value = "/page.do")
+	public String page(final HttpServletRequest request) {
+		return "/item/item";
+	}
+
+	// ============== 조회 ==============
+	/**
+	 * @param kindType
+	 *            유형
+	 * @param parent
+	 *            부모 코드 번호
+	 * @return 항목 목록
+	 */
+	@RequestMapping(value = "/list.json")
+	@ResponseBody
+	public List<ItemVo> list(@RequestParam("kind") final KindType kindType, @RequestParam("parent") final int parent) {
+		System.out.println(kindType);
+		return itemRepository.list(kindType, parent);
+	}
+
+	// ============== 등록 ==============
+	@RequestMapping(value = "/add.do")
+	@ResponseBody
+	public void add(final ItemVo item) {
+		itemRepository.save(item);
+	}
+
+	// ============== 수정 ==============
+	@RequestMapping(value = "/edit.do")
+	@ResponseBody
+	public void edit(final ItemVo item) {
+		ItemVo org = itemRepository.findById(item.getItemSeq()).get();
+		org.setName(item.getName());
+		itemRepository.save(org);
+	}
+
+	/**
+	 * 정렬 순서 변경
+	 *
+	 * @param downItemSeq
+	 *            내려갈 항목
+	 * @param upItemSeq
+	 *            올라갈 항목
+	 */
+	@RequestMapping(value = "/changeOrder.do")
+	@ResponseBody
+	public void changeOrder(@RequestParam("downItemSeq") final int downItemSeq,
+			@RequestParam("upItemSeq") final int upItemSeq) {
+		ItemVo downItem = itemRepository.findById(downItemSeq).get();
+		ItemVo upItem = itemRepository.findById(upItemSeq).get();
+		int downOrder = downItem.getOrderNo();
+		int upOrder = upItem.getOrderNo();
+
+		downItem.setOrderNo(upOrder);
+		upItem.setOrderNo(downOrder);
+
+		itemRepository.save(downItem);
+		itemRepository.save(upItem);
+	}
+
+	// ============== 삭제 ==============
+	@RequestMapping(value = "/delete.do")
+	@ResponseBody
+	public void delete(@RequestParam("itemSeq") final int itemSeq) {
+		ItemVo item = itemRepository.findById(itemSeq).get();
+		item.setDeleteFlag(true);
+		itemRepository.save(item);
+	}
+}

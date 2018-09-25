@@ -1,0 +1,9 @@
+@charset "UTF-8";
+/* 기존 UI에서 추가된 CSS 선언 */
+.error {
+	color: red;
+}
+
+[v-cloak] {
+	display: none;
+}

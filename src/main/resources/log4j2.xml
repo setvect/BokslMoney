@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %-5p [%t] %l%n                        > %m%n" />
+		</Console>
+		<File name="file" fileName="./logs/bokslmoney.log" append="false">
+			<PatternLayout pattern="%d %-5p [%t] %l%n                        > %m%n" />
+		</File>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="org.springframework" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.hibernate.engine.internal.Collections" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Logger name="com.setvect.bokslmoney" level="INFO" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Root level="INFO">
+			<AppenderRef ref="console" />
+		</Root>
+	</Loggers>
+</Configuration>
