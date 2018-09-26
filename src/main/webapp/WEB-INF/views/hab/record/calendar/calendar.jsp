@@ -31,11 +31,84 @@
 							<div class="x_panel">
 
 								<div class="x_content" id="app">
-									<div class="col-md-8 col-sm-8 col-xs-12">
-										<div id='calendar'></div>
-									</div>
-									<div class="col-md-4 col-sm-4 col-xs-12">
-											
+									<div v-cloak>
+										<div class="col-md-8 col-sm-8 col-xs-12">
+											<div id='calendar'></div>
+										</div>
+										<div class="col-md-4 col-sm-4 col-xs-12">
+											<div>
+												<h4 class="page-header">월 결산</h4>
+												<table class="table table-bordered">
+													<tbody>
+														<tr>
+															<td>수입</td>
+															<td class="text-right">{{12200000 | formatNumber}}</td>
+														</tr>
+														<tr>
+															<td>지출</td>
+															<td class="text-right">{{120000 | formatNumber}}</td>
+														</tr>
+														<tr>
+															<td>수입 - 지출</td>
+															<td class="text-right">{{5980000 | formatNumber}}</td>
+														</tr>
+														<tr>
+															<td>이체</td>
+															<td class="text-right">{{120000 | formatNumber}}</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div>
+												<h4 class="page-header">2018년 9월 9일 내역</h4>
+												<table class="table table-bordered">
+													<colgroup>
+														<col width="10%"/>
+														<col width="40%"/>
+														<col width="25%"/>
+														<col width="25%"/>
+													</colgroup>
+													<thead>
+														<th>유형</th>
+														<th>분류</th>
+														<th>내용</th>
+														<th>금액</th>
+													</thead>
+													<tbody>
+														<tr>
+															<td>수익</td>
+															<td>근로소득 > 급여</td>
+															<td>월급</td>
+															<td class="text-right">12120</td>
+														</tr>
+														<tr>
+															<td>수익</td>
+															<td>금융소득 > 이자</td>
+															<td>적급</td>
+															<td class="text-right">12120</td>
+														</tr>
+														<tr>
+															<td>지출</td>
+															<td>생활용품 > 주방용품</td>
+															<td>냄비</td>
+															<td class="text-right">12120</td>
+														</tr>
+														<tr>
+															<td>지출</td>
+															<td>생활용품 > 주방용품</td>
+															<td>냄비</td>
+															<td class="text-right">12120</td>
+														</tr>
+														<tr>
+															<td>이체</td>
+															<td>대차거래 > 인출</td>
+															<td>이체</td>
+															<td class="text-right">12120</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
 									</div>
 								</div>
 
@@ -141,7 +214,7 @@
 				categoryClass;
 
 			var calendar = $('#calendar').fullCalendar({
-				option:{
+				option: {
 					locale: "ko"
 				},
 				header: {
@@ -215,7 +288,7 @@
 			});
 		};
 
-		$(()=>{
+		$(() => {
 			init_calendar();
 		});
 		Vue.use(VeeValidate, {

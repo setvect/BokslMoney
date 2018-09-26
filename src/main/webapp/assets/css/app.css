@@ -8,17 +8,6 @@
 .td-ell{
 		max-width: 100px; 	overflow: hidden;	text-overflow: ellipsis; white-space: nowrap;
 }
-.left{
-	text-align: left;
-}
-.right{
-	text-align: right;
-}
-.center{
-	text-align: center;
-}
-
-
 [v-cloak] {
 	display: none;
 }
