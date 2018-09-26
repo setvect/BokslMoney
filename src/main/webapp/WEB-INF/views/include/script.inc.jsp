@@ -31,12 +31,15 @@
 <script src="${pageContext.request.contextPath}/assets/lib/fastclick/lib/fastclick.js"></script>
 <!-- NProgress -->
 <script src="${pageContext.request.contextPath}/assets/lib/nprogress/nprogress.js"></script>
-<!-- Custom Theme Scripts -->
+<!-- Custom Theme Scripts --> 
 <script src="${pageContext.request.contextPath}/assets/lib/gentelella/js/custom.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/common-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
+
+<!-- FullCalendar -->
+<script src="${pageContext.request.contextPath}/assets/lib/fullcalendar/dist/fullcalendar.js"></script>
 
 <script type="text/javascript" >
 	moment.locale('ko');

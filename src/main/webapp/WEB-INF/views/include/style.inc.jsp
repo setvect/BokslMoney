@@ -23,3 +23,6 @@
 <link href="${pageContext.request.contextPath}/assets/css/app.css" rel="stylesheet">
 
 <link href="${pageContext.request.contextPath}/assets/lib/jquery-ui/jquery-ui.css" rel="stylesheet">
+
+<!-- FullCalendar -->
+<link href="${pageContext.request.contextPath}/assets/lib/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
