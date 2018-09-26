@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.setvect.bokslmoney.code.repository.CodeItemRepository;
-import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.service.CodeKind;
 import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
@@ -28,12 +26,6 @@ public class AccountController {
 	private AccountRepository accountRepository;
 
 	@Autowired
-	private CodeItemRepository codeItemRepository;
-
-	@Autowired
-	private CodeMainRepository codeMainRepository;
-
-	@Autowired
 	private CodeService codeService;
 
 	// ============== 뷰==============
@@ -42,7 +34,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/page.do")
 	public String page() {
-		return "/account/account";
+		return "/hab/account/account";
 	}
 
 	// ============== 조회 ==============

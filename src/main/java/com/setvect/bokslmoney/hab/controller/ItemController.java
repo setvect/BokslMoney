@@ -37,7 +37,7 @@ public class ItemController {
 	 */
 	@RequestMapping(value = "/page.do")
 	public String page(final HttpServletRequest request) {
-		return "/item/item";
+		return "/hab/item/item";
 	}
 
 	// ============== 조회 ==============
