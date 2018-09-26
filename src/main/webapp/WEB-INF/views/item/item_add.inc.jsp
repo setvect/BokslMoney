@@ -52,18 +52,16 @@
 			},
 			// 등록 또는 수정
 			addAction(){
-				let self = this;
-				
 				this.$validator.validateAll().then((result) => {
 					if(!result){
 						return;
 					}
 					let url = this.actionType == 'add' ? '/item/add.do' : '/item/edit.do'
 					waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-					axios.post(CommonUtil.getContextPath() + url, $.param(self.item, true)).then((result) => {
+					axios.post(CommonUtil.getContextPath() + url, $.param(this.item, true)).then((result) => {
 						$("#addItem").modal('hide');
-						self.afterEventCallback();
-						self.item.name = "";
+						this.afterEventCallback();
+						this.item.name = "";
 					}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
 				});
 			},

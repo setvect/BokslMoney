@@ -1,6 +1,7 @@
 package com.setvect.bokslmoney.household.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.setvect.bokslmoney.code.repository.CodeItemRepository;
+import com.setvect.bokslmoney.code.repository.CodeMainRepository;
+import com.setvect.bokslmoney.code.service.CodeKind;
+import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.household.repository.AccountRepository;
 import com.setvect.bokslmoney.household.vo.AccountVo;
 
@@ -21,6 +26,15 @@ public class AccountController {
 
 	@Autowired
 	private AccountRepository accountRepository;
+
+	@Autowired
+	private CodeItemRepository codeItemRepository;
+
+	@Autowired
+	private CodeMainRepository codeMainRepository;
+
+	@Autowired
+	private CodeService codeService;
 
 	// ============== 뷰==============
 	/**
@@ -38,7 +52,18 @@ public class AccountController {
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
 	public List<AccountVo> list() {
-		return accountRepository.list();
+		Map<Integer, String> mapping = codeService.getMappingKindCode(CodeKind.KIND_CODE);
+
+		List<AccountVo> list = accountRepository.list();
+		list.forEach(a -> {
+			applyKindName(a, mapping);
+		});
+
+		return list;
+	}
+
+	private void applyKindName(AccountVo account, Map<Integer, String> mapping) {
+		account.setKindName(mapping.get(account.getKindCode()));
 	}
 
 	// ============== 등록 ==============

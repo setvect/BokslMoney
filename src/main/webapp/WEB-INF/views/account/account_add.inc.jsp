@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">등록</h4>
+					<h4 class="modal-title">{{actionType == 'add' ? '등록' : '수정'}}</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -37,7 +37,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">잔고: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="number" class="form-control" name="balance" v-model="item.balance" v-validate="'required|integer|max:11'" data-vv-as="잔고 ">
+								<input type="number" class="form-control" name="balance" v-model="item.balance" v-validate="'required|integer|max:11|between:0,2000000000'" data-vv-as="잔고 ">
 								<span class="error" v-if="errors.has('balance')">{{errors.first('balance')}}</span>
 							</div>
 						</div>
@@ -100,41 +100,36 @@
 		data(){
 			return {
 				item: {},
-				afterEventCallback: null,
 				actionType: 'add',
 				kindCodeList: []
 			};
 		},
 		methods: {
 			// 등록 폼 
-			addForm(item, afterEventCallback){
+			addForm(item){
 				this.actionType = 'add';
-				this.openForm(item, afterEventCallback);
+				this.openForm(item);
 			},
 			//수정 폼 
-			editForm(item, afterEventCallback){
+			editForm(item){
 				this.actionType = 'edit';
-				this.openForm(item, afterEventCallback);
+				this.openForm(item);
 			},
-			openForm(item, afterEventCallback){
+			openForm(item){
 				this.item = $.extend(true, {}, item);
-				this.afterEventCallback = afterEventCallback;
 				$("#addItem").modal();
 			},
 			// 등록 또는 수정
 			addAction(){
-				let self = this;
-				
 				this.$validator.validateAll().then((result) => {
 					if(!result){
 						return;
 					}
 					let url = this.actionType == 'add' ? '/account/add.do' : '/account/edit.do'
 					waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-					axios.post(CommonUtil.getContextPath() + url, $.param(self.item, true)).then((result) => {
+					axios.post(CommonUtil.getContextPath() + url, $.param(this.item, true)).then((result) => {
 						$("#addItem").modal('hide');
-						self.afterEventCallback();
-						self.item.name = "";
+						EventBus.$emit('listEvent');
 					}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
 				});
 			},

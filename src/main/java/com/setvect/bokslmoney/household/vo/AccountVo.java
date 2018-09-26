@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -44,6 +45,10 @@ public class AccountVo {
 	 */
 	@Column(name = "KIND_CODE", nullable = false)
 	private int kindCode;
+
+	/** 자산종류 이름 */
+	@Transient
+	private String kindName;
 
 	/** 잔고 */
 	@Column(name = "BALANCE", nullable = false)

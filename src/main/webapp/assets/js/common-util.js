@@ -134,9 +134,9 @@ Date.prototype.format = function(f) {
 	});
 };
 
-/*******************************************************************************
+/********************
  * Vue에서 전역적으로 사용하는 필더 정의
- ******************************************************************************/
+ ********************/
 
 // 숫자 (,)콤마 추가
 Vue.filter('formatNumber', function (value) {
@@ -151,20 +151,6 @@ Vue.filter('dateFilter', function (value, format) {
 	return date.format(format);
 });
 
-// carriage return를 br태그로 변경
-Vue.filter('br', function (value) {
-	return CommonUtil.toBr(value);
-});
-
-//필터값 로그 출력
-Vue.filter('logPrint', function (value) {
-	if(value === undefined){
-		return null;
-	}
-	console.log(value);
-	return value;
-});
-
 // timestamp dataformat
 Vue.filter('timestampFormat', function (timestamp, format) {
 	var d = new Date(Number(timestamp));
@@ -176,13 +162,13 @@ Vue.filter('indexSeq', function (index, page) {
 	return page.totalCount - ((page.currentPage - 1) * page.returnCount)  - index;
 });
 
-// 상대적 날짜 계산 
-Vue.filter('relativeDate', function (timestamp) {
-	var diff = moment(Date.now()).diff(timestamp, 'days');
-	if(diff < 10){
-		return moment(timestamp).fromNow(); 
+/********************
+ * 전역적으로 사용할 디렉티브 정의 
+ ********************/
+
+// 줄바꿈 -> br 태그 적용
+Vue.directive('br', {
+	inserted: function (el, binding, vnode) {
+		$(el).html(CommonUtil.toBr(binding.value));
 	}
-	//10일이 지나면 일반적으로 날짜 표시
-	var d = new Date(Number(timestamp));
-	return d.format('yyyy-MM-dd');
-});
+})

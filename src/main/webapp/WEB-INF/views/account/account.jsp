@@ -31,7 +31,10 @@
 											<list/>
 										</div>
 										<div>
-												<add/>
+											<add/>
+										</div>
+										<div>
+											<read/>
 										</div>
 									</div>
 								</div>
@@ -47,8 +50,11 @@
 		<jsp:include page="../include/common_modal.inc.jsp"></jsp:include>
 		<jsp:include page="account_list.inc.jsp"></jsp:include>
 		<jsp:include page="account_add.inc.jsp"></jsp:include>
+		<jsp:include page="account_read.inc.jsp"></jsp:include>
 
 		<script type="text/javascript">
+
+
 			Vue.use(VeeValidate,{
 				locale: 'ko',
 				events: 'blur',
@@ -64,6 +70,7 @@
 				components: {
 					'list': itemListComponent,
 					'add': itemAddComponent,
+					'read': itemReadComponent,
 				},
 			}).$mount('#app');
 		</script>
