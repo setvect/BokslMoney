@@ -1,4 +1,4 @@
-package com.setvect.bokslmoney.household.repository;
+package com.setvect.bokslmoney.hab.repository;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.setvect.bokslmoney.household.vo.ItemVo;
-import com.setvect.bokslmoney.household.vo.KindType;
+import com.setvect.bokslmoney.hab.vo.ItemVo;
+import com.setvect.bokslmoney.hab.vo.KindType;
 
 /**
  * 수입, 지출, 이체 항목

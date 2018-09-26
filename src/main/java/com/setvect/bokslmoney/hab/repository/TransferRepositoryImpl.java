@@ -1,4 +1,4 @@
-package com.setvect.bokslmoney.household.repository;
+package com.setvect.bokslmoney.hab.repository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +9,8 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang3.StringUtils;
 
 import com.setvect.bokslmoney.ApplicationUtil;
-import com.setvect.bokslmoney.household.controller.TransferSearchParam;
-import com.setvect.bokslmoney.household.vo.TransferVo;
+import com.setvect.bokslmoney.hab.controller.TransferSearchParam;
+import com.setvect.bokslmoney.hab.vo.TransferVo;
 import com.setvect.bokslmoney.util.PageResult;
 import com.setvect.bokslmoney.util.jpa.PageQueryCondition;
 import com.setvect.bokslmoney.util.jpa.PageUtil;

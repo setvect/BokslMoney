@@ -1,4 +1,4 @@
-package com.setvect.bokslmoney.household.controller;
+package com.setvect.bokslmoney.hab.controller;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.setvect.bokslmoney.household.repository.ItemRepository;
-import com.setvect.bokslmoney.household.vo.ItemVo;
-import com.setvect.bokslmoney.household.vo.KindType;
+import com.setvect.bokslmoney.hab.repository.ItemRepository;
+import com.setvect.bokslmoney.hab.vo.ItemVo;
+import com.setvect.bokslmoney.hab.vo.KindType;
 
 /**
  * 항목관리 컨트롤러

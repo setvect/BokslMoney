@@ -6,9 +6,9 @@ import java.util.Date;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.setvect.bokslmoney.household.controller.MemoSearchParam;
-import com.setvect.bokslmoney.household.repository.MemoRepository;
-import com.setvect.bokslmoney.household.vo.MemoVo;
+import com.setvect.bokslmoney.hab.controller.MemoSearchParam;
+import com.setvect.bokslmoney.hab.repository.MemoRepository;
+import com.setvect.bokslmoney.hab.vo.MemoVo;
 import com.setvect.bokslmoney.test.MainTestBase;
 import com.setvect.bokslmoney.util.DateUtil;
 import com.setvect.bokslmoney.util.PageResult;

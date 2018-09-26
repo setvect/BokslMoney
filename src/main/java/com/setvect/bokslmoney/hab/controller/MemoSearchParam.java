@@ -1,4 +1,4 @@
-package com.setvect.bokslmoney.household.controller;
+package com.setvect.bokslmoney.hab.controller;
 
 import java.util.Date;
 

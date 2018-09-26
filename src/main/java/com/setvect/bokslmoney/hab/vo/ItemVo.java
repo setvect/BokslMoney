@@ -1,4 +1,4 @@
-package com.setvect.bokslmoney.household.vo;
+package com.setvect.bokslmoney.hab.vo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

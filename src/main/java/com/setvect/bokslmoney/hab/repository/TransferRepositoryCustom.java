@@ -1,7 +1,7 @@
-package com.setvect.bokslmoney.household.repository;
+package com.setvect.bokslmoney.hab.repository;
 
-import com.setvect.bokslmoney.household.controller.TransferSearchParam;
-import com.setvect.bokslmoney.household.vo.TransferVo;
+import com.setvect.bokslmoney.hab.controller.TransferSearchParam;
+import com.setvect.bokslmoney.hab.vo.TransferVo;
 import com.setvect.bokslmoney.util.PageResult;
 
 public interface TransferRepositoryCustom {

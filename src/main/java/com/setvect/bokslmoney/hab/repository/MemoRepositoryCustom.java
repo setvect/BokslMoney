@@ -1,7 +1,7 @@
-package com.setvect.bokslmoney.household.repository;
+package com.setvect.bokslmoney.hab.repository;
 
-import com.setvect.bokslmoney.household.controller.MemoSearchParam;
-import com.setvect.bokslmoney.household.vo.MemoVo;
+import com.setvect.bokslmoney.hab.controller.MemoSearchParam;
+import com.setvect.bokslmoney.hab.vo.MemoVo;
 import com.setvect.bokslmoney.util.PageResult;
 
 public interface MemoRepositoryCustom {

@@ -1,4 +1,4 @@
-package com.setvect.bokslmoney.household.vo;
+package com.setvect.bokslmoney.hab.vo;
 
 /**
  * 수입, 지출, 이체 항목
