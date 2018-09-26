@@ -1,6 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <template id='item-list'>
 	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="form-row">
+			<div class="form-group col-md-4"><label for="inputCity">재산(내가 모은 돈)</label><span class="form-control right">{{property | formatNumber}}</span></div>
+			<div class="form-group col-md-4"><label for="inputCity">자산(마이너스가 아닌 계좌 합)</label><span class="form-control right">{{asset | formatNumber}}</span></div>
+			<div class="form-group col-md-4"><label for="inputCity">부채(마이너스 계좌 합)</label><span class="form-control right">{{debt | formatNumber}}</span></div>
+		</div>
+
 		<table class="table table-striped jambo_table bulk_action table-bordered">
 			<thead>
 				<tr class="headings">
@@ -17,7 +23,7 @@
 				<tr v-for="(item, index) in itemList" @click="readForm(item)" style="cursor: pointer">
 					<td>{{item.kindName}}</td>
 					<td>{{item.name}}</td>
-					<td>{{item.balance | formatNumber}}</td>
+					<td class="right">{{item.balance | formatNumber}}</td>
 					<td>{{item.interestRate}}</td>
 					<td>{{item.accountNumber}}</td>
 					<td>{{item.monthlyPay}}</td>
@@ -39,6 +45,29 @@
 			};
 		},
 		props: {
+		},
+		computed: {
+			property(){
+				return this.asset + this.debt;
+			},
+			asset(){
+				let value = this.itemList.reduce(function(acc, item){
+					if(item.balance > 0){
+						return acc + item.balance;
+					}
+					return acc
+				}, 0);
+				return value;
+			},
+			debt(){
+				let value = this.itemList.reduce(function(acc, item){
+					if(item.balance < 0){
+						return acc + item.balance;
+					}
+					return acc
+				}, 0);
+				return value;
+			},
 		},
 		methods: {
 			// 리스트
