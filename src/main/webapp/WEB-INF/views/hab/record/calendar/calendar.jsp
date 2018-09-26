@@ -31,7 +31,12 @@
 							<div class="x_panel">
 
 								<div class="x_content" id="app">
-									<div id='calendar'></div>
+									<div class="col-md-8 col-sm-8 col-xs-12">
+										<div id='calendar'></div>
+									</div>
+									<div class="col-md-4 col-sm-4 col-xs-12">
+											
+									</div>
 								</div>
 
 							</div>
@@ -123,7 +128,6 @@
 	<jsp:include page="/WEB-INF/views/include/common_modal.inc.jsp"></jsp:include>
 
 	<script type="text/javascript">
-
 		/* CALENDAR */
 		function init_calendar() {
 			if (typeof ($.fn.fullCalendar) === 'undefined') { return; }
@@ -137,10 +141,13 @@
 				categoryClass;
 
 			var calendar = $('#calendar').fullCalendar({
+				option:{
+					locale: "ko"
+				},
 				header: {
 					left: 'prev,next today',
 					center: 'title',
-					right: 'month,agendaWeek,agendaDay,listMonth'
+					right: ''
 				},
 				selectable: true,
 				selectHelper: true,
@@ -149,7 +156,6 @@
 
 					started = start;
 					ended = end;
-
 					$(".antosubmit").on("click", function () {
 						var title = $("#title").val();
 						if (end) {
@@ -205,21 +211,6 @@
 					title: 'Meeting',
 					start: new Date(y, m, d, 10, 30),
 					allDay: false
-				}, {
-					title: 'Lunch',
-					start: new Date(y, m, d + 14, 12, 0),
-					end: new Date(y, m, d, 14, 0),
-					allDay: false
-				}, {
-					title: 'Birthday Party',
-					start: new Date(y, m, d + 1, 19, 0),
-					end: new Date(y, m, d + 1, 22, 30),
-					allDay: false
-				}, {
-					title: 'Click for Google',
-					start: new Date(y, m, 28),
-					end: new Date(y, m, 29),
-					url: 'http://google.com/'
 				}]
 			});
 		};
