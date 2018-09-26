@@ -48,7 +48,7 @@
 				let param = {kind: this.kind, parent: this.parentSeq};
 				waitDialog.show('조회 중입니다.', {dialogSize: 'sm'});
 			
-				axios.get(CommonUtil.getContextPath() + "/item/list.json", {params:param}).then((result) => {
+				axios.get(CommonUtil.getContextPath() + "/hab/item/list.json", {params:param}).then((result) => {
 					this.itemList = result.data;
 				}).catch((err) => CommonUtil.popupError(err)).finally (() =>	waitDialog.hide());
 			},
@@ -65,7 +65,7 @@
 			// 정렬 순서 변경
 			changeOrder(downItemSeq, upItemSeq){
 				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				axios.post(CommonUtil.getContextPath() + '/item/changeOrder.do', $.param({downItemSeq: downItemSeq, upItemSeq: upItemSeq})).then((result) => {
+				axios.post(CommonUtil.getContextPath() + '/hab/item/changeOrder.do', $.param({downItemSeq: downItemSeq, upItemSeq: upItemSeq})).then((result) => {
 					this.list();
 				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
 			},
@@ -75,7 +75,7 @@
 					return;
 				}
 				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				axios.post(CommonUtil.getContextPath() + '/item/delete.do', $.param({itemSeq: itemSeq})).then((result) => {
+				axios.post(CommonUtil.getContextPath() + '/hab/item/delete.do', $.param({itemSeq: itemSeq})).then((result) => {
 					this.list();
 					this.$emit('@select-item', {itemSeq: -1});
 				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());

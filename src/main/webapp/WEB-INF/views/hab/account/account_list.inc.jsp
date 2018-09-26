@@ -73,7 +73,7 @@
 			// 리스트
 			list(){
 				waitDialog.show('조회 중입니다.', {dialogSize: 'sm'});
-				axios.get(CommonUtil.getContextPath() + "/account/list.json").then((result) => {
+				axios.get(CommonUtil.getContextPath() + "/hab/account/list.json").then((result) => {
 					this.itemList = result.data;
 				}).catch((err) => CommonUtil.popupError(err)).finally (() =>	waitDialog.hide());
 			},

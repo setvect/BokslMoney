@@ -20,7 +20,7 @@ import com.setvect.bokslmoney.hab.vo.KindType;
  * 항목관리 컨트롤러
  */
 @Controller
-@RequestMapping(value = "/item")
+@RequestMapping(value = "/hab/item")
 public class ItemController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(ItemController.class);

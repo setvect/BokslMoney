@@ -34,6 +34,8 @@ CommonUtil.dialogInfo = function(title, message){
 			}
 		}
 	});
+	// 버튼에 X가 표시 되도록 강제 설정. 왜 안되는지 모르겠다.
+	$("button.ui-dialog-titlebar-close").addClass("ui-icon").addClass("ui-icon-closethick")
 }
 
 /**

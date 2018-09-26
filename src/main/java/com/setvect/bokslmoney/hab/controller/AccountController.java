@@ -17,7 +17,7 @@ import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.vo.AccountVo;
 
 @Controller
-@RequestMapping(value = "/account")
+@RequestMapping(value = "/hab/account")
 public class AccountController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(AccountController.class);

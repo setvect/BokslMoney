@@ -56,7 +56,7 @@
 					if(!result){
 						return;
 					}
-					let url = this.actionType == 'add' ? '/item/add.do' : '/item/edit.do'
+					let url = this.actionType == 'add' ? '/hab/item/add.do' : '/hab/item/edit.do'
 					waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
 					axios.post(CommonUtil.getContextPath() + url, $.param(this.item, true)).then((result) => {
 						$("#addItem").modal('hide');

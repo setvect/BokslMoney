@@ -10,7 +10,7 @@
 		<div class="menu_section">
 			<ul class="nav side-menu">
 				<li>
-					<a><i class="fa fa-calendar"></i> 가계부 쓰기(달력)</a>
+					<a href="${pageContext.request.contextPath}/hab/record/calendar.do"><i class="fa fa-calendar"></i> 가계부 쓰기(달력)</a>
 				</li>
 				<li>
 					<a><i class="fa fa-th"></i> 가계부 쓰기(표)</a>
@@ -22,10 +22,10 @@
 					<a><i class="fa fa-bar-chart-o"></i> 통계 </a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/item/page.do"><i class="fa fa-building-o"></i> 항목관리 </a>
+					<a href="${pageContext.request.contextPath}/hab/item/page.do"><i class="fa fa-building-o"></i> 항목관리 </a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/account/page.do"><i class="fa fa-money"></i> 계좌 관리 </a>
+					<a href="${pageContext.request.contextPath}/hab/account/page.do"><i class="fa fa-money"></i> 계좌 관리 </a>
 				</li>
 				<li>
 					<a href="${pageContext.request.contextPath}/code/page.do?codeMainId=KIND_CODE"><i class="fa fa-book"></i> 코드 관리</a>

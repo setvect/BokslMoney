@@ -23,10 +23,10 @@ import com.setvect.bokslmoney.hab.vo.TransferVo;
  * 달력 기반 가계부 입력
  */
 @Controller
-@RequestMapping(value = "/hab/")
-public class HabController {
+@RequestMapping(value = "/hab/record/")
+public class RecordController {
 	/** 로깅 */
-	private static Logger logger = LoggerFactory.getLogger(HabController.class);
+	private static Logger logger = LoggerFactory.getLogger(RecordController.class);
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -52,7 +52,7 @@ public class HabController {
 	 */
 	@RequestMapping(value = "/calendar.do")
 	public String page(final HttpServletRequest request) {
-		return "/hab/calendar";
+		return "/hab/record/calendar/calendar";
 	}
 
 	// ============== 조회 ==============
