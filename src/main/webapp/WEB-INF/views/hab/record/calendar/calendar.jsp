@@ -36,31 +36,13 @@
 											<div id='calendar'></div>
 										</div>
 										<div class="col-md-4 col-sm-4 col-xs-12">
-											<div>
-												<h4 class="page-header">월 결산</h4>
-												<table class="table table-bordered">
-													<tbody>
-														<tr>
-															<td>수입</td>
-															<td class="text-right">{{12200000 | formatNumber}}</td>
-														</tr>
-														<tr>
-															<td>지출</td>
-															<td class="text-right">{{120000 | formatNumber}}</td>
-														</tr>
-														<tr>
-															<td>수입 - 지출</td>
-															<td class="text-right">{{5980000 | formatNumber}}</td>
-														</tr>
-														<tr>
-															<td>이체</td>
-															<td class="text-right">{{120000 | formatNumber}}</td>
-														</tr>
-													</tbody>
-												</table>
+											<div class="page-header">
+													<button type="button" class="btn btn-info">지출</button>
+													<button type="button" class="btn btn-info">수입</button>
+													<button type="button" class="btn btn-info">이체</button>
 											</div>
 											<div>
-												<h4 class="page-header">2018년 9월 9일 내역</h4>
+												<h4>2018년 9월 9일 내역</h4>
 												<table class="table table-bordered">
 													<colgroup>
 														<col width="10%"/>
@@ -104,6 +86,30 @@
 															<td>대차거래 > 인출</td>
 															<td>이체</td>
 															<td class="text-right">12120</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+											<div>
+												<h4>9월 결산</h4>
+												<table class="table table-bordered">
+													<tbody>
+														<tr>
+															<td>수입</td>
+															<td class="text-right">{{12200000 | formatNumber}}</td>
+														</tr>
+														<tr>
+															<td>지출</td>
+															<td class="text-right">{{120000 | formatNumber}}</td>
+														</tr>
+														<tr>
+															<td>수입 - 지출</td>
+															<td class="text-right">{{5980000 | formatNumber}}</td>
+														</tr>
+														<tr>
+															<td>이체</td>
+															<td class="text-right">{{120000 | formatNumber}}</td>
 														</tr>
 													</tbody>
 												</table>
