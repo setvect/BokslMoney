@@ -14,6 +14,10 @@
 	margin: 0 !important;
 }
 
+td.fc-event-container span{
+	line-height: 18px;
+}
+
 [v-cloak] {
 	display: none;
 }
