@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.hab.repository.ItemRepository;
 import com.setvect.bokslmoney.hab.vo.ItemVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
@@ -37,7 +38,8 @@ public class ItemController {
 	 */
 	@RequestMapping(value = "/page.do")
 	public String page(final HttpServletRequest request) {
-		return "/hab/item/item";
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/item/item.jsp");
+		return "template";
 	}
 
 	// ============== 조회 ==============

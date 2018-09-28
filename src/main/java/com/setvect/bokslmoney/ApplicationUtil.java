@@ -12,15 +12,11 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
@@ -131,21 +127,5 @@ public abstract class ApplicationUtil {
 		}
 		ObjectMapper objectMapper = Squiggly.init(new ObjectMapper(), filter);
 		return SquigglyUtils.stringify(objectMapper, val);
-	}
-
-	/**
-	 * 파일 확장자를 구별해 2007이전, 이후 나눠 Workbook 반환
-	 *
-	 * @param file
-	 *            엑셀 파일
-	 * @return 파일 확장자를 구별해 2007이전, 이후 나눠 Workbook 반환
-	 * @throws IOException
-	 *             파일 처리 오류
-	 */
-	public static Workbook getWorkbook(final MultipartFile file) throws IOException {
-		if (file.getOriginalFilename().toLowerCase().endsWith(".xlsx")) {
-			return new XSSFWorkbook(file.getInputStream());
-		}
-		return new HSSFWorkbook(file.getInputStream());
 	}
 }

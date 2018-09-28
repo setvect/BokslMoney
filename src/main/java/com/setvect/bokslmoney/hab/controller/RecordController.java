@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.code.repository.CodeItemRepository;
 import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.service.CodeService;
@@ -52,7 +53,8 @@ public class RecordController {
 	 */
 	@RequestMapping(value = "/calendar.do")
 	public String page(final HttpServletRequest request) {
-		return "/hab/record/calendar/calendar";
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/record/calendar/calendar.jsp");
+		return "template";
 	}
 
 	// ============== 조회 ==============

@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
+
+
 /**
  * 공통페이지 컨트롤러
  */
@@ -24,7 +27,8 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/")
 	public String index(final HttpServletRequest request) {
-		return "index";
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/page/home.jsp");
+		return "template";
 	}
 
 	/**

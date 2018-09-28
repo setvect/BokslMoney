@@ -3,6 +3,8 @@ package com.setvect.bokslmoney.hab.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.code.service.CodeKind;
 import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
@@ -33,8 +36,9 @@ public class AccountController {
 	 * @return view 페이지
 	 */
 	@RequestMapping(value = "/page.do")
-	public String page() {
-		return "/hab/account/account";
+	public String page(final HttpServletRequest request) {
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/account/account.jsp");
+		return "template";
 	}
 
 	// ============== 조회 ==============
