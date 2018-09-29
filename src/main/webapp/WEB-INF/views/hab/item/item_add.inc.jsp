@@ -11,7 +11,8 @@
 				<div class="modal-body">
 					<form onsubmit="return false;">
 						<div class="form-group">
-							<label>이름: </label><input type="text" class="form-control" name="name" v-model="item.name" v-validate="'required|max:20'" data-vv-as="이름 " v-on:keyup.13="addAction()">
+							<label>이름: </label><input type="text" class="form-control" name="name" v-model="item.name" v-validate="'required|max:20'"
+							 data-vv-as="이름 " v-on:keyup.13="addAction()">
 							<span class="error" v-if="errors.has('name')">{{errors.first('name')}}</span>
 						</div>
 					</form>
@@ -26,47 +27,47 @@
 </template>
 
 <script type="text/javascript">
-	const itemAddComponent = Vue.component("itemAdd", { template: '#item-add',
-		data(){
+	const itemAddComponent = Vue.component("itemAdd", {
+		template: '#item-add',
+		data() {
 			return {
-				item: {name:""},
+				item: { name: "" },
 				afterEventCallback: null,
 				actionType: 'add'
 			};
 		},
 		methods: {
 			// 등록 폼 
-			addForm(item, afterEventCallback){
+			addForm(item, afterEventCallback) {
 				this.actionType = 'add';
 				this.openForm(item, afterEventCallback);
 			},
 			//수정 폼 
-			editForm(item, afterEventCallback){
+			editForm(item, afterEventCallback) {
 				this.actionType = 'edit';
 				this.openForm(item, afterEventCallback);
 			},
-			openForm(item, afterEventCallback){
+			openForm(item, afterEventCallback) {
 				this.item = $.extend(true, {}, item);
 				this.afterEventCallback = afterEventCallback;
 				$("#addItem").modal();
 			},
 			// 등록 또는 수정
-			addAction(){
+			addAction() {
 				this.$validator.validateAll().then((result) => {
-					if(!result){
+					if (!result) {
 						return;
 					}
 					let url = this.actionType == 'add' ? '/hab/item/add.do' : '/hab/item/edit.do'
-					waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-					axios.post(CommonUtil.getContextPath() + url, $.param(this.item, true)).then((result) => {
+					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						this.afterEventCallback();
 						this.item.name = "";
-					}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+					});
 				});
 			},
 		},
-		created(){
+		created() {
 			EventBus.$on('addFormEvent', this.addForm);
 			EventBus.$on('editFormEvent', this.editForm);
 		},

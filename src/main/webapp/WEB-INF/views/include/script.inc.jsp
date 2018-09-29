@@ -36,6 +36,7 @@
 <script src="${pageContext.request.contextPath}/assets/lib/fullcalendar/locale/ko.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/common-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/vue-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 

@@ -82,11 +82,10 @@
 				if(!confirm("삭제?")){
 					return;
 				}
-				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				axios.post(CommonUtil.getContextPath() + '/hab/account/delete.do', $.param({accountSeq: itemSeq})).then((result) => {
-					$("#readItem").modal("hide");
+				VueUtil.post('/hab/account/delete.do', {accountSeq: itemSeq}, (result) => {
+					$("#readItem").modal('hide');
 					EventBus.$emit('listEvent');
-				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+				});
 			},
 		},
 		mounted(){

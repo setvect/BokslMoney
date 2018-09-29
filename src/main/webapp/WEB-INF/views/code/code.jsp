@@ -91,10 +91,9 @@
 			// 리스트
 			list(){
 				let param = {codeMainId: this.codeMainId};
-				waitDialog.show('조회 중입니다.', {dialogSize: 'sm'});
-				axios.get(CommonUtil.getContextPath() + "/code/list.json", {params:param}).then((result) => {
+				VueUtil.get("/code/list.json", param, (result) => {
 					this.itemList = result.data;
-				}).catch((err) => CommonUtil.popupError(err)).finally (() =>	waitDialog.hide());
+				});
 			},
 			// 등록 폼 
 			addForm(){
@@ -124,32 +123,28 @@
 					}
 					delete this.formItem.codeItemKey;
 					let url = this.actionType == 'add' ? '/code/add.do' : '/code/edit.do'
-
-					waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-					axios.post(CommonUtil.getContextPath() + url, $.param(this.formItem, true)).then((result) => {
+					VueUtil.post(url, this.formItem, (result) => {
 						$("#addItem").modal('hide');
 						this.list();
-					}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+					});
 				});
 			},
 			// 정렬 순서 변경
 			changeOrder(downCodeItemSeq, upCodeItemSeq){
-				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				let param = $.param({codeMainId:this.codeMainId, downCodeItemSeq: downCodeItemSeq, upCodeItemSeq: upCodeItemSeq});
-				axios.post(CommonUtil.getContextPath() + '/code/changeOrder.do', param).then((result) => {
+				let param = {codeMainId:this.codeMainId, downCodeItemSeq: downCodeItemSeq, upCodeItemSeq: upCodeItemSeq};
+				VueUtil.post('/code/changeOrder.do', param, (result) => {
 					this.list();
-				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+				});
 			},
 			// 삭제
 			deleteAction(codeItemSeq){
 				if(!confirm("삭제?")){
 					return;
 				}
-				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				let param = $.param({codeMainId:this.codeMainId, codeItemSeq: codeItemSeq});
-				axios.post(CommonUtil.getContextPath() + '/code/delete.do', param).then((result) => {
+				let param = {codeMainId:this.codeMainId, codeItemSeq: codeItemSeq};
+				VueUtil.post('/code/delete.do', param, (result) => {
 					this.list();
-				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+				});
 			},
 			isUpable(index){
 				if(this.itemList.length <= 1){
@@ -165,9 +160,9 @@
 			},
 			// 메인코드 
 			loadCodeMain(){
-				axios.get(CommonUtil.getContextPath() + "/code/getCodeMain.json", {params:{codeMainId: this.codeMainId}}).then((result) => {
+				VueUtil.get("/code/getCodeMain.json", {codeMainId: this.codeMainId}, (result) => {
 					this.codeMain = result.data;
-				}).catch((err) =>	CommonUtil.popupError(err));
+				});
 			}
 		},
 		created(){

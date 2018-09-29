@@ -46,11 +46,9 @@
 			// 리스트
 			list(){
 				let param = {kind: this.kind, parent: this.parentSeq};
-				waitDialog.show('조회 중입니다.', {dialogSize: 'sm'});
-			
-				axios.get(CommonUtil.getContextPath() + "/hab/item/list.json", {params:param}).then((result) => {
+				VueUtil.get("/hab/item/list.json", param, (result) => {
 					this.itemList = result.data;
-				}).catch((err) => CommonUtil.popupError(err)).finally (() =>	waitDialog.hide());
+				});
 			},
 			// 등록 폼 
 			addForm(){
@@ -64,21 +62,21 @@
 			},
 			// 정렬 순서 변경
 			changeOrder(downItemSeq, upItemSeq){
-				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				axios.post(CommonUtil.getContextPath() + '/hab/item/changeOrder.do', $.param({downItemSeq: downItemSeq, upItemSeq: upItemSeq})).then((result) => {
+				let param = {downItemSeq: downItemSeq, upItemSeq: upItemSeq};
+				VueUtil.post("/hab/item/changeOrder.do", param, (result) => {
 					this.list();
-				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+				});
 			},
 			// 삭제
 			deleteAction(itemSeq, callBack){
 				if(!confirm("삭제?")){
 					return;
 				}
-				waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-				axios.post(CommonUtil.getContextPath() + '/hab/item/delete.do', $.param({itemSeq: itemSeq})).then((result) => {
+				let param = {itemSeq: itemSeq};
+				VueUtil.post("/hab/item/delete.do", param, (result) => {
 					this.list();
 					this.$emit('@select-item', {itemSeq: -1});
-				}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+				});
 			},
 			isUpable(index){
 				if(this.itemList.length <= 1){

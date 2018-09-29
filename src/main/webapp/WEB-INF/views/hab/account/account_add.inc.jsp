@@ -126,19 +126,17 @@
 						return;
 					}
 					let url = this.actionType == 'add' ? '/hab/account/add.do' : '/hab/account/edit.do'
-					waitDialog.show('처리 중입니다.', {dialogSize: 'sm'});
-					axios.post(CommonUtil.getContextPath() + url, $.param(this.item, true)).then((result) => {
+					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						EventBus.$emit('listEvent');
-					}).catch((err) =>	CommonUtil.popupError(err)).finally (() => waitDialog.hide());
+					});
 				});
 			},
 			// 자산 코드 읽어 오기
 			listKindCode(){
-				waitDialog.show('조회 중입니다.', {dialogSize: 'sm'});
-				axios.get(CommonUtil.getContextPath() + "/code/list.json", {params: {codeMainId: 'KIND_CODE'}}).then((result) => {
+				VueUtil.get("/code/list.json", {codeMainId: 'KIND_CODE'}, (result) => {
 					this.kindCodeList = result.data;
-				}).catch((err) => CommonUtil.popupError(err)).finally (() =>	waitDialog.hide());
+				});
 			}
 		},
 		mounted(){

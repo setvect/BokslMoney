@@ -91,6 +91,10 @@ CommonUtil.getContextPath = function(){
 	return $("meta[name='contextRoot']").attr("content")
 }
 
+CommonUtil.appendContextRoot = function(url){
+	return CommonUtil.getContextPath() + url;
+}
+
 // 정규표현식에서 사용하는 특수문자를 escape 처리함
 CommonUtil.escapeRegExp = function(str) {
 	return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
@@ -135,42 +139,3 @@ Date.prototype.format = function(f) {
 		}
 	});
 };
-
-/********************
- * Vue에서 전역적으로 사용하는 필더 정의
- ********************/
-
-// 숫자 (,)콤마 추가
-Vue.filter('formatNumber', function (value) {
-	if(value === undefined){
-		return null;
-	}
-	return value.toLocaleString();
-});
-
-Vue.filter('dateFilter', function (value, format) {
-	var date = new Date(value);
-	return date.format(format);
-});
-
-// timestamp dataformat
-Vue.filter('timestampFormat', function (timestamp, format) {
-	var d = new Date(Number(timestamp));
-	return d.format(format);
-});
-
-// 목록 번호 계산. 내림차순(높은 번호 부터)으로 표시
-Vue.filter('indexSeq', function (index, page) {
-	return page.totalCount - ((page.currentPage - 1) * page.returnCount)  - index;
-});
-
-/********************
- * 전역적으로 사용할 디렉티브 정의 
- ********************/
-
-// 줄바꿈 -> br 태그 적용
-Vue.directive('br', {
-	inserted: function (el, binding, vnode) {
-		$(el).html(CommonUtil.toBr(binding.value));
-	}
-})
