@@ -1,23 +1,30 @@
 @charset "UTF-8";
 /* 기존 UI에서 추가된 CSS 선언 */
 .error {
-	color: red;
+  color: red;
 }
 
 /* 말줄임 */
-.td-ell{
-		max-width: 100px; 	overflow: hidden;	text-overflow: ellipsis; white-space: nowrap;
+.td-ell {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .no-padding {
-	padding: 0 !important;
-	margin: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-td.fc-event-container span{
-	line-height: 18px;
+td.fc-event-container span {
+  line-height: 18px;
+}
+/* calendar */
+.fc-title i {
+  padding: 0 3px;
 }
 
 [v-cloak] {
-	display: none;
+  display: none;
 }

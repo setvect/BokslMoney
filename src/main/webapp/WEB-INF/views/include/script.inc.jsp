@@ -34,8 +34,6 @@
 <!-- FullCalendar -->
 <script src="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.js"></script>
 <script src="${pageContext.request.contextPath}/assets/lib/fullcalendar/locale/ko.js"></script>
-<!-- Custom Theme Scripts --> 
-<script src="${pageContext.request.contextPath}/assets/lib/gentelella/js/custom.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/common-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 

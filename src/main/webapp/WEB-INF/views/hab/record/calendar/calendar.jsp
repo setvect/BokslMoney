@@ -16,9 +16,9 @@
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-12">
 							<div class="page-header">
-								<button type="button" class="btn btn-info _add">지출</button>
-								<button type="button" class="btn btn-info">수입</button>
-								<button type="button" class="btn btn-info">이체</button>
+								<button type="button" class="btn btn-info _spending">지출</button>
+								<button type="button" class="btn btn-info _income">수입</button>
+								<button type="button" class="btn btn-info _transfer">이체</button>
 							</div>
 							<div>
 								<h4>2018년 9월 9일 내역</h4>
@@ -103,6 +103,25 @@
 </div>
 
 <script type="text/javascript">
+
+	const TYPE_VALUE = {
+		'spending': {
+			title: '지출',
+			color: '#00bb33',
+			icon: 'fa-minus-square'
+		},
+		'income': {
+			title: '수입',
+			color: '#ff99cc',
+			icon: 'fa-plus-square'
+		},
+		'transfer': {
+			title: '이체',
+			color: '#66ccff',
+			icon: 'fa-check-square-o'
+		}
+	}
+
 	/* CALENDAR */
 	function init_calendar() {
 		if (typeof ($.fn.fullCalendar) === 'undefined') { return; }
@@ -119,7 +138,7 @@
 			editable: false,
 			selectable: true,
 			selectHelper: true,
-			// eventLimit: true, // allow "more" link when too many events
+			showNonCurrentDates: false,
 			option: {
 				locale: "ko"
 			},
@@ -132,49 +151,74 @@
 				start: '00:00',
 				end: '24:00',
 			},
+			// 날짜를 선택했을 때
 			select: function (start, end, allDay) {
-				console.log("###################");
-				console.log("################### start:", start);
-				console.log("################### end:", end);
-				console.log("################### allDay:", allDay);
-
-				calendar.fullCalendar('renderEvent', {
-					title: 'aaaaaaaaaa',
-					start: start,
-					end: end,
-					allDay: allDay
-				},
-					true // make the event "stick"
-				);
+				console.log("$$", start, start.format("YYYY-MM-DD"));
 			},
-			events: [{
-				title: 'All Day Event',
-				start: new Date(y, m, 1)
+			// 이벤트를 표시할 때
+			eventRender: function (event, element) {
+				if (event.type) {
+					let t = TYPE_VALUE[event.type];
+					element.find(".fc-title").prepend("<i class='fa " + t.icon + "'></i>" + t.title + ' : ' + event.cost);
+				}
 			},
-			{
-				title: '복슬이',
-				start: '2018-09-04',
+			// 최초, 월이 변경 되었을 때 발생하는 이벤트
+			viewRender : function (view) {
+				var start = view.start._d;
+				var end = view.end._d;
+				var dates = { start: start, end: end };
+				console.log(dates);
 			},
-			{
-				title: 'Meeting',
-				start: new Date(y, m, d),
-				allDay: false
-			}]
 		});
 
-		$("._add").click(function(){
-			calendar.fullCalendar('renderEvent', {
-				title: 'aaaaaaaaaa',
-				start: '2018-09-22',
-				color: '#DD99AA'
-			});
-			console.log("EEEEEEEEEEEEEEEEE");
+		$(".fc-next-button, .fc-prev-button, .fc-today-button").click(() => {
+			let t = calendar.fullCalendar('getDate');
+		});
+
+		function add(date, type, cost) {
+			let list = calendar.fullCalendar('clientEvents',
+				function (events) {
+					let view_start = date.format("YYYY-MM-DD");
+					return (moment(events.start).format('YYYY-MM-DD') == view_start && events.type == type);
+				}
+			);
+			let t = TYPE_VALUE[type];
+			if (list.length == 0) {
+				calendar.fullCalendar('renderEvent', {
+					type: type,
+					color: t.color,
+					cost: cost,
+					start: date.format("YYYY-MM-DD"),
+				});
+			}
+			else {
+				calendar.fullCalendar('removeEvents', list[0].id);
+				// list[0].cost = cost;
+				// calendar.fullCalendar('updateEvent', list[0]);
+			}
+		}
+
+		$("._spending").click(function () {
+			add(moment(), 'spending', Math.floor(Math.random() * 100) + 1);
+		});
+
+		$("._income").click(function () {
+			add(moment(), 'income', Math.floor(Math.random() * 100) + 1);
+		});
+
+		$("._transfer").click(function () {
+			add(moment(), 'transfer', Math.floor(Math.random() * 100) + 1);
 		});
 	};
 
 	$(() => {
 		init_calendar();
+
+
 	});
+
+
+
 	Vue.use(VeeValidate, {
 		locale: 'ko',
 		events: 'blur',
