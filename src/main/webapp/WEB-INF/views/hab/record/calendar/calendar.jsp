@@ -103,7 +103,6 @@
 </div>
 
 <script type="text/javascript">
-
 	const TYPE_VALUE = {
 		'spending': {
 			title: '지출',
@@ -122,102 +121,6 @@
 		}
 	}
 
-	/* CALENDAR */
-	function init_calendar() {
-		if (typeof ($.fn.fullCalendar) === 'undefined') { return; }
-		//  console.log('init_calendar');
-
-		var date = new Date(),
-			d = date.getDate(),
-			m = date.getMonth(),
-			y = date.getFullYear(),
-			started,
-			categoryClass;
-
-		var calendar = $('#calendar').fullCalendar({
-			editable: false,
-			selectable: true,
-			selectHelper: true,
-			showNonCurrentDates: false,
-			option: {
-				locale: "ko"
-			},
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: ''
-			},
-			selectConstraint: {
-				start: '00:00',
-				end: '24:00',
-			},
-			// 날짜를 선택했을 때
-			select: function (start, end, allDay) {
-				console.log("$$", start, start.format("YYYY-MM-DD"));
-			},
-			// 이벤트를 표시할 때
-			eventRender: function (event, element) {
-				if (event.type) {
-					let t = TYPE_VALUE[event.type];
-					element.find(".fc-title").prepend("<i class='fa " + t.icon + "'></i>" + t.title + ' : ' + event.cost);
-				}
-			},
-			// 최초, 월이 변경 되었을 때 발생하는 이벤트
-			viewRender : function (view) {
-				var start = view.start._d;
-				var end = view.end._d;
-				var dates = { start: start, end: end };
-				console.log(dates);
-			},
-		});
-
-		$(".fc-next-button, .fc-prev-button, .fc-today-button").click(() => {
-			let t = calendar.fullCalendar('getDate');
-		});
-
-		function add(date, type, cost) {
-			let list = calendar.fullCalendar('clientEvents',
-				function (events) {
-					let view_start = date.format("YYYY-MM-DD");
-					return (moment(events.start).format('YYYY-MM-DD') == view_start && events.type == type);
-				}
-			);
-			let t = TYPE_VALUE[type];
-			if (list.length == 0) {
-				calendar.fullCalendar('renderEvent', {
-					type: type,
-					color: t.color,
-					cost: cost,
-					start: date.format("YYYY-MM-DD"),
-				});
-			}
-			else {
-				calendar.fullCalendar('removeEvents', list[0].id);
-				// list[0].cost = cost;
-				// calendar.fullCalendar('updateEvent', list[0]);
-			}
-		}
-
-		$("._spending").click(function () {
-			add(moment(), 'spending', Math.floor(Math.random() * 100) + 1);
-		});
-
-		$("._income").click(function () {
-			add(moment(), 'income', Math.floor(Math.random() * 100) + 1);
-		});
-
-		$("._transfer").click(function () {
-			add(moment(), 'transfer', Math.floor(Math.random() * 100) + 1);
-		});
-	};
-
-	$(() => {
-		init_calendar();
-
-
-	});
-
-
 
 	Vue.use(VeeValidate, {
 		locale: 'ko',
@@ -229,9 +132,109 @@
 	const app = new Vue({
 		data: function () {
 			return {
+				calendar: null,
+				currentMonth: null,
+				selectDate: moment(),
 			};
 		},
 		components: {
 		},
+		methods: {
+			initCalendar() {
+				let self = this;
+				if (typeof ($.fn.fullCalendar) === 'undefined') { return; }
+				//  console.log('initCalendar');
+
+				let date = new Date(),
+					d = date.getDate(),
+					m = date.getMonth(),
+					y = date.getFullYear(),
+					started,
+					categoryClass;
+
+				this.calendar = $('#calendar').fullCalendar({
+					editable: false,
+					selectable: true,
+					selectHelper: true,
+					showNonCurrentDates: false,
+					option: {
+						locale: "ko"
+					},
+					header: {
+						left: 'prev,next today',
+						center: 'title',
+						right: ''
+					},
+					selectConstraint: {
+						start: '00:00',
+						end: '24:00',
+					},
+					// 날짜를 선택했을 때
+					select(start, end, allDay) {
+						self.selectDate = start;
+						console.log("select event $$", start, start.format("YYYY-MM-DD"));
+					},
+					// 이벤트를 표시할 때
+					eventRender(event, element) {
+						if (event.type) {
+							let t = TYPE_VALUE[event.type];
+							element.find(".fc-title").prepend("<i class='fa " + t.icon + "'></i>" + t.title + ' : ' + CommonUtil.toComma(event.cost));
+						}
+					},
+					// 최초, 월이 변경 되었을 때 발생하는 이벤트
+					viewRender(view) {
+						let start = view.start._d;
+						let end = view.end._d;
+						let dates = { start: start, end: end };
+						self.currentMonth = view.start;
+					},
+				});
+				$(".fc-next-button, .fc-prev-button, .fc-today-button").click((event) => {
+					let d = this.calendar.fullCalendar('getDate');
+					console.log("button event @@", d);
+					if ($(event.target).hasClass("fc-today-button")) {
+						this.calendar.fullCalendar('select', moment());
+					} else {
+						this.calendar.fullCalendar('select', d);
+					}
+				});
+			},
+			add(date, type, cost) {
+				let list = this.calendar.fullCalendar('clientEvents',
+					function (events) {
+						let view_start = date.format("YYYY-MM-DD");
+						return (moment(events.start).format('YYYY-MM-DD') == view_start && events.type == type);
+					}
+				);
+				if (list.length == 0) {
+					this.calendar.fullCalendar('renderEvent', {
+						type: type,
+						color: TYPE_VALUE[type].color,
+						cost: cost,
+						start: date.format("YYYY-MM-DD"),
+					});
+				}
+				else {
+					console.log(list[0]);
+					this.calendar.fullCalendar('removeEvents', list[0]._id);
+					// list[0].cost = cost;
+					// this.calendar.fullCalendar('updateEvent', list[0]);
+				}
+			}
+		},
+		mounted() {
+			this.initCalendar();
+			$("._spending").click(() => {
+				this.add(moment(), 'spending', Math.floor(Math.random() * 10000) + 1);
+			});
+
+			$("._income").click(() => {
+				this.add(moment(), 'income', Math.floor(Math.random() * 10000) + 1);
+			});
+
+			$("._transfer").click(() => {
+				this.add(moment(), 'transfer', Math.floor(Math.random() * 10000) + 1);
+			});
+		}
 	}).$mount('#app');
 </script>

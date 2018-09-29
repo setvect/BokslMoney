@@ -64,6 +64,11 @@ CommonUtil.destroyPage = function(selector){
 	}
 }
 
+// 콤마
+CommonUtil.toComma = function(value) {
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 // 줄바꿈을 br 테그로 변경
 CommonUtil.toBr = function(text){
 	if(text === undefined || text == null){
