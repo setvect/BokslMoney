@@ -96,11 +96,12 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
 </div>
+
+<jsp:include page="../record_add.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	const TYPE_VALUE = {

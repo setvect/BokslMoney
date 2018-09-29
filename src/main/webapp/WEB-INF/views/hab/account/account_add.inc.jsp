@@ -13,14 +13,16 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">이름: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="name" v-model="item.name" v-validate="'required|max:20'" data-vv-as="이름 ">
+								<input type="text" class="form-control" name="name" v-model="item.name" v-validate="'required|max:20'"
+								 data-vv-as="이름 ">
 								<span class="error" v-if="errors.has('name')">{{errors.first('name')}}</span>
 							</div>
-							</div>
+						</div>
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">계좌번호: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="accountNumber" v-model="item.accountNumber" v-validate="'max:30'" data-vv-as="계좌번호 ">
+								<input type="text" class="form-control" name="accountNumber" v-model="item.accountNumber" v-validate="'max:30'"
+								 data-vv-as="계좌번호 ">
 								<span class="error" v-if="errors.has('accountNumber')">{{errors.first('accountNumber')}}</span>
 							</div>
 						</div>
@@ -37,14 +39,16 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">잔고: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="number" class="form-control" name="balance" v-model="item.balance" v-validate="'required|integer|max:11|between:-2000000000,2000000000'" data-vv-as="잔고 ">
+								<input type="number" class="form-control" name="balance" v-model="item.balance" v-validate="'required|integer|max:11|between:-2000000000,2000000000'"
+								 data-vv-as="잔고 ">
 								<span class="error" v-if="errors.has('balance')">{{errors.first('balance')}}</span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">이율: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="interestRate" v-model="item.interestRate" v-validate="'max:20'" data-vv-as="이율 ">
+								<input type="text" class="form-control" name="interestRate" v-model="item.interestRate" v-validate="'max:20'"
+								 data-vv-as="이율 ">
 								<span class="error" v-if="errors.has('interestRate')">{{errors.first('interestRate')}}</span>
 							</div>
 						</div>
@@ -65,14 +69,16 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">월 납입액: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="monthlyPay" v-model="item.monthlyPay" v-validate="'max:20'" data-vv-as="월 납입액 ">
+								<input type="text" class="form-control" name="monthlyPay" v-model="item.monthlyPay" v-validate="'max:20'"
+								 data-vv-as="월 납입액 ">
 								<span class="error" v-if="errors.has('monthlyPay')">{{errors.first('monthlyPay')}}</span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-3">이체일: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
-								<input type="text" class="form-control" name="transferDate" v-model="item.transferDate" v-validate="'max:20'" data-vv-as="이체일 ">
+								<input type="text" class="form-control" name="transferDate" v-model="item.transferDate" v-validate="'max:20'"
+								 data-vv-as="이체일 ">
 								<span class="error" v-if="errors.has('transferDate')">{{errors.first('transferDate')}}</span>
 							</div>
 						</div>
@@ -96,8 +102,9 @@
 </template>
 
 <script type="text/javascript">
-	const itemAddComponent = Vue.component("itemAdd", { template: '#item-add',
-		data(){
+	const itemAddComponent = Vue.component("itemAdd", {
+		template: '#item-add',
+		data() {
 			return {
 				item: {},
 				actionType: 'add',
@@ -105,24 +112,24 @@
 			};
 		},
 		methods: {
-			// 등록 폼 
-			addForm(item){
+			// 등록 폼
+			addForm(item) {
 				this.actionType = 'add';
 				this.openForm(item);
 			},
-			//수정 폼 
-			editForm(item){
+			//수정 폼
+			editForm(item) {
 				this.actionType = 'edit';
 				this.openForm(item);
 			},
-			openForm(item){
+			openForm(item) {
 				this.item = $.extend(true, {}, item);
 				$("#addItem").modal();
 			},
 			// 등록 또는 수정
-			addAction(){
+			addAction() {
 				this.$validator.validateAll().then((result) => {
-					if(!result){
+					if (!result) {
 						return;
 					}
 					let url = this.actionType == 'add' ? '/hab/account/add.do' : '/hab/account/edit.do'
@@ -133,16 +140,16 @@
 				});
 			},
 			// 자산 코드 읽어 오기
-			listKindCode(){
-				VueUtil.get("/code/list.json", {codeMainId: 'KIND_CODE'}, (result) => {
+			listKindCode() {
+				VueUtil.get("/code/list.json", { codeMainId: 'KIND_CODE' }, (result) => {
 					this.kindCodeList = result.data;
 				});
 			}
 		},
-		mounted(){
+		mounted() {
 			this.listKindCode();
 		},
-		created(){
+		created() {
 			EventBus.$on('addFormEvent', this.addForm);
 			EventBus.$on('editFormEvent', this.editForm);
 		},

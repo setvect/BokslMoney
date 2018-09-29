@@ -9,56 +9,54 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-				<div class="x_content">
-					<div class="col-md-6 col-sm-8 col-xs-12">
-						<table class="table table-bordered">
-							<thead>
-								<tr>
-									<th>코드 이름</th>
-									<th>순서</th>
-									<th>편집</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="(item, index) in itemList">
-									<td >{{item.name}}</td>
-									<td>
-										<a href="javascript:" @click="changeOrder(itemList[index - 1].codeItemKey.codeItemSeq, item.codeItemKey.codeItemSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
-										<a href="javascript:" @click="changeOrder(item.codeItemKey.codeItemSeq, itemList[index + 1].codeItemKey.codeItemSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
-									</td>
-									<td>
-										<a href="javascript:" @click="editForm(item)"><i class="fa fa-edit" @click="editForm(item)"></i></a>
-										<a href="javascript:" @click="deleteAction(item.codeItemKey.codeItemSeq)"><i class="fa fa-remove"></i></a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<div>
-							<button type="button" class="btn btn-success" @click="addForm()">추가</button>
-						</div>
+				<div class="col-md-6 col-sm-8 col-xs-12">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>코드 이름</th>
+								<th>순서</th>
+								<th>편집</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(item, index) in itemList">
+								<td >{{item.name}}</td>
+								<td>
+									<a href="javascript:" @click="changeOrder(itemList[index - 1].codeItemKey.codeItemSeq, item.codeItemKey.codeItemSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
+									<a href="javascript:" @click="changeOrder(item.codeItemKey.codeItemSeq, itemList[index + 1].codeItemKey.codeItemSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
+								</td>
+								<td>
+									<a href="javascript:" @click="editForm(item)"><i class="fa fa-edit" @click="editForm(item)"></i></a>
+									<a href="javascript:" @click="deleteAction(item.codeItemKey.codeItemSeq)"><i class="fa fa-remove"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div>
+						<button type="button" class="btn btn-success" @click="addForm()">추가</button>
 					</div>
-				
-					<div id="addItem" class="modal fade" role="dialog">
-						<div class="modal-dialog">
-							<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">등록</h4>
-								</div>
-								<div class="modal-body">
-									<form onsubmit="return false;">
-										<div class="form-group">
-											<label>이름: </label>
-											<input type="text" class="form-control" name="name" v-model="formItem.name" v-validate="'required|max:20'" data-vv-as="이름 " v-on:keyup.13="addAction()">
-											<span class="error" v-if="errors.has('name')">{{errors.first('name')}}</span>
-										</div>
-									</form>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-info" @click="addAction()">저장</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-								</div>
+				</div>
+
+				<div id="addItem" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">등록</h4>
+							</div>
+							<div class="modal-body">
+								<form onsubmit="return false;">
+									<div class="form-group">
+										<label>이름: </label>
+										<input type="text" class="form-control" name="name" v-model="formItem.name" v-validate="'required|max:20'" data-vv-as="이름 " v-on:keyup.13="addAction()">
+										<span class="error" v-if="errors.has('name')">{{errors.first('name')}}</span>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info" @click="addAction()">저장</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 							</div>
 						</div>
 					</div>
@@ -95,14 +93,14 @@
 					this.itemList = result.data;
 				});
 			},
-			// 등록 폼 
+			// 등록 폼
 			addForm(){
 				this.actionType = 'add';
 				// 목록에서 최대 orderNo + 1 구하기
 				let orderNo = this.itemList.reduce((acc, item) => {return Math.max(acc, item.orderNo)}, 0) + 1;
 				this.openForm({orderNo: orderNo});
 			},
-			//수정 폼 
+			//수정 폼
 			editForm(item){
 				this.actionType = 'edit';
 				this.openForm(item);
@@ -158,7 +156,7 @@
 				}
 				return index + 1 !== this.itemList.length;
 			},
-			// 메인코드 
+			// 메인코드
 			loadCodeMain(){
 				VueUtil.get("/code/getCodeMain.json", {codeMainId: this.codeMainId}, (result) => {
 					this.codeMain = result.data;
