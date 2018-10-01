@@ -23,17 +23,19 @@
 
 <!-- bootstrap -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-<script src="${pageContext.request.contextPath}/assets/lib/parsleyjs/bower_components/bootstrap/js/tooltip.js"></script>
-<script src="${pageContext.request.contextPath}/assets/lib/parsleyjs/bower_components/bootstrap/js/popover.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/parsleyjs/bower_components/bootstrap/js/tooltip.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/parsleyjs/bower_components/bootstrap/js/popover.js"></script>
 
 <!-- FastClick -->
-<script src="${pageContext.request.contextPath}/assets/lib/fastclick/lib/fastclick.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fastclick/lib/fastclick.js"></script>
 <!-- NProgress -->
-<script src="${pageContext.request.contextPath}/assets/lib/nprogress/nprogress.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/nprogress/nprogress.js"></script>
 <!-- FullCalendar -->
-<script src="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.js"></script>
-<script src="${pageContext.request.contextPath}/assets/lib/fullcalendar/locale/ko.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fullcalendar/locale/ko.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/common-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/vue-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
@@ -57,6 +59,6 @@
 
 	<sec:authorize access="isAuthenticated()">
 		const LOGIN_USER_NAME = $('<textarea />').html("<sec:authentication property='principal.name'/>").text();
-		const LOGIN_USER_ID = "<sec:authentication property='principal.username'/>";	
+		const LOGIN_USER_ID = "<sec:authentication property='principal.username'/>";
 	</sec:authorize>
 </script>

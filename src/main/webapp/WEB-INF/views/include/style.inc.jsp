@@ -26,3 +26,6 @@
 
 <!-- FullCalendar -->
 <link href="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.min.css" rel="stylesheet">
+
+<!-- bootstrap-daterangepicker -->
+<link href="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">

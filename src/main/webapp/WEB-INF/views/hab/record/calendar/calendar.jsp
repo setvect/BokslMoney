@@ -9,96 +9,95 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
-				<div>
-					<div v-cloak>
-						<div class="col-md-8 col-sm-8 col-xs-12">
-							<div id='calendar'></div>
+				<div v-cloak>
+					<div class="col-md-8 col-sm-8 col-xs-12">
+						<div id='calendar'></div>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="page-header">
+							<button type="button" data-type="spending" class="btn btn-info _input">지출</button>
+							<button type="button" data-type="income" class="btn btn-info _input">수입</button>
+							<button type="button" data-type="transfer" class="btn btn-info _input">이체</button>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-12">
-							<div class="page-header">
-								<button type="button" class="btn btn-info _spending">지출</button>
-								<button type="button" class="btn btn-info _income">수입</button>
-								<button type="button" class="btn btn-info _transfer">이체</button>
-							</div>
-							<div>
-								<h4>2018년 9월 9일 내역</h4>
-								<table class="table table-bordered">
-									<colgroup>
-										<col width="10%" />
-										<col width="40%" />
-										<col width="25%" />
-										<col width="25%" />
-									</colgroup>
-									<thead>
-										<th>유형</th>
-										<th>분류</th>
-										<th>내용</th>
-										<th>금액</th>
-									</thead>
-									<tbody>
-										<tr>
-											<td>수익</td>
-											<td>근로소득 > 급여</td>
-											<td>월급</td>
-											<td class="text-right">12120</td>
-										</tr>
-										<tr>
-											<td>수익</td>
-											<td>금융소득 > 이자</td>
-											<td>적급</td>
-											<td class="text-right">12120</td>
-										</tr>
-										<tr>
-											<td>지출</td>
-											<td>생활용품 > 주방용품</td>
-											<td>냄비</td>
-											<td class="text-right">12120</td>
-										</tr>
-										<tr>
-											<td>지출</td>
-											<td>생활용품 > 주방용품</td>
-											<td>냄비</td>
-											<td class="text-right">12120</td>
-										</tr>
-										<tr>
-											<td>이체</td>
-											<td>대차거래 > 인출</td>
-											<td>이체</td>
-											<td class="text-right">12120</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+						<div>
+							<h4>2018년 9월 9일 내역</h4>
+							<table class="table table-bordered">
+								<colgroup>
+									<col width="10%" />
+									<col width="40%" />
+									<col width="25%" />
+									<col width="25%" />
+								</colgroup>
+								<thead>
+									<th>유형</th>
+									<th>분류</th>
+									<th>내용</th>
+									<th>금액</th>
+								</thead>
+								<tbody>
+									<tr>
+										<td>수익</td>
+										<td>근로소득 > 급여</td>
+										<td>월급</td>
+										<td class="text-right">12120</td>
+									</tr>
+									<tr>
+										<td>수익</td>
+										<td>금융소득 > 이자</td>
+										<td>적급</td>
+										<td class="text-right">12120</td>
+									</tr>
+									<tr>
+										<td>지출</td>
+										<td>생활용품 > 주방용품</td>
+										<td>냄비</td>
+										<td class="text-right">12120</td>
+									</tr>
+									<tr>
+										<td>지출</td>
+										<td>생활용품 > 주방용품</td>
+										<td>냄비</td>
+										<td class="text-right">12120</td>
+									</tr>
+									<tr>
+										<td>이체</td>
+										<td>대차거래 > 인출</td>
+										<td>이체</td>
+										<td class="text-right">12120</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
-							<div>
-								<h4>9월 결산</h4>
-								<table class="table table-bordered">
-									<tbody>
-										<tr>
-											<td>수입</td>
-											<td class="text-right">{{12200000 | formatNumber}}</td>
-										</tr>
-										<tr>
-											<td>지출</td>
-											<td class="text-right">{{120000 | formatNumber}}</td>
-										</tr>
-										<tr>
-											<td>수입 - 지출</td>
-											<td class="text-right">{{5980000 | formatNumber}}</td>
-										</tr>
-										<tr>
-											<td>이체</td>
-											<td class="text-right">{{120000 | formatNumber}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+						<div>
+							<h4>9월 결산</h4>
+							<table class="table table-bordered">
+								<tbody>
+									<tr>
+										<td>수입</td>
+										<td class="text-right">{{12200000 | formatNumber}}</td>
+									</tr>
+									<tr>
+										<td>지출</td>
+										<td class="text-right">{{120000 | formatNumber}}</td>
+									</tr>
+									<tr>
+										<td>수입 - 지출</td>
+										<td class="text-right">{{5980000 | formatNumber}}</td>
+									</tr>
+									<tr>
+										<td>이체</td>
+										<td class="text-right">{{120000 | formatNumber}}</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<add/>
 </div>
 
 <jsp:include page="../record_add.inc.jsp"></jsp:include>
@@ -122,7 +121,6 @@
 		}
 	}
 
-
 	Vue.use(VeeValidate, {
 		locale: 'ko',
 		events: 'blur',
@@ -139,6 +137,7 @@
 			};
 		},
 		components: {
+			'add': itemAddComponent
 		},
 		methods: {
 			initCalendar() {
@@ -225,16 +224,11 @@
 		},
 		mounted() {
 			this.initCalendar();
-			$("._spending").click(() => {
-				this.add(moment(), 'spending', Math.floor(Math.random() * 10000) + 1);
-			});
-
-			$("._income").click(() => {
-				this.add(moment(), 'income', Math.floor(Math.random() * 10000) + 1);
-			});
-
-			$("._transfer").click(() => {
-				this.add(moment(), 'transfer', Math.floor(Math.random() * 10000) + 1);
+			$("._input").click((event) => {
+				let type = $(event.target).attr("data-type");
+				console.log("3333333", type);
+				EventBus.$emit('addFormEvent', type);
+				// this.add(moment(), type, Math.floor(Math.random() * 10000) + 1);
 			});
 		}
 	}).$mount('#app');
