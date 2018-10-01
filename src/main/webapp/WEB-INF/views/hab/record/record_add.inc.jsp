@@ -28,7 +28,9 @@
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button">선택</button>
 										</span>
-										<span class="error" v-if="errors.has('item')">{{errors.first('item')}}</span>
+									</div>
+									<div v-if="errors.has('item')">
+										<span class="error">{{errors.first('item')}}</span>
 									</div>
 								</div>
 							</div>
@@ -43,7 +45,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">금액: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control _number" name="money" v-validate="'required'" data-vv-as="금액 ">
+									<input type="text" class="form-control _number" name="money" maxlength="11" v-validate="'required'" data-vv-as="금액 ">
 									<span class="error" v-if="errors.has('money')">{{errors.first('money')}}</span>
 								</div>
 							</div>
@@ -52,9 +54,9 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">지출계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<select class="form-control" v-model="item.payAccount">
-										<option>aaaa</option>
-										<option>aaaa</option>
-										<option>aaaa</option>
+										<option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option>
 									</select>
 								</div>
 							</div>
@@ -63,9 +65,9 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">수입계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<select class="form-control" v-model="item.receiveAccount">
-										<option>aaaa</option>
-										<option>aaaa</option>
-										<option>aaaa</option>
+										<option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option>
 									</select>
 								</div>
 							</div>
@@ -74,9 +76,9 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">속성: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<select class="form-control" name="attribute">
-										<option>aaaa</option>
-										<option>aaaa</option>
-										<option>aaaa</option>
+										<!-- <option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option> -->
 									</select>
 								</div>
 							</div>
@@ -84,7 +86,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">수수료: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control _number" name="fee">
+									<input type="text" class="form-control _number" name="fee" maxlength="6">
 								</div>
 							</div>
 						</div>
@@ -108,6 +110,7 @@
 		data() {
 			return {
 				item: {},
+				accountList: [],
 				actionType: 'add',
 			};
 		},
@@ -142,6 +145,12 @@
 					});
 				});
 			},
+			// 계좌 목록
+			listAccount(){
+				VueUtil.get("/hab/account/list.json", {}, (result) => {
+					this.accountList = result.data;
+				});
+			},
 		},
 		mounted() {
 			$('._datepicker').daterangepicker({
@@ -149,6 +158,7 @@
 				singleClasses: "picker_2"
 			});
 			$("._number").on("keyup", CommonUtil.inputComma);
+			this.listAccount();
 		},
 		created() {
 			EventBus.$on('addFormEvent', this.addForm);
