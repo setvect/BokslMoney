@@ -226,7 +226,6 @@
 			this.initCalendar();
 			$("._input").click((event) => {
 				let type = $(event.target).attr("data-type");
-				console.log("3333333", type);
 				EventBus.$emit('addFormEvent', type);
 				// this.add(moment(), type, Math.floor(Math.random() * 10000) + 1);
 			});

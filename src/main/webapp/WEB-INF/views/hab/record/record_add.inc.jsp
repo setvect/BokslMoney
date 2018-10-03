@@ -15,8 +15,17 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">날짜: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control has-feedback-left _datepicker" v-model="item.transferDate" placeholder="First Name" readonly="readonly">
-									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+									<div class='input-group date' id='datetimepicker10'>
+										<input type='text' class="form-control _datepicker" v-model="item.transferDate" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar">
+											</span>
+										</span>
+									</div>
+
+									<!-- <input type="text" class="form-control has-feedback-left _datepicker" v-model="item.transferDate" placeholder="First Name"
+									 readonly="readonly">
+									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span> -->
 								</div>
 							</div>
 
@@ -24,7 +33,8 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">항목: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<div class="input-group no-padding">
-										<input type="text" class="form-control" readonly="readonly" name="item" v-model="item.itemSeq" v-validate="'required'" data-vv-as="항목 ">
+										<input type="text" class="form-control" readonly="readonly" name="item" v-model="item.itemSeq" v-validate="'required'"
+										 data-vv-as="항목 ">
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button">선택</button>
 										</span>
@@ -37,7 +47,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">메모: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control" name="note" v-model="item.note" v-validate="'required'" data-vv-as="이름 ">
+									<input type="text" class="form-control" name="note" v-model="item.note" v-validate="'required'" data-vv-as="메모 ">
 									<span class="error" v-if="errors.has('note')">{{errors.first('note')}}</span>
 								</div>
 							</div>
@@ -45,7 +55,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">금액: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control _number" v-model="item.money" name="money" maxlength="11" v-validate="'required'" data-vv-as="금액 ">
+									<input type="text" class="form-control _number" v-model="item.money" name="money" maxlength="11" v-validate="'required'"
+									 data-vv-as="금액 ">
 									<span class="error" v-if="errors.has('money')">{{errors.first('money')}}</span>
 								</div>
 							</div>
@@ -146,26 +157,30 @@
 				});
 			},
 			// 계좌 목록
-			listAccount(){
+			loadAccount() {
 				VueUtil.get("/hab/account/list.json", {}, (result) => {
 					this.accountList = result.data;
 				});
 			},
 			// 속성
-			listAttribute(){
-				VueUtil.get("/code/list.json", {codeMainId: 'ATTR_SPENDING'}, (result) => {
+			loadAttribute() {
+				VueUtil.get("/code/list.json", { codeMainId: 'ATTR_SPENDING' }, (result) => {
 					this.attributeList = result.data;
 				});
 			}
 		},
 		mounted() {
-			$('._datepicker').daterangepicker({
-				singleDatePicker: true,
-				singleClasses: "picker_2"
+			$('#datetimepicker10').datetimepicker({
+				format: 'YYYY-MM-DD',
+				locale: 'ko',
+				maxDate: moment().add(1, 'days'),
+			}).on("dp.change", (e)=>{
+				console.log("$$$$$$$$$$$$$$$$$$$", e.date);
+				this.item.transferDate = e.date.format("YYYY-MM-DD");
 			});
-			$("._number").on("keyup", CommonUtil.inputComma);
-			this.listAccount();
-			this.listAttribute();
+						$("._number").on("keyup", CommonUtil.inputComma);
+			this.loadAccount();
+			this.loadAttribute();
 		},
 		created() {
 			EventBus.$on('addFormEvent', this.addForm);

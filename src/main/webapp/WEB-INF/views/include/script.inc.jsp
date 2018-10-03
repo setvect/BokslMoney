@@ -25,6 +25,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <!-- bootstrap-daterangepicker -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/parsleyjs/bower_components/bootstrap/js/tooltip.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/parsleyjs/bower_components/bootstrap/js/popover.js"></script>

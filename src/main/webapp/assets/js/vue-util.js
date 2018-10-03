@@ -4,8 +4,8 @@
 var VueUtil = {};
 const NOTING_OPERATION = ()=>{};
 /*
- * url: 호출 주소 
- * param: 전달 파라미터 
+ * url: 호출 주소
+ * param: 전달 파라미터
  * option: 옵션
  */
 VueUtil.get = function (url, param, callback, option) {
@@ -13,8 +13,8 @@ VueUtil.get = function (url, param, callback, option) {
 };
 
 /*
- * url: 호출 주소 
- * param: 전달 파라미터 
+ * url: 호출 주소
+ * param: 전달 파라미터
  * option: 옵션
  */
 VueUtil.post = function (url, param, callback, option) {
@@ -44,7 +44,7 @@ VueUtil._ajaxCall = function (callType, url, _param, _callback, _option) {
 	let errorCall =	option.errorCall || function (err) {CommonUtil.popupError(err);};
 
 	waitDialog.show(waitMsg, { dialogSize: "sm" });
-	
+
 	axiosMethod(CommonUtil.appendContextRoot(url), sendParam)
 	.then((result) => _callback(result))
 	.catch((err) => errorCall(err))
@@ -83,7 +83,7 @@ Vue.filter('indexSeq', function (index, page) {
 });
 
 /*
- * 전역적으로 사용할 디렉티브 정의 
+ * 전역적으로 사용할 디렉티브 정의
  */
 
 // 줄바꿈 -> br 태그 적용
@@ -92,3 +92,4 @@ Vue.directive('br', {
 		$(el).html(CommonUtil.toBr(binding.value));
 	}
 })
+
