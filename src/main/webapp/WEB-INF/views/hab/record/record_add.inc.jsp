@@ -15,8 +15,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">날짜: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<datepicker @update-date="updateDate" class="form-control" name="name" v-model="item.transferDate" readonly="readonly"
-											style="margin-right:-35px; display: inline;" v-once></datepicker>
+									<input type="text" class="form-control has-feedback-left _datepicker" placeholder="First Name" readonly="readonly" v-model="item.transferDate" v-once>
+									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 								</div>
 							</div>
 
@@ -162,6 +162,13 @@
 			}
 		},
 		mounted() {
+			$('._datepicker').daterangepicker({
+				singleDatePicker: true,
+				singleClasses: "",
+				startDate: moment('2018-10-10', 'YYYY-MM-DD')
+			},(start) => {
+				this.item.transferDate = start.format("YYYY-MM-DD");
+			});
 			$("._number").on("keyup", CommonUtil.inputComma);
 			this.loadAccount();
 			this.loadAttribute();
