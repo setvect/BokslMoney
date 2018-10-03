@@ -2,6 +2,9 @@
 
 <!-- Bootstrap -->
 <link href="${pageContext.request.contextPath}/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- bootstrap-daterangepicker -->
+<link href="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/assets/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <!-- NProgress -->
@@ -26,9 +29,3 @@
 
 <!-- FullCalendar -->
 <link href="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.min.css" rel="stylesheet">
-
-<!-- bootstrap-daterangepicker -->
-<link href="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
-<!-- bootstrap datetimepicker master  https://github.com/Eonasdan/bootstrap-datetimepicker -->
-<link href="${pageContext.request.contextPath}/assets/lib/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>

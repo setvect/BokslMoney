@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">{{actionType == 'add' ? '등록' : '수정'}}</h4>
+					<h4 class="modal-title">지출 내역 {{actionType == 'add' ? '등록' : '수정'}}</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -15,17 +15,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">날짜: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<div class='input-group date' id='datetimepicker10'>
-										<input type='text' class="form-control _datepicker" v-model="item.transferDate" />
-										<span class="input-group-addon">
-											<span class="glyphicon glyphicon-calendar">
-											</span>
-										</span>
-									</div>
-
-									<!-- <input type="text" class="form-control has-feedback-left _datepicker" v-model="item.transferDate" placeholder="First Name"
-									 readonly="readonly">
-									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span> -->
+									<datepicker @update-date="updateDate" class="form-control" name="name" v-model="item.transferDate" readonly="readonly"
+											style="margin-right:-35px; display: inline;" v-once></datepicker>
 								</div>
 							</div>
 
@@ -137,8 +128,9 @@
 				this.actionType = 'edit';
 				this.openForm(item);
 			},
+			// datepicker
 			updateDate: function (d) {
-				this.date = d;
+				this.item.transferDate = d;
 			},
 			openForm(item) {
 				$("#addItem").modal();
@@ -170,15 +162,7 @@
 			}
 		},
 		mounted() {
-			$('#datetimepicker10').datetimepicker({
-				format: 'YYYY-MM-DD',
-				locale: 'ko',
-				maxDate: moment().add(1, 'days'),
-			}).on("dp.change", (e)=>{
-				console.log("$$$$$$$$$$$$$$$$$$$", e.date);
-				this.item.transferDate = e.date.format("YYYY-MM-DD");
-			});
-						$("._number").on("keyup", CommonUtil.inputComma);
+			$("._number").on("keyup", CommonUtil.inputComma);
 			this.loadAccount();
 			this.loadAttribute();
 		},

@@ -93,3 +93,17 @@ Vue.directive('br', {
 	}
 })
 
+// 컴포넌트(component)
+// 선언
+Vue.component('datepicker', {
+	template: '<input/>',
+	mounted: function () {
+		var self = this;
+		$(this.$el).datepicker({
+			showOn: "button",
+			dateFormat: "yy-mm-dd",
+			onSelect: function (d) { self.$emit('update-date', d) }
+		});
+	},
+	beforeDestroy: function () { $(this.$el).datepicker('hide').datepicker('destroy') }
+});
