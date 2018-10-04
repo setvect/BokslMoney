@@ -18,11 +18,11 @@
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-							<panel kind='INCOME'/>
+							<panel kind='SPENDING'/>
 						</div>
 
 						<div role="tabpane2" class="tab-pane fade in" id="tab_content2" aria-labelledby="home-tab">
-							<panel kind='SPENDING'/>
+							<panel kind='INCOME'/>
 						</div>
 
 						<div role="tabpane3" class="tab-pane fade in" id="tab_content3" aria-labelledby="home-tab">

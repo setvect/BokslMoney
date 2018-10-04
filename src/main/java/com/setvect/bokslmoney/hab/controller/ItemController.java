@@ -16,6 +16,7 @@ import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.hab.repository.ItemRepository;
 import com.setvect.bokslmoney.hab.vo.ItemVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
+import com.setvect.bokslmoney.util.TreeNode;
 
 /**
  * 항목관리 컨트롤러
@@ -28,6 +29,8 @@ public class ItemController {
 
 	@Autowired
 	private ItemRepository itemRepository;
+
+	private static int ROOT_ITEM_SEQ = 0;
 
 	// ============== 뷰==============
 
@@ -54,6 +57,33 @@ public class ItemController {
 	@ResponseBody
 	public List<ItemVo> list(@RequestParam("kind") final KindType kindType, @RequestParam("parent") final int parent) {
 		return itemRepository.list(kindType, parent);
+	}
+
+	/**
+	 * @param kindType
+	 *            유형
+	 * @return 항목 목록
+	 */
+	@RequestMapping(value = "/listAll.json")
+	@ResponseBody
+	public TreeNode<ItemVo> listAll(@RequestParam("kind") final KindType kindType) {
+		ItemVo rootItem = new ItemVo();
+		rootItem.setItemSeq(0);
+		rootItem.setName("root");
+
+		TreeNode<ItemVo> rootTree = new TreeNode<ItemVo>(rootItem);
+
+		List<ItemVo> allItem = itemRepository.list(kindType, 0);
+
+		for (ItemVo itemDepth1 : allItem) {
+			TreeNode<ItemVo> depth1Tree = rootTree.addChild(itemDepth1);
+			List<ItemVo> itemList = itemRepository.list(kindType, itemDepth1.getItemSeq());
+			itemList.forEach(itemDepth2 -> {
+				depth1Tree.addChild(itemDepth2);
+			});
+		}
+
+		return rootTree;
 	}
 
 	// ============== 등록 ==============

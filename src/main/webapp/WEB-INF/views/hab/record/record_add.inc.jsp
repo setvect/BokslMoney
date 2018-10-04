@@ -112,6 +112,7 @@
 		data() {
 			return {
 				item: {},
+				itemList: {},
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
@@ -159,6 +160,14 @@
 				VueUtil.get("/code/list.json", { codeMainId: 'ATTR_SPENDING' }, (result) => {
 					this.attributeList = result.data;
 				});
+			},
+			// 항목 조회
+			loadItemList(){
+				VueUtil.get("/hab/item/listAll.json", { kind: 'SPENDING' }, (result) => {
+					this.itemList = result.data;
+					console.log("$$$$$$$$$$$$$$$$$$$", this.itemList);
+				});
+
 			}
 		},
 		mounted() {
@@ -172,6 +181,7 @@
 			$("._number").on("keyup", CommonUtil.inputComma);
 			this.loadAccount();
 			this.loadAttribute();
+			this.loadItemList();
 		},
 		created() {
 			EventBus.$on('addFormEvent', this.addForm);
