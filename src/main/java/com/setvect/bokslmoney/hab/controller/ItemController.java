@@ -1,6 +1,7 @@
 package com.setvect.bokslmoney.hab.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.hab.repository.ItemRepository;
+import com.setvect.bokslmoney.hab.service.ItemService;
 import com.setvect.bokslmoney.hab.vo.ItemVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.util.TreeNode;
@@ -29,6 +31,9 @@ public class ItemController {
 
 	@Autowired
 	private ItemRepository itemRepository;
+
+	@Autowired
+	private ItemService itemServcie;
 
 	private static int ROOT_ITEM_SEQ = 0;
 
@@ -66,24 +71,8 @@ public class ItemController {
 	 */
 	@RequestMapping(value = "/listAll.json")
 	@ResponseBody
-	public TreeNode<ItemVo> listAll(@RequestParam("kind") final KindType kindType) {
-		ItemVo rootItem = new ItemVo();
-		rootItem.setItemSeq(0);
-		rootItem.setName("root");
-
-		TreeNode<ItemVo> rootTree = new TreeNode<ItemVo>(rootItem);
-
-		List<ItemVo> allItem = itemRepository.list(kindType, 0);
-
-		for (ItemVo itemDepth1 : allItem) {
-			TreeNode<ItemVo> depth1Tree = rootTree.addChild(itemDepth1);
-			List<ItemVo> itemList = itemRepository.list(kindType, itemDepth1.getItemSeq());
-			itemList.forEach(itemDepth2 -> {
-				depth1Tree.addChild(itemDepth2);
-			});
-		}
-
-		return rootTree;
+	public Map<KindType, List<TreeNode<ItemVo>>> listAll() {
+		return itemServcie.listHierarchyAll();
 	}
 
 	// ============== 등록 ==============

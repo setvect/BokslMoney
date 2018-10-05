@@ -27,7 +27,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="item.itemSeq" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button">선택</button>
+											<button class="btn btn-default" type="button" @click="openItemList()">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -103,8 +103,11 @@
 				</div>
 			</div>
 		</div>
+		<all-list/>
 	</div>
 </template>
+
+<jsp:include page="record_item.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	const itemAddComponent = Vue.component("itemAdd", {
@@ -112,11 +115,13 @@
 		data() {
 			return {
 				item: {},
-				itemList: {},
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
 			};
+		},
+		components: {
+			'allList': itemAllListComponent
 		},
 		methods: {
 			// 등록 폼
@@ -161,13 +166,9 @@
 					this.attributeList = result.data;
 				});
 			},
-			// 항목 조회
-			loadItemList(){
-				VueUtil.get("/hab/item/listAll.json", { kind: 'SPENDING' }, (result) => {
-					this.itemList = result.data;
-					console.log("$$$$$$$$$$$$$$$$$$$", this.itemList);
-				});
-
+			// 항목 선택 팝업.
+			openItemList(){
+				EventBus.$emit('openItemListEvent');
 			}
 		},
 		mounted() {
@@ -181,7 +182,6 @@
 			$("._number").on("keyup", CommonUtil.inputComma);
 			this.loadAccount();
 			this.loadAttribute();
-			this.loadItemList();
 		},
 		created() {
 			EventBus.$on('addFormEvent', this.addForm);
