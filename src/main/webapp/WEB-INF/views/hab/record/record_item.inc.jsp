@@ -9,9 +9,23 @@
 					<h4 class="modal-title">항목 선택</h4>
 				</div>
 				<div class="modal-body">
-					ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ
+					<form class="form-horizontal">
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p>대분류</p>
+							<select class="form-control" size="10" v-model="subList" @change="reset()">
+								<option v-for="(item, index) in mainList" :value="item.children">{{item.data.name}}</option>
+							</select>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p>소분류</p>
+							<select class="form-control" size="10" v-model="selectItem">
+								<option v-for="(item, index) in subList" :value="item.data">{{item.data.name}}</option>
+							</select>
+						</div>
+					</form>
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn btn-info" @click="confirm()">저장</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</div>
@@ -25,14 +39,32 @@
 		data() {
 			return {
 				itemList: {},
+				mainList:[],
+				subList:[],
+				selectItem:null
 			};
 		},
+		props: {
+			type: String,
+		},
 		methods: {
+			// 확인
+			confirm(){
+				if(!this.selectItem){
+					alert("소분류 항목 선택해 주세요.");
+					return;
+				}
+				$("#itemAllList").modal("hide");
+			},
 			// 항목 조회
 			loadItemAllList() {
 				VueUtil.get("/hab/item/listAll.json", {}, (result) => {
 					this.itemList = result.data;
+					this.mainList = this.itemList[this.type];
 				});
+			},
+			reset(){
+				this.selectItem = null;
 			},
 			openItemList(item) {
 				$("#itemAllList").modal();

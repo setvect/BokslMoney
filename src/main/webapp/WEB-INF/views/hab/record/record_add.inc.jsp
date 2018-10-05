@@ -103,7 +103,7 @@
 				</div>
 			</div>
 		</div>
-		<all-list/>
+		<all-list :type="itemType"/>
 	</div>
 </template>
 
@@ -118,6 +118,7 @@
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
+				itemType: "SPENDING"
 			};
 		},
 		components: {
