@@ -12,14 +12,14 @@
 					<form class="form-horizontal">
 						<div class="col-md-6 col-sm-6 col-xs-6">
 							<p>대분류</p>
-							<select class="form-control" size="10" v-model="subList" @change="reset()">
-								<option v-for="(item, index) in mainList" :value="item.children">{{item.data.name}}</option>
+							<select class="form-control" size="10" v-model="selectMainItem" @change="reset()">
+								<option v-for="(item, index) in mainList" :value="item">{{item.data.name}}</option>
 							</select>
 						</div>
 						<div class="col-md-6 col-sm-6 col-xs-6">
 							<p>소분류</p>
-							<select class="form-control" size="10" v-model="selectItem">
-								<option v-for="(item, index) in subList" :value="item.data">{{item.data.name}}</option>
+							<select class="form-control" size="10" v-model="selectSubItem">
+								<option v-for="(item, index) in selectMainItem.children" :value="item">{{item.data.name}}</option>
 							</select>
 						</div>
 					</form>
@@ -40,17 +40,19 @@
 			return {
 				itemList: {},
 				mainList:[],
-				subList:[],
-				selectItem:null,
+				selectMainItem:{},
+				selectSubItem:null,
 			};
 		},
 		methods: {
 			// 확인
 			confirm(){
-				if(!this.selectItem){
+				if(!this.selectSubItem){
 					alert("소분류 항목 선택해 주세요.");
 					return;
 				}
+
+				EventBus.$emit('insertItemEvent', this.selectMainItem.data, this.selectSubItem.data);
 				this.close();
 			},
 			// 항목 조회
@@ -63,7 +65,7 @@
 				$("#itemAllList").modal("hide");
 			},
 			reset(){
-				this.selectItem = null;
+				this.selectSubItem = null;
 			},
 			openItemList(itemType) {
 				this.mainList = this.itemList[itemType];

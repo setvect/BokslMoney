@@ -24,7 +24,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">항목: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<div class="input-group no-padding">
-										<input type="text" class="form-control" readonly="readonly" name="item" v-model="item.itemSeq" v-validate="'required'"
+										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button" @click="openItemList(itemType)">선택</button>
@@ -119,6 +119,7 @@
 				actionType: 'add',
 				attributeList: [],
 				itemType: null,
+				itemPath:null,
 				selectDate: null,
 			};
 		},
@@ -190,6 +191,11 @@
 			// 항목 선택 팝업.
 			openItemList(itemType){
 				EventBus.$emit('openItemListEvent', itemType);
+			},
+			// 항목 입력
+			insertItem(mainItem, subItem){
+				this.item.itemSeq = subItem.itemSeq;
+				this.itemPath = mainItem.name + " > " + subItem.name;
 			}
 		},
 		mounted() {
@@ -200,6 +206,7 @@
 		created() {
 			EventBus.$on('addFormEvent', this.addForm);
 			EventBus.$on('editFormEvent', this.editForm);
+			EventBus.$on('insertItemEvent', this.insertItem);
 		},
 	});
 </script>
