@@ -59,22 +59,23 @@ VueUtil._ajaxCall = function (callType, url, _param, _callback, _option) {
  */
 
 // 숫자 (,)콤마 추가
-Vue.filter('formatNumber', function (value) {
+Vue.filter('numberFormat', function (value) {
 	if(value === undefined){
 		return null;
 	}
 	return value.toLocaleString();
 });
 
-Vue.filter('dateFilter', function (value, format) {
-	var date = new Date(value);
-	return date.format(format);
-});
-
-// timestamp dataformat
-Vue.filter('timestampFormat', function (timestamp, format) {
-	var d = new Date(Number(timestamp));
-	return d.format(format);
+// 날짜 포맷 변환
+// moment format pattern
+Vue.filter('dateFormat', function (value, format) {
+	if(moment.isMoment(value)){
+		return value.format(format)
+	}
+	if(value instanceof Date){
+		return moment(value).format(format)
+	}
+	return moment().format(format);
 });
 
 // 목록 번호 계산. 내림차순(높은 번호 부터)으로 표시

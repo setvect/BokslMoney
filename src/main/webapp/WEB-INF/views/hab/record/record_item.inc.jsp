@@ -26,7 +26,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info" @click="confirm()">저장</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-default" @click="close()">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -41,11 +41,8 @@
 				itemList: {},
 				mainList:[],
 				subList:[],
-				selectItem:null
+				selectItem:null,
 			};
-		},
-		props: {
-			type: String,
 		},
 		methods: {
 			// 확인
@@ -54,19 +51,22 @@
 					alert("소분류 항목 선택해 주세요.");
 					return;
 				}
-				$("#itemAllList").modal("hide");
+				this.close();
 			},
 			// 항목 조회
 			loadItemAllList() {
 				VueUtil.get("/hab/item/listAll.json", {}, (result) => {
 					this.itemList = result.data;
-					this.mainList = this.itemList[this.type];
 				});
+			},
+			close(){
+				$("#itemAllList").modal("hide");
 			},
 			reset(){
 				this.selectItem = null;
 			},
-			openItemList(item) {
+			openItemList(itemType) {
+				this.mainList = this.itemList[itemType];
 				$("#itemAllList").modal();
 			},
 		},

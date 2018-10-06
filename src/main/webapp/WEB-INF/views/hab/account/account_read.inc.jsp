@@ -15,7 +15,7 @@
 							<col style="width: 35%">
 							<col style="width: 100px;">
 							<col style="width: 35%">
-						</colgroup>						
+						</colgroup>
 						<tbody>
 							<tr>
 								<th scope="row">이름</th>
@@ -27,7 +27,7 @@
 								<th scope="row">자산종류</th>
 								<td>{{item.kindName}}</td>
 								<th scope="row">잔고</th>
-								<td>{{item.balance | formatNumber}}</td>
+								<td>{{item.balance | numberFormat}}</td>
 							</tr>
 							<tr>
 								<th scope="row">이율</th>

@@ -15,12 +15,12 @@
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-12">
 						<div class="page-header">
-							<button type="button" data-type="spending" class="btn btn-info _input">지출</button>
-							<button type="button" data-type="income" class="btn btn-info _input">수입</button>
-							<button type="button" data-type="transfer" class="btn btn-info _input">이체</button>
+							<button type="button" data-type="SPENDING" class="btn btn-info _input">지출</button>
+							<button type="button" data-type="INCOME" class="btn btn-info _input">수입</button>
+							<button type="button" data-type="TRANSFER" class="btn btn-info _input">이체</button>
 						</div>
 						<div>
-							<h4>2018년 9월 9일 내역</h4>
+							<h4>{{selectDate | dateFormat("YYYY년 MM월 DD일")}} 내역</h4>
 							<table class="table table-bordered">
 								<colgroup>
 									<col width="10%" />
@@ -70,24 +70,24 @@
 						</div>
 
 						<div>
-							<h4>9월 결산</h4>
+							<h4>{{currentMonth | dateFormat("YYYY년 MM월")}} 결산</h4>
 							<table class="table table-bordered">
 								<tbody>
 									<tr>
 										<td>수입</td>
-										<td class="text-right">{{12200000 | formatNumber}}</td>
+										<td class="text-right">{{12200000 | numberFormat}}</td>
 									</tr>
 									<tr>
 										<td>지출</td>
-										<td class="text-right">{{120000 | formatNumber}}</td>
+										<td class="text-right">{{120000 | numberFormat}}</td>
 									</tr>
 									<tr>
 										<td>수입 - 지출</td>
-										<td class="text-right">{{5980000 | formatNumber}}</td>
+										<td class="text-right">{{5980000 | numberFormat}}</td>
 									</tr>
 									<tr>
 										<td>이체</td>
-										<td class="text-right">{{120000 | formatNumber}}</td>
+										<td class="text-right">{{120000 | numberFormat}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -104,17 +104,17 @@
 
 <script type="text/javascript">
 	const TYPE_VALUE = {
-		'spending': {
+		'SPENDING': {
 			title: '지출',
 			color: '#00bb33',
 			icon: 'fa-minus-square'
 		},
-		'income': {
+		'INCOME': {
 			title: '수입',
 			color: '#ff99cc',
 			icon: 'fa-plus-square'
 		},
-		'transfer': {
+		'TRANSFER': {
 			title: '이체',
 			color: '#66ccff',
 			icon: 'fa-check-square-o'
@@ -169,10 +169,11 @@
 						start: '00:00',
 						end: '24:00',
 					},
-					// 날짜를 선택했을 때
+					// 달력에서 셀(날짜) 하나를 선택했을 때
 					select(start, end, allDay) {
 						self.selectDate = start;
-						console.log("select event $$", start, start.format("YYYY-MM-DD"));
+						$(".fc-day").removeClass("cal-select");
+						$(".fc-day[data-date='" + self.selectDate.format("YYYY-MM-DD")  + "']").addClass("cal-select");
 					},
 					// 이벤트를 표시할 때
 					eventRender(event, element) {
@@ -199,6 +200,12 @@
 					}
 				});
 			},
+			/**
+			 * 지출, 이체, 수입 항목 입력
+			 * date: 날짜
+			 * type: 유형코드(지출, 이체, 수입)
+			 * cost: 금액
+			 */
 			add(date, type, cost) {
 				let list = this.calendar.fullCalendar('clientEvents',
 					function (events) {
@@ -215,18 +222,16 @@
 					});
 				}
 				else {
-					console.log(list[0]);
 					this.calendar.fullCalendar('removeEvents', list[0]._id);
-					// list[0].cost = cost;
-					// this.calendar.fullCalendar('updateEvent', list[0]);
 				}
 			}
 		},
 		mounted() {
 			this.initCalendar();
+			// 지출, 이체, 수입 버튼 클릭
 			$("._input").click((event) => {
 				let type = $(event.target).attr("data-type");
-				EventBus.$emit('addFormEvent', type);
+				EventBus.$emit('addFormEvent', type, this.selectDate);
 				// this.add(moment(), type, Math.floor(Math.random() * 10000) + 1);
 			});
 		}

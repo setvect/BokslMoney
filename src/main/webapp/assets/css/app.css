@@ -28,3 +28,8 @@ td.fc-event-container span {
 [v-cloak] {
   display: none;
 }
+
+/* calendar cell background */
+.cal-select {
+  background: lightgreen;
+}

@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">지출 내역 {{actionType == 'add' ? '등록' : '수정'}}</h4>
+					<h4 class="modal-title">{{itemLabel}} 내역 {{actionType == 'add' ? '등록' : '수정'}}</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -27,7 +27,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="item.itemSeq" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" @click="openItemList()">선택</button>
+											<button class="btn btn-default" type="button" @click="openItemList(itemType)">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -103,7 +103,7 @@
 				</div>
 			</div>
 		</div>
-		<all-list :type="itemType"/>
+		<all-list/>
 	</div>
 </template>
 
@@ -118,28 +118,48 @@
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
-				itemType: "SPENDING"
+				itemType: null,
+				selectDate: null,
 			};
 		},
 		components: {
 			'allList': itemAllListComponent
 		},
+		computed:{
+			itemLabel: function(){
+				const ITEM_TYPE_LABEL = {INCOME: '수입', SPENDING: '지출', TRANSFER: '이체'}
+				return ITEM_TYPE_LABEL[this.itemType];
+			}
+		},
 		methods: {
 			// 등록 폼
-			addForm(item) {
+			addForm(itemType,  date) {
+				this.selectDate = date;
 				this.actionType = 'add';
-				this.openForm(item);
+				this.openForm(itemType);
 			},
 			//수정 폼
-			editForm(item) {
+			editForm(itemType) {
 				this.actionType = 'edit';
-				this.openForm(item);
+				this.openForm(itemType);
 			},
 			// datepicker
 			updateDate: function (d) {
 				this.item.transferDate = d;
 			},
-			openForm(item) {
+			// 계좌 입력 팝업창.
+			openForm(itemType) {
+				this.itemType = itemType;
+
+				let self = this;
+				$('._datepicker').daterangepicker({
+					singleDatePicker: true,
+					singleClasses: "",
+					startDate: self.selectDate.format("YYYY-MM-DD")
+				},(start) => {
+					this.item.transferDate = start.format("YYYY-MM-DD");
+				});
+
 				$("#addItem").modal();
 			},
 			// 등록 또는 수정
@@ -168,18 +188,11 @@
 				});
 			},
 			// 항목 선택 팝업.
-			openItemList(){
-				EventBus.$emit('openItemListEvent');
+			openItemList(itemType){
+				EventBus.$emit('openItemListEvent', itemType);
 			}
 		},
 		mounted() {
-			$('._datepicker').daterangepicker({
-				singleDatePicker: true,
-				singleClasses: "",
-				startDate: moment('2018-10-10', 'YYYY-MM-DD')
-			},(start) => {
-				this.item.transferDate = start.format("YYYY-MM-DD");
-			});
 			$("._number").on("keyup", CommonUtil.inputComma);
 			this.loadAccount();
 			this.loadAttribute();
