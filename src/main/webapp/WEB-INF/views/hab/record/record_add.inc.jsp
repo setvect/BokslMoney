@@ -28,7 +28,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" @click="openItemList(itemType)">선택</button>
+											<button class="btn btn-default" type="button" @click="openItemList(kindType)">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -47,8 +47,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">금액: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control _number" v-model="item.money" name="money" maxlength="11" v-validate="'required'"
-									 data-vv-as="금액 ">
+									<my-currency-input v-model="item.money" class="form-control" name="money" maxlength="10" v-validate="'required'" data-vv-as="금액 "></my-currency-input>
 									<span class="error" v-if="errors.has('money')">{{errors.first('money')}}</span>
 								</div>
 							</div>
@@ -94,7 +93,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">수수료: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control _number" name="fee" v-model="item.fee" maxlength="6">
+									<my-currency-input v-model="item.fee" class="form-control" name="money" maxlength="5"></my-currency-input>
 								</div>
 							</div>
 						</div>
@@ -120,11 +119,11 @@
 		template: '#item-add',
 		data() {
 			return {
-				item: {},
+				item: {money: 0, fee: 0},
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
-				itemType: null,
+				kindType: null,
 				itemPath: null,
 				selectDate: null,
 
@@ -136,25 +135,25 @@
 		computed: {
 			itemLabel() {
 				const ITEM_TYPE_LABEL = { INCOME: '수입', SPENDING: '지출', TRANSFER: '이체' }
-				return ITEM_TYPE_LABEL[this.itemType];
+				return ITEM_TYPE_LABEL[this.kindType];
 			},
 			// 지출계좌 선택 박스 비활성
 			disablePay() {
-				return this.itemType == "INCOME";
+				return this.kindType == "INCOME";
 			},
 			// 수입계좌 선택 박스 비활성
 			disableReceive() {
-				return this.itemType == "SPENDING";
+				return this.kindType == "SPENDING";
 			},
 			validatePay() {
 				return this.disablePay ? "" : "required";
 			},
 			validateReceive() {
-				if (this.itemType == "SPENDING") {
+				if (this.kindType == "SPENDING") {
 					return "";
 				}
 				// 이체에서는 지출계좌와 수입 계좌가 같으면 안됨.
-				if (this.itemType == "TRANSFER") {
+				if (this.kindType == "TRANSFER") {
 					return { required: true, notEquals: this.item.payAccount };
 				}
 				return "required";
@@ -162,31 +161,32 @@
 		},
 		methods: {
 			// 등록 폼
-			addForm(itemType, date) {
+			addForm(kindType, date) {
 				this.selectDate = date;
 				this.actionType = 'add';
-				this.openForm(itemType);
+				this.item.transferDate = this.selectDate.format("YYYY-MM-DD")
+				this.item.kind = kindType;
+				this.openForm(kindType);
 			},
 			//수정 폼
-			editForm(itemType) {
+			editForm(kindType) {
 				this.actionType = 'edit';
-				this.openForm(itemType);
+				this.openForm(kindType);
 			},
 			// datepicker
 			updateDate: function (d) {
 				this.item.transferDate = d;
 			},
 			// 계좌 입력 팝업창.
-			openForm(itemType) {
-				this.itemType = itemType;
+			openForm(kindType) {
+				this.kindType = kindType;
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
-				this.loadAttribute(ITEM_TYPE_ATTR[this.itemType]);
+				this.loadAttribute(ITEM_TYPE_ATTR[this.kindType]);
 
-				let self = this;
 				$('._datepicker').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
-					startDate: self.selectDate.format("YYYY-MM-DD")
+					startDate: this.selectDate.format("YYYY-MM-DD")
 				}, (start) => {
 					this.item.transferDate = start.format("YYYY-MM-DD");
 				});
@@ -199,8 +199,6 @@
 					if (!result) {
 						return;
 					}
-					return;
-
 					let url = this.actionType == 'add' ? '/hab/record/add.do' : '/hab/record/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
@@ -218,11 +216,14 @@
 			loadAttribute(codeMainId) {
 				VueUtil.get("/code/list.json", { codeMainId: codeMainId }, (result) => {
 					this.attributeList = result.data;
+					if(this.actionType == "add"){
+						this.item.attribute = this.attributeList[0].codeItemKey.codeItemSeq;
+					}
 				});
 			},
 			// 항목 선택 팝업.
-			openItemList(itemType) {
-				EventBus.$emit('openItemListEvent', itemType);
+			openItemList(kindType) {
+				EventBus.$emit('openItemListEvent', kindType);
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertItem(mainItem, subItem) {
@@ -231,7 +232,6 @@
 			}
 		},
 		mounted() {
-			$("._number").on("keyup", CommonUtil.inputComma);
 			this.loadAccount();
 		},
 		created() {

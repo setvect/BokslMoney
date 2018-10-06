@@ -10,7 +10,7 @@
 		<div class="menu_section">
 			<ul class="nav side-menu">
 				<li>
-					<a href="${pageContext.request.contextPath}/hab/record/calendar.do"><i class="fa fa-calendar"></i> 가계부 쓰기(달력)</a>
+					<a href="${pageContext.request.contextPath}/hab/transfer/calendar.do"><i class="fa fa-calendar"></i> 가계부 쓰기(달력)</a>
 				</li>
 				<li>
 					<a><i class="fa fa-th"></i> 가계부 쓰기(표)</a>

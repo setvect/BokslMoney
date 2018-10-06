@@ -38,7 +38,7 @@ public class TransferVo {
 	@JoinColumn(name = "ITEM_SEQ", nullable = false)
 	private ItemVo item;
 
-	/** 유형 */
+	/** 유형(지출, 수입, 이체) */
 	@Column(name = "KIND", length = 20, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private KindType kind;

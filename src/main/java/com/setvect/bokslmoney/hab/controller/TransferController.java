@@ -1,5 +1,6 @@
 package com.setvect.bokslmoney.hab.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,22 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.setvect.bokslmoney.ApplicationUtil;
 import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.code.repository.CodeItemRepository;
 import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
+import com.setvect.bokslmoney.hab.repository.ItemRepository;
 import com.setvect.bokslmoney.hab.repository.TransferRepository;
 import com.setvect.bokslmoney.hab.vo.TransferVo;
+import com.setvect.bokslmoney.util.DateUtil;
+import com.setvect.bokslmoney.util.PageResult;
 
 /**
  * 달력 기반 가계부 입력
  */
 @Controller
-@RequestMapping(value = "/hab/record/")
-public class RecordController {
+@RequestMapping(value = "/hab/transfer/")
+public class TransferController {
 	/** 로깅 */
-	private static Logger logger = LoggerFactory.getLogger(RecordController.class);
+	private static Logger logger = LoggerFactory.getLogger(TransferController.class);
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -37,6 +42,9 @@ public class RecordController {
 
 	@Autowired
 	private CodeMainRepository codeMainRepository;
+
+	@Autowired
+	private ItemRepository itemRepository;
 
 	@Autowired
 	private TransferRepository transferRepository;
@@ -59,11 +67,8 @@ public class RecordController {
 
 	// ============== 조회 ==============
 	/**
-	 * @param kindType
-	 *            유형
-	 * @param parent
-	 *            부모 코드 번호
-	 * @return 항목 목록
+	 * @param searchParam
+	 * @return 지출, 수입, 이체내역
 	 */
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
@@ -71,10 +76,33 @@ public class RecordController {
 		return null;
 	}
 
+	/**
+	 * @param year
+	 *            년
+	 * @param month
+	 *            월
+	 * @return 해당 월에 등록된 지출, 수입, 이체 내역
+	 */
+	@RequestMapping(value = "/listByMonth.json")
+	@ResponseBody
+	public String listByMonth(final int year, final int month) {
+		TransferSearchParam searchCondition = new TransferSearchParam(0, Integer.MAX_VALUE);
+		LocalDate fromDate = LocalDate.of(year, month, 1);
+		LocalDate toDate = fromDate.plusMonths(1).minusDays(1);
+
+		searchCondition.setFrom(DateUtil.toDate(fromDate));
+		searchCondition.setTo(DateUtil.toDate(toDate));
+
+		PageResult<TransferVo> page = transferRepository.getPagingList(searchCondition);
+		List<TransferVo> list = page.getList();
+		return ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
+	}
+
 	// ============== 등록 ==============
 	@RequestMapping(value = "/add.do")
 	@ResponseBody
-	public void add(final TransferVo item) {
+	public void add(final TransferVo item, @RequestParam("itemSeq") final int itemSeq) {
+		item.setItem(itemRepository.findById(itemSeq).get());
 		transferRepository.save(item);
 	}
 

@@ -75,19 +75,19 @@
 								<tbody>
 									<tr>
 										<td>수입</td>
-										<td class="text-right">{{12200000 | numberFormat}}</td>
+										<td class="text-right">{{sumIncome | numberFormat}}</td>
 									</tr>
 									<tr>
 										<td>지출</td>
-										<td class="text-right">{{120000 | numberFormat}}</td>
+										<td class="text-right">{{sumSpending | numberFormat}}</td>
 									</tr>
 									<tr>
 										<td>수입 - 지출</td>
-										<td class="text-right">{{5980000 | numberFormat}}</td>
+										<td class="text-right">{{sumIncome - sumSpending | numberFormat}}</td>
 									</tr>
 									<tr>
 										<td>이체</td>
-										<td class="text-right">{{120000 | numberFormat}}</td>
+										<td class="text-right">{{sumTransfer | numberFormat}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -133,11 +133,23 @@
 			return {
 				calendar: null,
 				currentMonth: null,
+				transferList:[],
 				selectDate: moment(),
 			};
 		},
 		components: {
 			'add': itemAddComponent
+		},
+		computed:{
+			sumIncome(){
+				return this.sumCalculation(t => t.kind == 'INCOME');
+			},
+			sumSpending(){
+				return this.sumCalculation(t => t.kind == 'SPENDING');
+			},
+			sumTransfer(){
+				return this.sumCalculation(t => t.kind == 'TRANSFER');
+			}
 		},
 		methods: {
 			initCalendar() {
@@ -188,6 +200,7 @@
 						let end = view.end._d;
 						let dates = { start: start, end: end };
 						self.currentMonth = view.start;
+						self.loadRecord(self.currentMonth.toDate().getFullYear(), self.currentMonth.toDate().getMonth()+1);
 					},
 				});
 				$(".fc-next-button, .fc-prev-button, .fc-today-button").click((event) => {
@@ -200,9 +213,19 @@
 					}
 				});
 			},
+			// 해당 월에 등록된 지출,수입,이체 항목 조회
+			loadRecord(year, month){
+				VueUtil.get("/hab/transfer/listByMonth.json", {year: year, month: month}, (result) => {
+					this.transferList = result.data;
+					for(let idx in this.transferList) {
+						let t = this.transferList[idx];
+						this.add(moment(t.transferDate), t.kind, t.money);
+					}
+				});
+			},
 			/**
 			 * 지출, 이체, 수입 항목 입력
-			 * date: 날짜
+			 * date: 날짜(moment 객체)
 			 * type: 유형코드(지출, 이체, 수입)
 			 * cost: 금액
 			 */
@@ -224,6 +247,10 @@
 				else {
 					this.calendar.fullCalendar('removeEvents', list[0]._id);
 				}
+			},
+			// 수입, 지출, 이체 합산
+			sumCalculation(filterCondition){
+				return this.transferList.filter(filterCondition).reduce((acc, t) => {return acc + t.money;}, 0);
 			}
 		},
 		mounted() {
