@@ -33,3 +33,5 @@ td.fc-event-container span {
 .cal-select {
   background: lightgreen;
 }
+
+body { padding-right: 0 !important }
