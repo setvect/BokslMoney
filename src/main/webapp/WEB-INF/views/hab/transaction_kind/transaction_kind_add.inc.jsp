@@ -58,7 +58,7 @@
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/transaction_kind/add.do' : '/hab/transaction_kind/edit.do'
+					let url = this.actionType == 'add' ? '/hab/transactionKind/add.do' : '/hab/transactionKind/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						this.afterEventCallback();

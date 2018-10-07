@@ -57,7 +57,7 @@
 			},
 			// 항목 조회
 			loadItemAllList() {
-				VueUtil.get("/hab/item/listAll.json", {}, (result) => {
+				VueUtil.get("/hab/transactionKind/listAll.json", {}, (result) => {
 					this.itemListMap = result.data;
 				});
 			},

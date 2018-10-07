@@ -29,8 +29,8 @@ public class OftenUserVo {
 	private int oftenUsedSeq;
 
 	/** 항목 일련번호 */
-	@Column(name = "ITEM_SEQ", nullable = false)
-	private int itemSeq;
+	@Column(name = "TRANSACTION_KIND_SEQ", nullable = false)
+	private int transactionKindSeq;
 
 	/** 출금계좌 */
 	@Column(name = "PAY_ACCOUNT", nullable = true)

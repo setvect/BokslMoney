@@ -22,7 +22,7 @@
 					<a><i class="fa fa-bar-chart-o"></i> 통계 </a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/hab/transaction_kind/page.do"><i class="fa fa-building-o"></i> 항목관리 </a>
+					<a href="${pageContext.request.contextPath}/hab/transactionKind/page.do"><i class="fa fa-building-o"></i> 항목관리 </a>
 				</li>
 				<li>
 					<a href="${pageContext.request.contextPath}/hab/account/page.do"><i class="fa fa-money"></i> 계좌 관리 </a>

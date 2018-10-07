@@ -46,7 +46,7 @@
 			// 리스트
 			list(){
 				let param = {kind: this.kind, parent: this.parentSeq};
-				VueUtil.get("/hab/transaction_kind/list.json", param, (result) => {
+				VueUtil.get("/hab/transactionKind/list.json", param, (result) => {
 					this.itemList = result.data;
 				});
 			},
@@ -63,7 +63,7 @@
 			// 정렬 순서 변경
 			changeOrder(downtransactionKindSeq, uptransactionKindSeq){
 				let param = {downtransactionKindSeq: downtransactionKindSeq, uptransactionKindSeq: uptransactionKindSeq};
-				VueUtil.post("/hab/transaction_kind/changeOrder.do", param, (result) => {
+				VueUtil.post("/hab/transactionKind/changeOrder.do", param, (result) => {
 					this.list();
 				});
 			},
@@ -73,7 +73,7 @@
 					return;
 				}
 				let param = {transactionKindSeq: transactionKindSeq};
-				VueUtil.post("/hab/transaction_kind/delete.do", param, (result) => {
+				VueUtil.post("/hab/transactionKind/delete.do", param, (result) => {
 					this.list();
 					this.$emit('@select-item', {transactionKindSeq: -1});
 				});

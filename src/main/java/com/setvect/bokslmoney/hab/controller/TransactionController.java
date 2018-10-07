@@ -106,8 +106,8 @@ public class TransactionController {
 	// ============== 등록 ==============
 	@RequestMapping(value = "/add.do")
 	@ResponseBody
-	public void add(final TransactionVo item, @RequestParam("itemSeq") final int itemSeq) {
-		item.setItem(itemRepository.findById(itemSeq).get());
+	public void add(final TransactionVo item, @RequestParam("transactionKindSeq") final int transactionKindSeq) {
+		item.setItem(itemRepository.findById(transactionKindSeq).get());
 		transactionRepository.save(item);
 	}
 

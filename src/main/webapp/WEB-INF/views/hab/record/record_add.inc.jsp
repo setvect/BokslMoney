@@ -16,7 +16,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">날짜: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<input type="text" class="form-control has-feedback-left _datepicker" placeholder="First Name" readonly="readonly"
-									 v-model="item.transferDate" v-once>
+									 v-model="item.transactionDate" v-once>
 									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 								</div>
 							</div>
@@ -164,7 +164,7 @@
 			addForm(kindType, date) {
 				this.selectDate = date;
 				this.actionType = 'add';
-				this.item.transferDate = this.selectDate.format("YYYY-MM-DD")
+				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
 				this.item.kind = kindType;
 				this.openForm(kindType);
 			},
@@ -175,7 +175,7 @@
 			},
 			// datepicker
 			updateDate: function (d) {
-				this.item.transferDate = d;
+				this.item.transactionDate = d;
 			},
 			// 계좌 입력 팝업창.
 			openForm(kindType) {
@@ -188,7 +188,7 @@
 					singleClasses: "",
 					startDate: this.selectDate.format("YYYY-MM-DD")
 				}, (start) => {
-					this.item.transferDate = start.format("YYYY-MM-DD");
+					this.item.transactionDate = start.format("YYYY-MM-DD");
 				});
 
 				$("#addItem").modal();
@@ -199,7 +199,7 @@
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/transfer/add.do' : '/hab/transfer/edit.do'
+					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						EventBus.$emit('listEvent');
@@ -227,7 +227,7 @@
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertItem(mainItem, subItem) {
-				this.item.itemSeq = subItem.itemSeq;
+				this.item.transactionKindSeq = subItem.transactionKindSeq;
 				this.itemPath = mainItem.name + " > " + subItem.name;
 			}
 		},

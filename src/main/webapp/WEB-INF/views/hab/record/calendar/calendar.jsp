@@ -130,7 +130,7 @@
 			// 선택된 날짜의 지출, 수입, 이체 내역
 			listSelectDayTransfer(){
 				let r = this.transferList.filter((t) =>{
-					return this.selectDate.toDate().getDate() == new Date(t.transferDate).getDate();
+					return this.selectDate.toDate().getDate() == new Date(t.transactionDate).getDate();
 				});
 				return r;
 			}
@@ -199,11 +199,11 @@
 			},
 			// 해당 월에 등록된 지출,수입,이체 항목 조회
 			loadRecord(year, month){
-				VueUtil.get("/hab/transfer/listByMonth.json", {year: year, month: month}, (result) => {
+				VueUtil.get("/hab/transaction/listByMonth.json", {year: year, month: month}, (result) => {
 					this.transferList = result.data;
 					for(let idx in this.transferList) {
 						let t = this.transferList[idx];
-						this.displayTransfer(moment(t.transferDate), t.kind, t.money);
+						this.displayTransfer(moment(t.transactionDate), t.kind, t.money);
 					}
 				});
 			},

@@ -24,7 +24,7 @@ import com.setvect.bokslmoney.util.TreeNode;
  * 항목관리 컨트롤러
  */
 @Controller
-@RequestMapping(value = "/hab/transaction_kind")
+@RequestMapping(value = "/hab/transactionKind")
 public class TransactionKindController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(TransactionKindController.class);
