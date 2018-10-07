@@ -37,12 +37,12 @@ public class TransactionVo {
 	private int transactionSeq;
 
 	/** 메인코드 종속 일련번호 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ITEM_SEQ", nullable = false)
-	private TransactionKindVo item;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "TRANSACTION_KIND_SEQ", nullable = false)
+	private TransactionKindVo transactionKind;
 
 	@Transient
-	private TransactionKindVo parentItem;
+	private TransactionKindVo parentTransactionKind;
 
 	/** 유형(지출, 수입, 이체) */
 	@Column(name = "KIND", length = 20, nullable = false)

@@ -162,16 +162,20 @@
 		methods: {
 			// 등록 폼
 			addForm(kindType, date) {
-				this.selectDate = date;
 				this.actionType = 'add';
+				this.selectDate = date;
 				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
 				this.item.kind = kindType;
-				this.openForm(kindType);
+				this.openForm(this.item.kind);
 			},
 			//수정 폼
-			editForm(kindType) {
+			editForm(transaction) {
 				this.actionType = 'edit';
-				this.openForm(kindType);
+				this.selectDate = moment(transaction.transactionDate);
+				this.item = transaction;
+				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
+				this.insertItem(transaction.parentTransactionKind, transaction.transactionKind);
+				this.openForm(this.item.kind);
 			},
 			// datepicker
 			updateDate: function (d) {
@@ -199,10 +203,13 @@
 					if (!result) {
 						return;
 					}
+					delete this.item.transactionKind;
+					delete this.item.parentTransactionKind;
+
 					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
-						EventBus.$emit('listEvent');
+						EventBus.$emit('reloadEvent');
 					});
 				});
 			},

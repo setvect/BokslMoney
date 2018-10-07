@@ -27,8 +27,9 @@ public class TransactionService {
 	 */
 	public void mappingParentItem(final List<TransactionVo> list) {
 		list.stream().forEach(t -> {
-			TransactionKindVo parent = itemRepository.findById(t.getItem().getParentSeq()).get();
-			t.setParentItem(parent);
+			int parentSeq = t.getTransactionKind().getParentSeq();
+			TransactionKindVo parent = itemRepository.findById(parentSeq).orElse(null);
+			t.setParentTransactionKind(parent);
 		});
 	}
 }

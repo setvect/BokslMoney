@@ -45,7 +45,7 @@ public class TransactionController {
 	private CodeMainRepository codeMainRepository;
 
 	@Autowired
-	private TransactionKindRepository itemRepository;
+	private TransactionKindRepository transactionKindRepository;
 
 	@Autowired
 	private TransactionRepository transactionRepository;
@@ -107,15 +107,16 @@ public class TransactionController {
 	@RequestMapping(value = "/add.do")
 	@ResponseBody
 	public void add(final TransactionVo item, @RequestParam("transactionKindSeq") final int transactionKindSeq) {
-		item.setItem(itemRepository.findById(transactionKindSeq).get());
+		item.setTransactionKind(transactionKindRepository.findById(transactionKindSeq).get());
 		transactionRepository.save(item);
 	}
 
 	// ============== 수정 ==============
 	@RequestMapping(value = "/edit.do")
 	@ResponseBody
-	public void edit(final TransactionVo item) {
-		transactionRepository.save(item);
+	public void edit(final TransactionVo transaction, @RequestParam("transactionKindSeq") final int transactionKindSeq) {
+		transaction.setTransactionKind(transactionKindRepository.findById(transactionKindSeq).get());
+		transactionRepository.save(transaction);
 	}
 
 	// ============== 삭제 ==============

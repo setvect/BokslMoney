@@ -23,9 +23,10 @@
 							<h4>{{selectDate | dateFormat("YYYY년 MM월 DD일")}} 내역</h4>
 							<table class="table table-bordered">
 								<colgroup>
-									<col width="10%" />
-									<col width="40%" />
-									<col width="25%" />
+									<col width="12%" />
+									<col width="30%" />
+									<col width="17%" />
+									<col width="16%" />
 									<col width="25%" />
 								</colgroup>
 								<thead>
@@ -33,13 +34,22 @@
 									<th>분류</th>
 									<th>내용</th>
 									<th>금액</th>
+									<th>기능</th>
 								</thead>
 								<tbody>
 									<tr v-for="t in listSelectDayTransfer">
 										<td>{{kindMapValue(t.kind).title}}</td>
-										<td>{{t.parentItem.name}} > {{t.item.name}}</td>
+										<td>
+											{{t.parentTransactionKind.name}} > {{t.transactionKind.name}}
+										</td>
 										<td>{{t.note}}</td>
 										<td class="text-right">{{t.money | numberFormat}}</td>
+										<td class="text-center">
+											<div class="btn-group  btn-group-xs">
+												<button type="button" class="btn btn-success btn-xs" @click="editForm(t)">수정</button>
+												<button type="button" class="btn btn-dark btn-xs" @click="deleteAction(t)">삭제</button>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -200,6 +210,7 @@
 			// 해당 월에 등록된 지출,수입,이체 항목 조회
 			loadRecord(year, month){
 				VueUtil.get("/hab/transaction/listByMonth.json", {year: year, month: month}, (result) => {
+					this.calendar.fullCalendar('removeEvents');
 					this.transferList = result.data;
 					for(let idx in this.transferList) {
 						let t = this.transferList[idx];
@@ -239,6 +250,22 @@
 			},
 			kindMapValue(kind){
 				return TYPE_VALUE[kind];
+			},
+			// 현재 보고 있는 달력 거래 내역 트랜.
+			reload(){
+				this.loadRecord(this.currentMonth.toDate().getFullYear(), this.currentMonth.toDate().getMonth() + 1);
+			},
+			editForm(item){
+				var d = $.extend(true, {}, item);
+				EventBus.$emit('editFormEvent', d);
+			},
+			deleteAction(item){
+				if(!confirm("삭제하시겠습니까?")){
+					return;
+				}
+				VueUtil.post('/hab/transaction/delete.do', {itemSeq: item.transactionSeq}, (result) => {
+					this.reload();
+				});
 			}
 		},
 		mounted() {
@@ -247,8 +274,8 @@
 			$("._input").click((event) => {
 				let type = $(event.target).attr("data-type");
 				EventBus.$emit('addFormEvent', type, this.selectDate);
-				// this.add(moment(), type, Math.floor(Math.random() * 10000) + 1);
 			});
+			EventBus.$on('reloadEvent', this.reload);
 		}
 	}).$mount('#app');
 </script>
