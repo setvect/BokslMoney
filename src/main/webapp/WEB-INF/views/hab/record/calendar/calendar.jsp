@@ -35,35 +35,11 @@
 									<th>금액</th>
 								</thead>
 								<tbody>
-									<tr>
-										<td>수익</td>
-										<td>근로소득 > 급여</td>
-										<td>월급</td>
-										<td class="text-right">12120</td>
-									</tr>
-									<tr>
-										<td>수익</td>
-										<td>금융소득 > 이자</td>
-										<td>적급</td>
-										<td class="text-right">12120</td>
-									</tr>
-									<tr>
-										<td>지출</td>
-										<td>생활용품 > 주방용품</td>
-										<td>냄비</td>
-										<td class="text-right">12120</td>
-									</tr>
-									<tr>
-										<td>지출</td>
-										<td>생활용품 > 주방용품</td>
-										<td>냄비</td>
-										<td class="text-right">12120</td>
-									</tr>
-									<tr>
-										<td>이체</td>
-										<td>대차거래 > 인출</td>
-										<td>이체</td>
-										<td class="text-right">12120</td>
+									<tr v-for="t in listSelectDayTransfer">
+										<td>{{kindMapValue(t.kind).title}}</td>
+										<td>{{t.parentItem.name}} > {{t.item.name}}</td>
+										<td>{{t.note}}</td>
+										<td class="text-right">{{t.money | numberFormat}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -133,6 +109,7 @@
 			return {
 				calendar: null,
 				currentMonth: null,
+				// 지출, 수입, 이체 내역
 				transferList:[],
 				selectDate: moment(),
 			};
@@ -149,6 +126,13 @@
 			},
 			sumTransfer(){
 				return this.sumCalculation(t => t.kind == 'TRANSFER');
+			},
+			// 선택된 날짜의 지출, 수입, 이체 내역
+			listSelectDayTransfer(){
+				let r = this.transferList.filter((t) =>{
+					return this.selectDate.toDate().getDate() == new Date(t.transferDate).getDate();
+				});
+				return r;
 			}
 		},
 		methods: {
@@ -219,17 +203,17 @@
 					this.transferList = result.data;
 					for(let idx in this.transferList) {
 						let t = this.transferList[idx];
-						this.add(moment(t.transferDate), t.kind, t.money);
+						this.displayTransfer(moment(t.transferDate), t.kind, t.money);
 					}
 				});
 			},
 			/**
-			 * 지출, 이체, 수입 항목 입력
+			 * 지출, 이체, 수입 항목 달력 셀에 입력
 			 * date: 날짜(moment 객체)
 			 * type: 유형코드(지출, 이체, 수입)
 			 * cost: 금액
 			 */
-			add(date, type, cost) {
+			displayTransfer(date, type, cost) {
 				let list = this.calendar.fullCalendar('clientEvents',
 					function (events) {
 						let view_start = date.format("YYYY-MM-DD");
@@ -245,12 +229,16 @@
 					});
 				}
 				else {
-					this.calendar.fullCalendar('removeEvents', list[0]._id);
+					list[0].cost += cost;
+					this.calendar.fullCalendar('updateEvent', list[0]);
 				}
 			},
 			// 수입, 지출, 이체 합산
 			sumCalculation(filterCondition){
 				return this.transferList.filter(filterCondition).reduce((acc, t) => {return acc + t.money;}, 0);
+			},
+			kindMapValue(kind){
+				return TYPE_VALUE[kind];
 			}
 		},
 		mounted() {

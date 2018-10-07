@@ -45,7 +45,7 @@ public class TransferRepositoryImpl implements TransferRepositoryCustom {
 		PageQueryCondition pageQuery = new PageQueryCondition(bindParameter, searchCondition);
 
 		pageQuery.setCountQuery("select count(*) FROM TransferVo m " + where);
-		pageQuery.setSelectQuery("SELECT m FROM TransferVo m " + where + " ORDER BY m.transferDate ");
+		pageQuery.setSelectQuery("SELECT m FROM TransferVo m " + where + " ORDER BY m.transferDate, m.kind ");
 
 		PageResult<TransferVo> resultPage = PageUtil.excutePageQuery(em, pageQuery, TransferVo.class);
 		return resultPage;

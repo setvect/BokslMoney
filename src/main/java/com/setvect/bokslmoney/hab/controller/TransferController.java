@@ -21,6 +21,7 @@ import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.repository.ItemRepository;
 import com.setvect.bokslmoney.hab.repository.TransferRepository;
+import com.setvect.bokslmoney.hab.service.TransferService;
 import com.setvect.bokslmoney.hab.vo.TransferVo;
 import com.setvect.bokslmoney.util.DateUtil;
 import com.setvect.bokslmoney.util.PageResult;
@@ -51,6 +52,9 @@ public class TransferController {
 
 	@Autowired
 	private CodeService codeService;
+
+	@Autowired
+	private TransferService transferService;
 
 	// ============== 뷰==============
 
@@ -95,6 +99,7 @@ public class TransferController {
 
 		PageResult<TransferVo> page = transferRepository.getPagingList(searchCondition);
 		List<TransferVo> list = page.getList();
+		transferService.mappingParentItem(list);
 		return ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
 	}
 

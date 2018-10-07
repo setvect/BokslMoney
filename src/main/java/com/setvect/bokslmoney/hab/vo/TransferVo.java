@@ -10,9 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +24,8 @@ import lombok.ToString;
  * 지출, 수입, 이체내역
  */
 @Entity
-@Table(name = "BE_TRANSFER")
+@Table(name = "BE_TRANSFER", indexes = {
+		@Index(name = "IDX_BE_TRANSFER_DATE", columnList = "TRANSFER_DATE", unique = false) })
 @Setter
 @Getter
 @ToString
@@ -37,6 +40,9 @@ public class TransferVo {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ITEM_SEQ", nullable = false)
 	private ItemVo item;
+
+	@Transient
+	private ItemVo parentItem;
 
 	/** 유형(지출, 수입, 이체) */
 	@Column(name = "KIND", length = 20, nullable = false)
