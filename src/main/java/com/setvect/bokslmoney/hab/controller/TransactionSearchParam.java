@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TransferSearchParam extends SearchListParam {
+public class TransactionSearchParam extends SearchListParam {
 	/** 날짜 범위: 시작 */
 	private Date from;
 
@@ -34,7 +34,7 @@ public class TransferSearchParam extends SearchListParam {
 	 *            반환
 	 */
 	@Autowired
-	public TransferSearchParam(final int startCursor, final int returnCount) {
+	public TransactionSearchParam(final int startCursor, final int returnCount) {
 		super(startCursor, returnCount);
 	}
 

@@ -9,24 +9,24 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.setvect.bokslmoney.hab.repository.ItemRepository;
-import com.setvect.bokslmoney.hab.vo.ItemVo;
+import com.setvect.bokslmoney.hab.repository.TransactionKindRepository;
 import com.setvect.bokslmoney.hab.vo.KindType;
+import com.setvect.bokslmoney.hab.vo.TransactionKindVo;
 import com.setvect.bokslmoney.util.TreeNode;
 
 @Service
-public class ItemService {
+public class TransactionKindService {
 
 	@Autowired
-	private ItemRepository itemRepository;
+	private TransactionKindRepository itemRepository;
 
 	private static int ROOT_ITEM_SEQ = 0;
 
 	/**
 	 * @return 항목 정보를 계층적으로 제공
 	 */
-	public Map<KindType, List<TreeNode<ItemVo>>> listHierarchyAll() {
-		Map<KindType, List<TreeNode<ItemVo>>> r = Stream.of(KindType.values())
+	public Map<KindType, List<TreeNode<TransactionKindVo>>> listHierarchyAll() {
+		Map<KindType, List<TreeNode<TransactionKindVo>>> r = Stream.of(KindType.values())
 				.collect(Collectors.toMap(Function.identity(), k -> listHierarchy(k)));
 		return r;
 	}
@@ -35,18 +35,18 @@ public class ItemService {
 	 * @param kindType
 	 * @return
 	 */
-	private List<TreeNode<ItemVo>> listHierarchy(final KindType kindType) {
-		ItemVo rootItem = new ItemVo();
-		rootItem.setItemSeq(0);
+	private List<TreeNode<TransactionKindVo>> listHierarchy(final KindType kindType) {
+		TransactionKindVo rootItem = new TransactionKindVo();
+		rootItem.setTransactionKindSeq(0);
 		rootItem.setName("root");
 
 		// TreeNode<ItemVo> rootTree = new TreeNode<ItemVo>(rootItem);
 
-		List<ItemVo> allItem = itemRepository.list(kindType, 0);
+		List<TransactionKindVo> allItem = itemRepository.list(kindType, 0);
 
-		List<TreeNode<ItemVo>> result = allItem.stream().map(itemDepth1 -> {
-			TreeNode<ItemVo> depth1Tree = new TreeNode<ItemVo>(itemDepth1);
-			List<ItemVo> itemList = itemRepository.list(kindType, itemDepth1.getItemSeq());
+		List<TreeNode<TransactionKindVo>> result = allItem.stream().map(itemDepth1 -> {
+			TreeNode<TransactionKindVo> depth1Tree = new TreeNode<TransactionKindVo>(itemDepth1);
+			List<TransactionKindVo> itemList = itemRepository.list(kindType, itemDepth1.getTransactionKindSeq());
 			itemList.forEach(itemDepth2 -> {
 				depth1Tree.addChild(itemDepth2);
 			});

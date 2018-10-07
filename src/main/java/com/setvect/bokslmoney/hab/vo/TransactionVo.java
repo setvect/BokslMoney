@@ -24,25 +24,25 @@ import lombok.ToString;
  * 지출, 수입, 이체내역
  */
 @Entity
-@Table(name = "BE_TRANSFER", indexes = {
-		@Index(name = "IDX_BE_TRANSFER_DATE", columnList = "TRANSFER_DATE", unique = false) })
+@Table(name = "BE_TRANSACTION", indexes = {
+		@Index(name = "IDX_BE_TRANSACTION_DATE", columnList = "TRANSACTION_DATE", unique = false) })
 @Setter
 @Getter
 @ToString
-public class TransferVo {
+public class TransactionVo {
 	/** 내역 일련번호 */
 	@Id
-	@Column(name = "TRANSFER_SEQ", unique = true, nullable = false)
+	@Column(name = "TRANSACTION_SEQ", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int transferSeq;
+	private int transactionSeq;
 
 	/** 메인코드 종속 일련번호 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ITEM_SEQ", nullable = false)
-	private ItemVo item;
+	private TransactionKindVo item;
 
 	@Transient
-	private ItemVo parentItem;
+	private TransactionKindVo parentItem;
 
 	/** 유형(지출, 수입, 이체) */
 	@Column(name = "KIND", length = 20, nullable = false)
@@ -66,8 +66,8 @@ public class TransferVo {
 	private int money;
 
 	/** 사용일 */
-	@Column(name = "TRANSFER_DATE", nullable = false)
-	private Date transferDate;
+	@Column(name = "TRANSACTION_DATE", nullable = false)
+	private Date transactionDate;
 
 	/** 메모 내용 */
 	@Column(name = "NOTE", length = 100, nullable = false)

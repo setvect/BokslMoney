@@ -7,12 +7,12 @@
 				<tr v-for="(item, index) in itemList">
 					<td><a href="javascript:" @click="selectItem(item)">{{item.name}}</a></td>
 					<td style="text-align: left;">
-						<a href="javascript:" @click="changeOrder(itemList[index - 1].itemSeq, item.itemSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
-						<a href="javascript:" @click="changeOrder(item.itemSeq, itemList[index + 1].itemSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
+						<a href="javascript:" @click="changeOrder(itemList[index - 1].transactionKindSeq, item.transactionKindSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
+						<a href="javascript:" @click="changeOrder(item.transactionKindSeq, itemList[index + 1].transactionKindSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
 					</td>
 					<td style="text-align: center;">
 						<a href="javascript:" @click="editForm(item)"><i class="fa fa-edit" @click="editForm(item)"></i></a>
-						<a href="javascript:" @click="deleteAction(item.itemSeq)"><i class="fa fa-remove"></i></a>
+						<a href="javascript:" @click="deleteAction(item.transactionKindSeq)"><i class="fa fa-remove"></i></a>
 					</td>
 				</tr>
 			</tbody>
@@ -46,36 +46,36 @@
 			// 리스트
 			list(){
 				let param = {kind: this.kind, parent: this.parentSeq};
-				VueUtil.get("/hab/item/list.json", param, (result) => {
+				VueUtil.get("/hab/transaction_kind/list.json", param, (result) => {
 					this.itemList = result.data;
 				});
 			},
-			// 등록 폼 
+			// 등록 폼
 			addForm(){
 				// 목록에서 최대 orderNo + 1 구하기
 				let maxOrder = this.itemList.reduce((acc, item) => {return Math.max(acc, item.orderNo)}, 0) + 1;
-				EventBus.$emit('addFormEvent', {kind: this.kind, parentItemSeq: this.parentSeq, orderNo: maxOrder }, this.list);
+				EventBus.$emit('addFormEvent', {kind: this.kind, parentSeq: this.parentSeq, orderNo: maxOrder }, this.list);
 			},
 			// 수정폼
 			editForm(item){
 				EventBus.$emit('editFormEvent', item, this.list);
 			},
 			// 정렬 순서 변경
-			changeOrder(downItemSeq, upItemSeq){
-				let param = {downItemSeq: downItemSeq, upItemSeq: upItemSeq};
-				VueUtil.post("/hab/item/changeOrder.do", param, (result) => {
+			changeOrder(downtransactionKindSeq, uptransactionKindSeq){
+				let param = {downtransactionKindSeq: downtransactionKindSeq, uptransactionKindSeq: uptransactionKindSeq};
+				VueUtil.post("/hab/transaction_kind/changeOrder.do", param, (result) => {
 					this.list();
 				});
 			},
 			// 삭제
-			deleteAction(itemSeq, callBack){
+			deleteAction(transactionKindSeq, callBack){
 				if(!confirm("삭제?")){
 					return;
 				}
-				let param = {itemSeq: itemSeq};
-				VueUtil.post("/hab/item/delete.do", param, (result) => {
+				let param = {transactionKindSeq: transactionKindSeq};
+				VueUtil.post("/hab/transaction_kind/delete.do", param, (result) => {
 					this.list();
-					this.$emit('@select-item', {itemSeq: -1});
+					this.$emit('@select-item', {transactionKindSeq: -1});
 				});
 			},
 			isUpable(index){

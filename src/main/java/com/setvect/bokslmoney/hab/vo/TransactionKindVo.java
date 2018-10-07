@@ -19,16 +19,16 @@ import lombok.ToString;
  * 수입, 지출, 이체 항목
  */
 @Entity
-@Table(name = "BB_ITEM")
+@Table(name = "BB_TRANSACTION_KIND")
 @Setter
 @Getter
 @ToString
-public class ItemVo {
+public class TransactionKindVo {
 	/** 아이템 일련번호 */
 	@Id
-	@Column(name = "ITEM_SEQ", unique = true, nullable = false)
+	@Column(name = "TRANSACTION_KIND_SEQ", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int itemSeq;
+	private int TransactionKindSeq;
 
 	/** 유형 */
 	@Column(name = "KIND", length = 20, nullable = false)
@@ -40,8 +40,8 @@ public class ItemVo {
 	private String name;
 
 	/** 부모항목 번호 */
-	@Column(name = "PARENT_ITEM_SEQ", nullable = true)
-	private int parentItemSeq;
+	@Column(name = "PARENT_SEQ", nullable = true)
+	private int parentSeq;
 
 	/** 항목내 정렬 순서 */
 	@Column(name = "ORDER_NO", nullable = false)

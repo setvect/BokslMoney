@@ -19,10 +19,10 @@ import com.setvect.bokslmoney.code.repository.CodeItemRepository;
 import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
-import com.setvect.bokslmoney.hab.repository.ItemRepository;
-import com.setvect.bokslmoney.hab.repository.TransferRepository;
-import com.setvect.bokslmoney.hab.service.TransferService;
-import com.setvect.bokslmoney.hab.vo.TransferVo;
+import com.setvect.bokslmoney.hab.repository.TransactionKindRepository;
+import com.setvect.bokslmoney.hab.repository.TransactionRepository;
+import com.setvect.bokslmoney.hab.service.TransactionService;
+import com.setvect.bokslmoney.hab.vo.TransactionVo;
 import com.setvect.bokslmoney.util.DateUtil;
 import com.setvect.bokslmoney.util.PageResult;
 
@@ -30,10 +30,10 @@ import com.setvect.bokslmoney.util.PageResult;
  * 달력 기반 가계부 입력
  */
 @Controller
-@RequestMapping(value = "/hab/transfer/")
-public class TransferController {
+@RequestMapping(value = "/hab/transaction/")
+public class TransactionController {
 	/** 로깅 */
-	private static Logger logger = LoggerFactory.getLogger(TransferController.class);
+	private static Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
 	@Autowired
 	private AccountRepository accountRepository;
@@ -45,16 +45,16 @@ public class TransferController {
 	private CodeMainRepository codeMainRepository;
 
 	@Autowired
-	private ItemRepository itemRepository;
+	private TransactionKindRepository itemRepository;
 
 	@Autowired
-	private TransferRepository transferRepository;
+	private TransactionRepository transactionRepository;
 
 	@Autowired
 	private CodeService codeService;
 
 	@Autowired
-	private TransferService transferService;
+	private TransactionService transactionService;
 
 	// ============== 뷰==============
 
@@ -76,7 +76,7 @@ public class TransferController {
 	 */
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
-	public List<TransferVo> list(final TransferSearchParam searchParam) {
+	public List<TransactionVo> list(final TransactionSearchParam searchParam) {
 		return null;
 	}
 
@@ -90,39 +90,39 @@ public class TransferController {
 	@RequestMapping(value = "/listByMonth.json")
 	@ResponseBody
 	public String listByMonth(final int year, final int month) {
-		TransferSearchParam searchCondition = new TransferSearchParam(0, Integer.MAX_VALUE);
+		TransactionSearchParam searchCondition = new TransactionSearchParam(0, Integer.MAX_VALUE);
 		LocalDate fromDate = LocalDate.of(year, month, 1);
 		LocalDate toDate = fromDate.plusMonths(1).minusDays(1);
 
 		searchCondition.setFrom(DateUtil.toDate(fromDate));
 		searchCondition.setTo(DateUtil.toDate(toDate));
 
-		PageResult<TransferVo> page = transferRepository.getPagingList(searchCondition);
-		List<TransferVo> list = page.getList();
-		transferService.mappingParentItem(list);
+		PageResult<TransactionVo> page = transactionRepository.getPagingList(searchCondition);
+		List<TransactionVo> list = page.getList();
+		transactionService.mappingParentItem(list);
 		return ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
 	}
 
 	// ============== 등록 ==============
 	@RequestMapping(value = "/add.do")
 	@ResponseBody
-	public void add(final TransferVo item, @RequestParam("itemSeq") final int itemSeq) {
+	public void add(final TransactionVo item, @RequestParam("itemSeq") final int itemSeq) {
 		item.setItem(itemRepository.findById(itemSeq).get());
-		transferRepository.save(item);
+		transactionRepository.save(item);
 	}
 
 	// ============== 수정 ==============
 	@RequestMapping(value = "/edit.do")
 	@ResponseBody
-	public void edit(final TransferVo item) {
-		transferRepository.save(item);
+	public void edit(final TransactionVo item) {
+		transactionRepository.save(item);
 	}
 
 	// ============== 삭제 ==============
 	@RequestMapping(value = "/delete.do")
 	@ResponseBody
 	public void delete(@RequestParam("itemSeq") final int itemSeq) {
-		TransferVo item = transferRepository.findById(itemSeq).get();
-		transferRepository.delete(item);
+		TransactionVo item = transactionRepository.findById(itemSeq).get();
+		transactionRepository.delete(item);
 	}
 }

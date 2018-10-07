@@ -36,9 +36,9 @@
 	</div>
 </div>
 
-<jsp:include page="item_list.inc.jsp"></jsp:include>
-<jsp:include page="item_panel.inc.jsp"></jsp:include>
-<jsp:include page="item_add.inc.jsp"></jsp:include>
+<jsp:include page="transaction_kind_list.inc.jsp"></jsp:include>
+<jsp:include page="transaction_kind_panel.inc.jsp"></jsp:include>
+<jsp:include page="transaction_kind_add.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	Vue.use(VeeValidate,{

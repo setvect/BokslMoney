@@ -6,13 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.setvect.bokslmoney.hab.vo.ItemVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
+import com.setvect.bokslmoney.hab.vo.TransactionKindVo;
 
 /**
  * 수입, 지출, 이체 항목
  */
-public interface ItemRepository extends JpaRepository<ItemVo, Integer> {
+public interface TransactionKindRepository extends JpaRepository<TransactionKindVo, Integer> {
 	/**
 	 * @param kindType
 	 *            유형
@@ -20,7 +20,7 @@ public interface ItemRepository extends JpaRepository<ItemVo, Integer> {
 	 *            부모 코드 번호
 	 * @return 항목 목록
 	 */
-	@Query("select i from ItemVo i where deleteFlag = false and i.kind = :kind and i.parentItemSeq = :parent order by i.orderNo")
-	public List<ItemVo> list(@Param("kind") KindType kindType, @Param("parent") int parent);
+	@Query("select i from TransactionKindVo i where deleteFlag = false and i.kind = :kind and i.parentSeq = :parent order by i.orderNo")
+	public List<TransactionKindVo> list(@Param("kind") KindType kindType, @Param("parent") int parent);
 
 }

@@ -37,12 +37,12 @@
 			};
 		},
 		methods: {
-			// 등록 폼 
+			// 등록 폼
 			addForm(item, afterEventCallback) {
 				this.actionType = 'add';
 				this.openForm(item, afterEventCallback);
 			},
-			//수정 폼 
+			//수정 폼
 			editForm(item, afterEventCallback) {
 				this.actionType = 'edit';
 				this.openForm(item, afterEventCallback);
@@ -58,7 +58,7 @@
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/item/add.do' : '/hab/item/edit.do'
+					let url = this.actionType == 'add' ? '/hab/transaction_kind/add.do' : '/hab/transaction_kind/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						this.afterEventCallback();

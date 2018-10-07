@@ -5,7 +5,7 @@
 			<list :kind='kind' area="main" :parent-seq.number="0" v-on:@select-item="selectItem"/>
 		</div>
 		<div>
-			<list :kind='kind' area="sub" :parent-seq.number="mainItem.itemSeq"/>
+			<list :kind='kind' area="sub" :parent-seq.number="mainItem.transactionKindSeq"/>
 		</div>
 	</div>
 </template>
@@ -14,7 +14,7 @@
 	const itemPanelComponent = Vue.component("itemPanel", { template: '#item-panel',
 		data(){
 			return {
-				mainItem: {itemSeq: -1}
+				mainItem: {transactionKindSeq: -1}
 			}
 		},
 		props: {
