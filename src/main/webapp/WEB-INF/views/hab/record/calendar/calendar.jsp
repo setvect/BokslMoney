@@ -40,7 +40,7 @@
 									<tr v-for="t in listSelectDayTransfer">
 										<td>{{kindMapValue(t.kind).title}}</td>
 										<td>
-											{{t.parentTransactionKind.name}} > {{t.transactionKind.name}}
+											{{t.parentCategory.name}} > {{t.category.name}}
 										</td>
 										<td>{{t.note}}</td>
 										<td class="text-right">{{t.money | numberFormat}}</td>

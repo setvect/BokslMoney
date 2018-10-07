@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.setvect.bokslmoney.hab.repository.TransactionKindRepository;
+import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.TransactionRepository;
-import com.setvect.bokslmoney.hab.vo.TransactionKindVo;
+import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.TransactionVo;
 
 @Service
@@ -17,7 +17,7 @@ public class TransactionService {
 	private TransactionRepository transferRepository;
 
 	@Autowired
-	private TransactionKindRepository itemRepository;
+	private CategoryRepository itemRepository;
 
 	/**
 	 * 부모 수입, 지출, 이체 항목
@@ -27,9 +27,9 @@ public class TransactionService {
 	 */
 	public void mappingParentItem(final List<TransactionVo> list) {
 		list.stream().forEach(t -> {
-			int parentSeq = t.getTransactionKind().getParentSeq();
-			TransactionKindVo parent = itemRepository.findById(parentSeq).orElse(null);
-			t.setParentTransactionKind(parent);
+			int parentSeq = t.getCategory().getParentSeq();
+			CategoryVo parent = itemRepository.findById(parentSeq).orElse(null);
+			t.setParentCategory(parent);
 		});
 	}
 }

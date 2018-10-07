@@ -7,12 +7,12 @@
 				<tr v-for="(item, index) in itemList">
 					<td><a href="javascript:" @click="selectItem(item)">{{item.name}}</a></td>
 					<td style="text-align: left;">
-						<a href="javascript:" @click="changeOrder(itemList[index - 1].transactionKindSeq, item.transactionKindSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
-						<a href="javascript:" @click="changeOrder(item.transactionKindSeq, itemList[index + 1].transactionKindSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
+						<a href="javascript:" @click="changeOrder(itemList[index - 1].categorySeq, item.categorySeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
+						<a href="javascript:" @click="changeOrder(item.categorySeq, itemList[index + 1].categorySeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
 					</td>
 					<td style="text-align: center;">
 						<a href="javascript:" @click="editForm(item)"><i class="fa fa-edit" @click="editForm(item)"></i></a>
-						<a href="javascript:" @click="deleteAction(item.transactionKindSeq)"><i class="fa fa-remove"></i></a>
+						<a href="javascript:" @click="deleteAction(item.categorySeq)"><i class="fa fa-remove"></i></a>
 					</td>
 				</tr>
 			</tbody>
@@ -46,7 +46,7 @@
 			// 리스트
 			list(){
 				let param = {kind: this.kind, parent: this.parentSeq};
-				VueUtil.get("/hab/transactionKind/list.json", param, (result) => {
+				VueUtil.get("/hab/category/list.json", param, (result) => {
 					this.itemList = result.data;
 				});
 			},
@@ -61,21 +61,21 @@
 				EventBus.$emit('editFormEvent', item, this.list);
 			},
 			// 정렬 순서 변경
-			changeOrder(downtransactionKindSeq, uptransactionKindSeq){
-				let param = {downtransactionKindSeq: downtransactionKindSeq, uptransactionKindSeq: uptransactionKindSeq};
-				VueUtil.post("/hab/transactionKind/changeOrder.do", param, (result) => {
+			changeOrder(downCategorySeq, upCategorySeq){
+				let param = {downCategorySeq: downCategorySeq, upCategorySeq: upCategorySeq};
+				VueUtil.post("/hab/category/changeOrder.do", param, (result) => {
 					this.list();
 				});
 			},
 			// 삭제
-			deleteAction(transactionKindSeq, callBack){
+			deleteAction(categorySeq, callBack){
 				if(!confirm("삭제?")){
 					return;
 				}
-				let param = {transactionKindSeq: transactionKindSeq};
-				VueUtil.post("/hab/transactionKind/delete.do", param, (result) => {
+				let param = {categorySeq: categorySeq};
+				VueUtil.post("/hab/category/delete.do", param, (result) => {
 					this.list();
-					this.$emit('@select-item', {transactionKindSeq: -1});
+					this.$emit('@select-item', {categorySeq: -1});
 				});
 			},
 			isUpable(index){

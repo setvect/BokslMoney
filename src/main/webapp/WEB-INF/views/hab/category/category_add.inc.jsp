@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <template id='item-add'>
-	<div id="addItem" class="modal fade" role="dialog">
+	<div id="addItem" class="modal" role="dialog">
 		<div class="modal-dialog">
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -58,7 +58,7 @@
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/transactionKind/add.do' : '/hab/transactionKind/edit.do'
+					let url = this.actionType == 'add' ? '/hab/category/add.do' : '/hab/category/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						this.afterEventCallback();

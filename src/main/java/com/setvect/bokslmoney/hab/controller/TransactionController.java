@@ -19,7 +19,7 @@ import com.setvect.bokslmoney.code.repository.CodeItemRepository;
 import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
-import com.setvect.bokslmoney.hab.repository.TransactionKindRepository;
+import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.TransactionRepository;
 import com.setvect.bokslmoney.hab.service.TransactionService;
 import com.setvect.bokslmoney.hab.vo.TransactionVo;
@@ -45,7 +45,7 @@ public class TransactionController {
 	private CodeMainRepository codeMainRepository;
 
 	@Autowired
-	private TransactionKindRepository transactionKindRepository;
+	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private TransactionRepository transactionRepository;
@@ -106,16 +106,16 @@ public class TransactionController {
 	// ============== 등록 ==============
 	@RequestMapping(value = "/add.do")
 	@ResponseBody
-	public void add(final TransactionVo item, @RequestParam("transactionKindSeq") final int transactionKindSeq) {
-		item.setTransactionKind(transactionKindRepository.findById(transactionKindSeq).get());
+	public void add(final TransactionVo item, @RequestParam("categorySeq") final int categorySeq) {
+		item.setCategory(categoryRepository.findById(categorySeq).get());
 		transactionRepository.save(item);
 	}
 
 	// ============== 수정 ==============
 	@RequestMapping(value = "/edit.do")
 	@ResponseBody
-	public void edit(final TransactionVo transaction, @RequestParam("transactionKindSeq") final int transactionKindSeq) {
-		transaction.setTransactionKind(transactionKindRepository.findById(transactionKindSeq).get());
+	public void edit(final TransactionVo transaction, @RequestParam("categorySeq") final int categorySeq) {
+		transaction.setCategory(categoryRepository.findById(categorySeq).get());
 		transactionRepository.save(transaction);
 	}
 

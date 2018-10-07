@@ -36,13 +36,13 @@ public class TransactionVo {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int transactionSeq;
 
-	/** 메인코드 종속 일련번호 */
+	/** 거래 분류 정보 */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "TRANSACTION_KIND_SEQ", nullable = false)
-	private TransactionKindVo transactionKind;
+	@JoinColumn(name = "CATEGORY_SEQ", nullable = false)
+	private CategoryVo category;
 
 	@Transient
-	private TransactionKindVo parentTransactionKind;
+	private CategoryVo parentCategory;
 
 	/** 유형(지출, 수입, 이체) */
 	@Column(name = "KIND", length = 20, nullable = false)

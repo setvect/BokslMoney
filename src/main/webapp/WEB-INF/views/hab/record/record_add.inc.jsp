@@ -174,7 +174,7 @@
 				this.selectDate = moment(transaction.transactionDate);
 				this.item = transaction;
 				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
-				this.insertItem(transaction.parentTransactionKind, transaction.transactionKind);
+				this.insertItem(transaction.parentCategory, transaction.category);
 				this.openForm(this.item.kind);
 			},
 			// datepicker
@@ -203,8 +203,8 @@
 					if (!result) {
 						return;
 					}
-					delete this.item.transactionKind;
-					delete this.item.parentTransactionKind;
+					delete this.item.category;
+					delete this.item.parentCategory;
 
 					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
@@ -234,7 +234,7 @@
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertItem(mainItem, subItem) {
-				this.item.transactionKindSeq = subItem.transactionKindSeq;
+				this.item.categorySeq = subItem.categorySeq;
 				this.itemPath = mainItem.name + " > " + subItem.name;
 			}
 		},

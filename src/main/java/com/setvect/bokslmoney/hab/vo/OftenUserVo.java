@@ -2,9 +2,12 @@ package com.setvect.bokslmoney.hab.vo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -28,9 +31,10 @@ public class OftenUserVo {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int oftenUsedSeq;
 
-	/** 항목 일련번호 */
-	@Column(name = "TRANSACTION_KIND_SEQ", nullable = false)
-	private int transactionKindSeq;
+	/** 거래 분류 정보 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "CATEGORY_SEQ", nullable = false)
+	private CategoryVo category;
 
 	/** 출금계좌 */
 	@Column(name = "PAY_ACCOUNT", nullable = true)

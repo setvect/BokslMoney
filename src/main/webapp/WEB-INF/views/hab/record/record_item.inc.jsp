@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <template id='item-all-list'>
-	<div id="itemAllList" class="modal fade" role="dialog">
+	<div id="itemAllList" class="modal" role="dialog">
 		<div class="modal-dialog">
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -57,7 +57,7 @@
 			},
 			// 항목 조회
 			loadItemAllList() {
-				VueUtil.get("/hab/transactionKind/listAll.json", {}, (result) => {
+				VueUtil.get("/hab/category/listAll.json", {}, (result) => {
 					this.itemListMap = result.data;
 				});
 			},

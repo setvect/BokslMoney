@@ -19,16 +19,16 @@ import lombok.ToString;
  * 수입, 지출, 이체 항목
  */
 @Entity
-@Table(name = "BB_TRANSACTION_KIND")
+@Table(name = "BB_CATEGORY")
 @Setter
 @Getter
 @ToString
-public class TransactionKindVo {
+public class CategoryVo {
 	/** 아이템 일련번호 */
 	@Id
-	@Column(name = "TRANSACTION_KIND_SEQ", unique = true, nullable = false)
+	@Column(name = "CATEGORY_SEQ", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int TransactionKindSeq;
+	private int CategorySeq;
 
 	/** 유형 */
 	@Column(name = "KIND", length = 20, nullable = false)
