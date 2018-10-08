@@ -18,6 +18,7 @@ CalendarUtil.getAnniversary = function(year){
   result.push({date: year + "-02-05", event: {name:"복슬이 생일", holiday: false}});
   result.push({date: year + "-03-01", event: {name:"삼일절", holiday: true}});
   result.push({date: year + "-04-05", event: {name:"식목일", holiday: false}});
+  result.push({date: year + "-04-19", event: {name:"4·19혁명 기념일", holiday: false}});
   result.push({date: year + "-05-01", event: {name:"노동절", holiday: false}});
   result.push({date: year + "-05-05", event: {name:"어린일날", holiday: true}});
   result.push({date: year + "-05-08", event: {name:"어버이날", holiday: false}});

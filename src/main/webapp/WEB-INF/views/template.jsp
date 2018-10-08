@@ -15,13 +15,13 @@
 					<jsp:include page="./include/left.inc.jsp"></jsp:include>
 				</div>
 				<jsp:include page="./include/head.inc.jsp"></jsp:include>
-				 
+
 				<!-- page content -->
 				<div class="right_col" role="main">
-					<!-- Custom Theme Scripts --> 
+					<!-- Custom Theme Scripts -->
 					<% pageContext.include((String)request.getAttribute(AttributeName.LOAD_PAGE));%>
 				</div>
-				
+
 				<!-- /page content -->
 				<jsp:include page="./include/footer.jsp"></jsp:include>
 				<jsp:include page="/WEB-INF/views/include/common_modal.inc.jsp"></jsp:include>
