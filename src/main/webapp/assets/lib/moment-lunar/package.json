@@ -1,0 +1,59 @@
+{
+  "_from": "moment-lunar",
+  "_id": "moment-lunar@0.0.3",
+  "_inBundle": false,
+  "_integrity": "sha1-NXPQ0idgZCdr/p+/zMQ+AMHjFNQ=",
+  "_location": "/moment-lunar",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "moment-lunar",
+    "name": "moment-lunar",
+    "escapedName": "moment-lunar",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/moment-lunar/-/moment-lunar-0.0.3.tgz",
+  "_shasum": "3573d0d2276064276bfe9fbfccc43e00c1e314d4",
+  "_spec": "moment-lunar",
+  "_where": "C:\\temp",
+  "author": {
+    "name": "Luavis"
+  },
+  "bugs": {
+    "url": "https://github.com/Luavis/moment-lunar/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "moment": "^2.17.1"
+  },
+  "deprecated": false,
+  "description": "A lunar calendar extension for moment.js",
+  "devDependencies": {},
+  "homepage": "https://github.com/Luavis/moment-lunar#readme",
+  "keywords": [
+    "lunar",
+    "moment",
+    "calendar",
+    "date",
+    "conversion",
+    "convert"
+  ],
+  "license": "MIT",
+  "main": "moment-lunar.js",
+  "name": "moment-lunar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luavis/moment-lunar.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.3"
+}

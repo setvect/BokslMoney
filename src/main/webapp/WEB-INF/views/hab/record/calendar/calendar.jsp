@@ -200,7 +200,6 @@
 				});
 				$(".fc-next-button, .fc-prev-button, .fc-today-button").click((event) => {
 					let d = this.calendar.fullCalendar('getDate');
-					console.log("button event @@", d);
 					if ($(event.target).hasClass("fc-today-button")) {
 						this.calendar.fullCalendar('select', moment());
 					} else {
