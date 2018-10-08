@@ -188,6 +188,10 @@
 							element.find(".fc-title").prepend("<i class='fa " + t.icon + "'></i>" + t.title + ' : ' + CommonUtil.toComma(event.cost));
 						}
 					},
+					// 이벤트 항목 클릭 시 달력 셀(날짜) 클릭 효과 부여
+					eventClick(calEvent, jsEvent, view){
+						self.calendar.fullCalendar('select', calEvent.start);
+					},
 					// 최초, 월이 변경 되었을 때 발생하는 이벤트
 					viewRender(view) {
 						let start = view.start._d;
