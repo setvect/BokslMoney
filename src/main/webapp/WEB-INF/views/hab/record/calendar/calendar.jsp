@@ -195,6 +195,7 @@
 						let dates = { start: start, end: end };
 						self.currentMonth = view.start;
 						self.loadRecord(self.currentMonth.toDate().getFullYear(), self.currentMonth.toDate().getMonth()+1);
+						self.holiydayDisplay();
 					},
 				});
 				$(".fc-next-button, .fc-prev-button, .fc-today-button").click((event) => {
@@ -265,6 +266,21 @@
 				}
 				VueUtil.post('/hab/transaction/delete.do', {itemSeq: item.transactionSeq}, (result) => {
 					this.reload();
+				});
+			},
+			// 달력에 공휴일, 주요 행사 정보 표시
+			holiydayDisplay(){
+				let dayList = CalendarUtil.getAnniversary(this.currentMonth.toDate().getFullYear());
+				dayList.forEach((value) => {
+					if(value.event.holiday){
+						$("td[data-date='" + value.date + "']").addClass("fc-holiday");
+					}
+					if($("td[data-date='" + value.date + "'] span._day-label").length == 0){
+						$("td[data-date='" + value.date + "']").prepend("<span class='_day-label'>" + value.event.name +  "</span>");
+					}
+					else{
+						$("td[data-date='" + value.date + "'] span._day-label").append(", " + value.event.name);
+					}
 				});
 			}
 		},

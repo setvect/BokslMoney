@@ -33,5 +33,12 @@ td.fc-event-container span {
 .cal-select {
   background: lightgreen;
 }
+td.fc-sun .fc-day-number,
+td.fc-sat .fc-day-number,
+td.fc-holiday .fc-day-number {
+  color: red;
+}
 
-body { padding-right: 0 !important }
+body {
+  padding-right: 0 !important;
+}
