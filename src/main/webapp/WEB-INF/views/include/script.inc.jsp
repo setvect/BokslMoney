@@ -59,6 +59,8 @@
 		let aTag = $("#sidebar-menu > div > ul > li > a[href^='" + url.pathname + "']");
 		aTag.parent().addClass("active");
 		aTag.parent().find("ul").css("display", "block");
+
+
 	});
 
 	<sec:authorize access="isAuthenticated()">
