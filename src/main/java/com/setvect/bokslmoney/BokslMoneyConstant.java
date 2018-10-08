@@ -41,6 +41,8 @@ public final class BokslMoneyConstant {
 	 * 로그인 관련 상수.
 	 */
 	public static class Login {
+		/** 로그인 아이디(고정) */
+		public static final String ID = "boksl";
 		/** remember 관련. */
 		public static final String REMEMBER_ME_KEY = "bokslLoginKey";
 		/** remember 관련. */

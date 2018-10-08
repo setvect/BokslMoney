@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.setvect.bokslmoney.BokslMoneyConstant;
 import com.setvect.bokslmoney.user.repository.UserRepository;
 import com.setvect.bokslmoney.user.vo.UserVo;
 
@@ -21,7 +22,8 @@ public class MyUserDetailsService implements UserDetailsService {
 	/** 사용자 데이터 조회용 */
 	@Override
 	public UserDetails loadUserByUsername(final String id) {
-		UserVo user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(id));
+		UserVo user = userRepository.findById(BokslMoneyConstant.Login.ID)
+				.orElseThrow(() -> new UsernameNotFoundException(id));
 		return user;
 	}
 }

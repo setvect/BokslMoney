@@ -19,6 +19,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.setvect.bokslmoney.code.service.CodeService;
+import com.setvect.bokslmoney.user.service.UserService;
 import com.setvect.bokslmoney.util.BeanUtils;
 
 /**
@@ -79,6 +80,8 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 				configUrl = BokslMoneyApplication.class.getResource(CONFIG_PROPERTIES);
 			}
 			EnvirmentProperty.init(configUrl);
+			UserService userService = BeanUtils.getBean(UserService.class);
+			userService.init();
 			CodeService codeService = BeanUtils.getBean(CodeService.class);
 			codeService.init();
 		};

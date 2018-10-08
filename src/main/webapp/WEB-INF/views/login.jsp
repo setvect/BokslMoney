@@ -38,9 +38,6 @@
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<h1>복슬머니 로그인</h1>
 						<div>
-							<input name="username" type="text" class="form-control" placeholder="Username" />
-						</div>
-						<div>
 							<input name="password" type="password" class="form-control" placeholder="Password" />
 						</div>
 						<div>
