@@ -9,7 +9,7 @@
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="">
-					<a href="${pageContext.request.contextPath}/logout.do" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 로그아웃 <span class="glyphicon glyphicon-log-out"></span></a>
+					<a href="${pageContext.request.contextPath}/logout.do" onclick="javascript:location.href='${pageContext.request.contextPath}/logout.do'" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 로그아웃 <span class="glyphicon glyphicon-log-out"></span></a>
 				</li>
 				<li role="presentation" class="dropdown">
 					<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> 비밀번호 변경 <i class="glyphicon glyphicon-cog"></i></a>

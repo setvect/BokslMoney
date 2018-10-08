@@ -20,7 +20,7 @@
 							<tr>
 								<th scope="row">이름</th>
 								<td>{{item.name}}</td>
-								<th scope="row">계좌번호</th>
+								<th scope="row">계좌(카드)번호</th>
 								<td>{{item.accountNumber}}</td>
 							</tr>
 							<tr>

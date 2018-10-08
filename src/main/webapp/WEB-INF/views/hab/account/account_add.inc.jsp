@@ -19,10 +19,10 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-3">계좌번호: </label>
+							<label class="control-label col-md-3 col-sm-3 col-xs-3">계좌(카드)번호: </label>
 							<div class="col-md-9 col-sm-9 col-xs-9">
 								<input type="text" class="form-control" name="accountNumber" v-model="item.accountNumber" v-validate="'max:30'"
-								 data-vv-as="계좌번호 ">
+								 data-vv-as="계좌(카드)번호 ">
 								<span class="error" v-if="errors.has('accountNumber')">{{errors.first('accountNumber')}}</span>
 							</div>
 						</div>
