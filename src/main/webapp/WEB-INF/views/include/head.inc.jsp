@@ -12,10 +12,17 @@
 					<a href="${pageContext.request.contextPath}/logout.do" onclick="javascript:location.href='${pageContext.request.contextPath}/logout.do'" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 로그아웃 <span class="glyphicon glyphicon-log-out"></span></a>
 				</li>
 				<li role="presentation" class="dropdown">
-					<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false"> 비밀번호 변경 <i class="glyphicon glyphicon-cog"></i></a>
+					<a href="javascript:;" class="dropdown-toggle info-number _edit-my" data-toggle="dropdown" aria-expanded="false"> 비밀번호 변경 <i class="glyphicon glyphicon-cog"></i></a>
 				</li>
 			</ul>
 		</nav>
 	</div>
 </div>
 <!-- /top navigation -->
+<script type="text/javascript">
+	$("._edit-my").click(function(){
+		$('#myinfo-edit-dialog .modal-content').load(CommonUtil.getContextPath() + "/user/loginUserEdit.do", function(){
+			$("#myinfo-edit-dialog").modal();
+		});
+	})
+</script>

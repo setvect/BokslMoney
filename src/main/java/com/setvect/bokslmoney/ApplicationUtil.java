@@ -11,17 +11,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.Squiggly;
 import com.github.bohnman.squiggly.util.SquigglyUtils;
 import com.setvect.bokslmoney.user.vo.UserRoleVo;
+import com.setvect.bokslmoney.user.vo.UserVo;
 
 /**
  * 어플리케이션 전반에 사용되는 공통 함수 제공.
@@ -127,5 +132,21 @@ public abstract class ApplicationUtil {
 		}
 		ObjectMapper objectMapper = Squiggly.init(new ObjectMapper(), filter);
 		return SquigglyUtils.stringify(objectMapper, val);
+	}
+
+	/**
+	 * @param session
+	 *            HTTP 세션
+	 * @return 현재 로그인한 사용자 정보 반환
+	 */
+	public static UserVo getLoginUser(final HttpSession session) {
+		SecurityContext securityContext = (SecurityContext) session
+				.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+		if (securityContext == null) {
+			return null;
+		}
+		Authentication auth = securityContext.getAuthentication();
+		UserVo regUser = (UserVo) auth.getPrincipal();
+		return regUser;
 	}
 }

@@ -46,7 +46,7 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
-<script type="text/javascript" >
+<script type="text/javascript">
 	moment.locale('ko');
 
 	// 좌측 메뉴 활성화

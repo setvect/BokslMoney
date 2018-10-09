@@ -8,12 +8,12 @@
 </div>
 
 <!-- 개인정보 변경 -->
-<div id="myinfo-dialog" class="modal">
+<div id="myinfo-edit-dialog" class="modal">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
 
-			<!-- 개인정보 수정 폼 로딩되는 영역-->
+			<!-- 비밀번호 수정 HTML LOADING-->
 
 		</div>
 	</div>
