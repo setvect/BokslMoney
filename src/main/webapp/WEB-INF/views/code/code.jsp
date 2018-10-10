@@ -26,7 +26,7 @@
 									<a href="javascript:" @click="changeOrder(item.codeItemKey.codeItemSeq, itemList[index + 1].codeItemKey.codeItemSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
 								</td>
 								<td>
-									<a href="javascript:" @click="editForm(item)"><i class="fa fa-edit" @click="editForm(item)"></i></a>
+									<a href="javascript:" @click="editForm(item)"><i class="fa fa-edit"></i></a>
 									<a href="javascript:" @click="deleteAction(item.codeItemKey.codeItemSeq)"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>

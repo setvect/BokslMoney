@@ -47,7 +47,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">금액: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<my-currency-input v-model="item.money" class="form-control" name="money" maxlength="10" v-validate="'required'" data-vv-as="금액 "></my-currency-input>
+									<my-currency-input v-model="item.money" class="form-control" name="money" maxlength="10" v-validate="'required'"
+									 data-vv-as="금액 "></my-currency-input>
 									<span class="error" v-if="errors.has('money')">{{errors.first('money')}}</span>
 								</div>
 							</div>
@@ -98,7 +99,58 @@
 							</div>
 						</div>
 						<div class="col-md-5 col-sm-5 col-xs-5">
-							aaaaaaaaaaaaa<br />sa
+							<p>자주 쓰는 거래</p>
+							<div style="height:285px;overflow: auto;">
+								<table class="table table-striped">
+									<colgroup>
+										<col style="width:30px;">
+										<col>
+										<col style="width:50px;">
+										<col style="width:50px;">
+									</colgroup>
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td>주식/부식 > 라면</td>
+											<td>
+												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
+												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
+											</td>
+											<td>
+												<a href="javascript:"><i class="fa fa-edit"></i></a>
+												<a href="javascript:"><i class="fa fa-remove"></i></a>
+											</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>주식/부식 > 쌀</td>
+											<td>
+												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
+												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
+											</td>
+											<td>
+												<a href="javascript:"><i class="fa fa-edit"></i></a>
+												<a href="javascript:"><i class="fa fa-remove"></i></a>
+											</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>의류 > 수선</td>
+											<td>
+												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
+												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
+											</td>
+											<td>
+												<a href="javascript:"><i class="fa fa-edit"></i></a>
+												<a href="javascript:"><i class="fa fa-remove"></i></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="x_content">
+								<button type="button" class="btn btn-primary btn-xs" @click="openOften()">자주쓰는 거래 저장</button>
+							</div>
 						</div>
 					</form>
 				</div>
@@ -108,29 +160,35 @@
 				</div>
 			</div>
 		</div>
-		<all-list />
+		<div>
+			<all-list />
+		</div>
+		<div>
+			<often/>
+		</div>
 	</div>
 </template>
 
 <jsp:include page="record_item.inc.jsp"></jsp:include>
+<jsp:include page="record_often.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	const itemAddComponent = Vue.component("itemAdd", {
 		template: '#item-add',
 		data() {
 			return {
-				item: {money: 0, fee: 0},
+				item: { money: 0, fee: 0 },
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
 				kindType: null,
 				itemPath: null,
 				selectDate: null,
-
 			};
 		},
 		components: {
-			'allList': itemAllListComponent
+			'allList': itemAllListComponent,
+			'often': oftenComponent
 		},
 		computed: {
 			itemLabel() {
@@ -223,7 +281,7 @@
 			loadAttribute(codeMainId) {
 				VueUtil.get("/code/list.json", { codeMainId: codeMainId }, (result) => {
 					this.attributeList = result.data;
-					if(this.actionType == "add"){
+					if (this.actionType == "add") {
 						this.item.attribute = this.attributeList[0].codeItemKey.codeItemSeq;
 					}
 				});
@@ -231,6 +289,10 @@
 			// 항목 선택 팝업.
 			openItemList(kindType) {
 				EventBus.$emit('openItemListEvent', kindType);
+			},
+			// 자주쓰는 거래
+			openOften(){
+				EventBus.$emit('openOftenEvent');
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertItem(mainItem, subItem) {
