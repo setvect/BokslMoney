@@ -161,7 +161,7 @@
 			</div>
 		</div>
 		<div>
-			<all-list />
+			<category />
 		</div>
 		<div>
 			<often/>
@@ -169,7 +169,7 @@
 	</div>
 </template>
 
-<jsp:include page="record_item.inc.jsp"></jsp:include>
+<jsp:include page="record_category.inc.jsp"></jsp:include>
 <jsp:include page="record_often.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
@@ -187,7 +187,7 @@
 			};
 		},
 		components: {
-			'allList': itemAllListComponent,
+			'category': categoryComponent,
 			'often': oftenComponent
 		},
 		computed: {

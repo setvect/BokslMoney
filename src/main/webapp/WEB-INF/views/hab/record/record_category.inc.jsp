@@ -34,7 +34,7 @@
 </template>
 
 <script type="text/javascript">
-	const itemAllListComponent = Vue.component("itemAllList", {
+	const categoryComponent = Vue.component("itemAllList", {
 		template: '#item-all-list',
 		data() {
 			return {
