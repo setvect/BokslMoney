@@ -12,13 +12,80 @@
 					<form class="form-horizontal">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="control-label col-md-2 col-sm-2 col-xs-2">날짜: </label>
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">거래 제목: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control has-feedback-left _datepicker" placeholder="First Name" readonly="readonly"
-									 v-model="item.transactionDate" v-once>
-									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+									<input type="text" class="form-control" name="title" v-model="item.title" v-validate="'required'" data-vv-as="거래 제목 ">
+									<div v-if="errors.has('title')">
+										<span class="error">{{errors.first('title')}}</span>
+									</div>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">항목: </label>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<div class="input-group no-padding">
+										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
+										 data-vv-as="항목 ">
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button" @click="openItemList(kindType)">선택</button>
+										</span>
+									</div>
+									<div v-if="errors.has('item')">
+										<span class="error">{{errors.first('item')}}</span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">메모: </label>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<input type="text" class="form-control" name="note" v-model="item.note" v-validate="'required'" data-vv-as="메모 ">
+									<span class="error" v-if="errors.has('note')">{{errors.first('note')}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">금액: </label>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<my-currency-input v-model="item.money" class="form-control" name="money" maxlength="10" v-validate="'required'"
+									 data-vv-as="금액 "></my-currency-input>
+									<span class="error" v-if="errors.has('money')">{{errors.first('money')}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">출금계좌: </label>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<select class="form-control" v-model="item.payAccount" name="payAccount" v-validate="validatePay" data-vv-as="지출계좌 "
+									 :disabled="disablePay">
+										<option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option>
+									</select>
+									<span class="error" v-if="errors.has('payAccount')">{{errors.first('payAccount')}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">입금계좌: </label>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<select class="form-control" v-model="item.receiveAccount" name="receiveAccount" v-validate="validateReceive"
+									 data-vv-as="수입계좌 " :disabled="disableReceive">
+										<option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option>
+									</select>
+									<span class="error" v-if="errors.has('receiveAccount')">{{errors.first('receiveAccount')}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-2">속성계좌: </label>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<select class="form-control" v-model="item.attribute" name="attribute" v-validate="'required'" data-vv-as="속성 ">
+										<option v-for="attribute in attributeList" v-bind:value="attribute.codeItemKey.codeItemSeq">
+											{{attribute.name}}
+										</option>
+									</select>
+									<span class="error" v-if="errors.has('attribute')">{{errors.first('attribute')}}</span>
+								</div>
+							</div>
+
 						</div>
 					</form>
 				</div>
@@ -36,9 +103,29 @@
 		template: '#item-often-add',
 		data() {
 			return {
-				item: {},
+				item: {money: 0},
+				accountList: [],
+				itemPath: null,
+				attributeList: [],
 			};
 		},
+		computed:{
+			// 지출계좌 선택 박스 비활성
+			disablePay() {
+				return this.kindType == "INCOME";
+			},
+			// 수입계좌 선택 박스 비활성
+			disableReceive() {
+				return this.kindType == "SPENDING";
+			},
+			validatePay() {
+				return this.disablePay ? "" : "required";
+			},
+			validateReceive() {
+				return "required";
+			},
+		}
+		,
 		methods: {
 			// 자주 쓰는 계좌
 			openForm(kindType) {

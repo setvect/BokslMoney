@@ -40,6 +40,10 @@ public class OftenUserVo {
 	@Column(name = "PAY_ACCOUNT", nullable = true)
 	private int payAccount;
 
+	/** 거래제목 */
+	@Column(name = "TITLE", nullable = true)
+	private int title;
+
 	/** 입금계좌 */
 	@Column(name = "RECEIVE_ACCOUNT", nullable = true)
 	private int receiveAccount;
