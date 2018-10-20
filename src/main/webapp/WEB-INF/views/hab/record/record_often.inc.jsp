@@ -130,6 +130,9 @@
 			// 자주 쓰는 계좌
 			openForm(kindType) {
 				this.kindType = kindType;
+				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
+				this.loadAttribute(ITEM_TYPE_ATTR[this.kindType]);
+
 				$("#addOftenItem").modal();
 			},
 			close() {
@@ -147,8 +150,24 @@
 			// 등록 또는 수정
 			addAction() {
 			},
+			// 계좌 목록
+			loadAccount() {
+				VueUtil.get("/hab/account/list.json", {}, (result) => {
+					this.accountList = result.data;
+				});
+			},
+			// 속성
+			loadAttribute(codeMainId) {
+				VueUtil.get("/code/list.json", { codeMainId: codeMainId }, (result) => {
+					this.attributeList = result.data;
+					if (this.actionType == "add") {
+						this.item.attribute = this.attributeList[0].codeItemKey.codeItemSeq;
+					}
+				});
+			},
 		},
 		mounted() {
+			this.loadAccount();
 		},
 		created() {
 			EventBus.$on('openOftenEvent', this.openForm);
