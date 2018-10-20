@@ -27,7 +27,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" @click="openItemList(kindType)">선택</button>
+											<button class="btn btn-default" type="button" @click="openCategoryList(kindType)">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -107,6 +107,7 @@
 				accountList: [],
 				itemPath: null,
 				attributeList: [],
+				kindType: null,
 			};
 		},
 		computed:{
@@ -124,15 +125,24 @@
 			validateReceive() {
 				return "required";
 			},
-		}
-		,
+		},
 		methods: {
 			// 자주 쓰는 계좌
 			openForm(kindType) {
+				this.kindType = kindType;
 				$("#addOftenItem").modal();
 			},
 			close() {
 				$("#addOftenItem").modal("hide");
+			},
+			// 항목 선택 팝업.
+			openCategoryList(kindType) {
+				EventBus.$emit('openCategoryListEvent', kindType, 'often');
+			},
+			// 항목 팝업에서 선택한 값 입력
+			insertCategory(mainItem, subItem) {
+				this.item.categorySeq = subItem.categorySeq;
+				this.itemPath = mainItem.name + " > " + subItem.name;
 			},
 			// 등록 또는 수정
 			addAction() {
@@ -142,6 +152,7 @@
 		},
 		created() {
 			EventBus.$on('openOftenEvent', this.openForm);
+			EventBus.$on('insertCategoryOftenEvent', this.insertCategory);
 		},
 	});
 </script>

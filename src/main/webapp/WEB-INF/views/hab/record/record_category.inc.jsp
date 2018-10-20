@@ -42,6 +42,7 @@
 				mainList: [],
 				selectMainItem: {},
 				selectSubItem: null,
+				openParent:null
 			};
 		},
 		methods: {
@@ -51,8 +52,11 @@
 					alert("소분류 항목 선택해 주세요.");
 					return;
 				}
-
-				EventBus.$emit('insertItemEvent', this.selectMainItem.data, this.selectSubItem.data);
+				if(this.openParent == "add"){
+					EventBus.$emit('insertCategoryEvent', this.selectMainItem.data, this.selectSubItem.data);
+				} else {
+					EventBus.$emit('insertCategoryOftenEvent', this.selectMainItem.data, this.selectSubItem.data);
+				}
 				this.close();
 			},
 			// 항목 조회
@@ -69,8 +73,11 @@
 				$("._subItemSelect option:eq(0)").prop("selected", true);
 				this.selectSubItem = this.selectMainItem.children[0];
 			},
-			openItemList(itemType) {
+			// item: 유형(이체, 지출, 수입)
+			// openParent: 부모 모달 종류(add, often)
+			openCategoryList(itemType, openParent) {
 				this.mainList = this.itemListMap[itemType];
+				this.openParent = openParent;
 				$("#itemAllList").modal();
 				// DOM 갱신 이후 발생한 이벤트
 				this.$nextTick(() => {
@@ -87,7 +94,7 @@
 			this.loadItemAllList();
 		},
 		created() {
-			EventBus.$on('openItemListEvent', this.openItemList);
+			EventBus.$on('openCategoryListEvent', this.openCategoryList);
 		},
 	});
 </script>

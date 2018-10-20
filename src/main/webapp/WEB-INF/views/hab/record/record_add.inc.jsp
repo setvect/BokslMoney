@@ -28,7 +28,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" @click="openItemList(kindType)">선택</button>
+											<button class="btn btn-default" type="button" @click="openCategoryList(kindType)">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -161,10 +161,10 @@
 			</div>
 		</div>
 		<div>
-			<category />
+			<often/>
 		</div>
 		<div>
-			<often/>
+			<category />
 		</div>
 	</div>
 </template>
@@ -232,7 +232,7 @@
 				this.selectDate = moment(transaction.transactionDate);
 				this.item = transaction;
 				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
-				this.insertItem(transaction.parentCategory, transaction.category);
+				this.insertCategory(transaction.parentCategory, transaction.category);
 				this.openForm(this.item.kind);
 			},
 			// datepicker
@@ -287,15 +287,15 @@
 				});
 			},
 			// 항목 선택 팝업.
-			openItemList(kindType) {
-				EventBus.$emit('openItemListEvent', kindType);
+			openCategoryList(kindType) {
+				EventBus.$emit('openCategoryListEvent', kindType, 'add');
 			},
 			// 자주쓰는 거래
 			openOften(){
-				EventBus.$emit('openOftenEvent');
+				EventBus.$emit('openOftenEvent', this.kindType);
 			},
 			// 항목 팝업에서 선택한 값 입력
-			insertItem(mainItem, subItem) {
+			insertCategory(mainItem, subItem) {
 				this.item.categorySeq = subItem.categorySeq;
 				this.itemPath = mainItem.name + " > " + subItem.name;
 			}
@@ -306,7 +306,7 @@
 		created() {
 			EventBus.$on('addFormEvent', this.addForm);
 			EventBus.$on('editFormEvent', this.editForm);
-			EventBus.$on('insertItemEvent', this.insertItem);
+			EventBus.$on('insertCategoryEvent', this.insertCategory);
 
 			// 커스텀 validation
 			this.$validator.extend('notEquals', {
