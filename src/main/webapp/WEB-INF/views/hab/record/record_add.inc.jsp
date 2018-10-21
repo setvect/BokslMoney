@@ -83,7 +83,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">속성: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<select class="form-control" v-model="item.attribute" name="attribute" v-validate="'required'" data-vv-as="속성 ">
-										<option v-for="attribute in attributeList" v-bind:value="attribute.oftenUsedSeq">
+										<option v-for="attribute in attributeList" v-bind:value="attribute.codeItemKey.codeItemSeq">
 											{{attribute.name}}
 										</option>
 									</select>
@@ -111,7 +111,7 @@
 									<tbody>
 										<tr v-for="(often, index) in oftenUsedList">
 											<td>{{index + 1}}</td>
-											<td>{{often.title}}</td>
+											<td><a href="javascript:" @click="selectOftenUsed(often)">{{often.title}}</a></td>
 											<td>
 												<a href="javascript:" @click="changeOrder(oftenUsedList[index - 1].oftenUsedSeq, often.oftenUsedSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
 												<a href="javascript:" @click="changeOrder(often.oftenUsedSeq, oftenUsedList[index + 1].oftenUsedSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
@@ -278,7 +278,12 @@
 				this.item.categorySeq = subItem.categorySeq;
 				this.itemPath = mainItem.name + " > " + subItem.name;
 			},
-			// 자주쓰는 거래
+			// 자주쓰는 거래 선택
+			selectOftenUsed(often){
+				this.item = Object.assign(this.item, $.extend(true, {}, often));
+				this.insertCategory(often.parentCategory, often.category);
+			},
+			// 자주쓰는 거래 팝업 열기
 			openOften(type, often){
 				EventBus.$emit('openOftenEvent', type, $.extend(true, {}, often));
 			},

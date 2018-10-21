@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.setvect.bokslmoney.ApplicationUtil;
 import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.code.repository.CodeItemRepository;
 import com.setvect.bokslmoney.code.repository.CodeMainRepository;
@@ -47,8 +48,9 @@ public class CodeController {
 	// ============== 조회 ==============
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
-	public List<CodeItemVo> list(@RequestParam("codeMainId") final String codeMainId) {
-		return codeItemRepository.list(codeMainId);
+	public String list(@RequestParam("codeMainId") final String codeMainId) {
+		List<CodeItemVo> list = codeItemRepository.list(codeMainId);
+		return ApplicationUtil.toJson(list, "**,codeItemKey[**,codeMain[-handler,-hibernateLazyInitializer]]");
 	}
 
 	@RequestMapping(value = "/getCodeMain.json")
