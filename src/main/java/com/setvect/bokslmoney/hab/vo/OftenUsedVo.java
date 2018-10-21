@@ -2,6 +2,8 @@ package com.setvect.bokslmoney.hab.vo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,10 +26,10 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class OftenUserVo {
+public class OftenUsedVo {
 	/** 자주 쓰는 항목 일련번호 */
 	@Id
-	@Column(name = "OFTEN_USER_SEQ", unique = true, nullable = false)
+	@Column(name = "OFTEN_USED_SEQ", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int oftenUsedSeq;
 
@@ -36,13 +38,18 @@ public class OftenUserVo {
 	@JoinColumn(name = "CATEGORY_SEQ", nullable = false)
 	private CategoryVo category;
 
+	/** 유형(지출, 수입, 이체) */
+	@Column(name = "KIND", length = 20, nullable = false)
+	@Enumerated(EnumType.STRING)
+	private KindType kind;
+
 	/** 출금계좌 */
 	@Column(name = "PAY_ACCOUNT", nullable = true)
 	private int payAccount;
 
 	/** 거래제목 */
-	@Column(name = "TITLE", nullable = true)
-	private int title;
+	@Column(name = "TITLE", nullable = false, length = 200)
+	private String title;
 
 	/** 입금계좌 */
 	@Column(name = "RECEIVE_ACCOUNT", nullable = true)

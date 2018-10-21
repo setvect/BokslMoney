@@ -28,7 +28,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" @click="openCategoryList(kindType)">선택</button>
+											<button class="btn btn-default" type="button" @click="openCategoryList(item.kind)">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -109,47 +109,23 @@
 										<col style="width:50px;">
 									</colgroup>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>주식/부식 > 라면</td>
+										<tr v-for="(often, index) in oftenUsedList">
+											<td>{{index + 1}}</td>
+											<td>{{often.title}}</td>
 											<td>
 												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
 												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
 											</td>
 											<td>
-												<a href="javascript:"><i class="fa fa-edit"></i></a>
-												<a href="javascript:"><i class="fa fa-remove"></i></a>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>주식/부식 > 쌀</td>
-											<td>
-												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
-												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
-											</td>
-											<td>
-												<a href="javascript:"><i class="fa fa-edit"></i></a>
-												<a href="javascript:"><i class="fa fa-remove"></i></a>
-											</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>의류 > 수선</td>
-											<td>
-												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
-												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
-											</td>
-											<td>
-												<a href="javascript:"><i class="fa fa-edit"></i></a>
-												<a href="javascript:"><i class="fa fa-remove"></i></a>
+												<a href="javascript:" @click="editOftenForm(often.oftenUsedSeq)"><i class="fa fa-edit"></i></a>
+												<a href="javascript:" @click="deleteOftenForm(often.oftenUsedSeq)"><i class="fa fa-remove"></i></a>
 											</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 							<div class="x_content">
-								<button type="button" class="btn btn-primary btn-xs" @click="openOften()">자주쓰는 거래 저장</button>
+								<button type="button" class="btn btn-primary btn-xs" @click="openOften('add')">자주쓰는 거래 저장</button>
 							</div>
 						</div>
 					</form>
@@ -177,13 +153,13 @@
 		template: '#item-add',
 		data() {
 			return {
-				item: { money: 0, fee: 0 },
+				item: { money: 0, fee: 0, kind: null },
 				accountList: [],
 				actionType: 'add',
 				attributeList: [],
-				kindType: null,
 				itemPath: null,
 				selectDate: null,
+				oftenUsedList:[],
 			};
 		},
 		components: {
@@ -193,25 +169,25 @@
 		computed: {
 			itemLabel() {
 				const ITEM_TYPE_LABEL = { INCOME: '수입', SPENDING: '지출', TRANSFER: '이체' }
-				return ITEM_TYPE_LABEL[this.kindType];
+				return ITEM_TYPE_LABEL[this.item.kind];
 			},
-			// 지출계좌 선택 박스 비활성
+			// 출금계좌 선택 박스 비활성
 			disablePay() {
-				return this.kindType == "INCOME";
+				return this.item.kind == "INCOME";
 			},
 			// 수입계좌 선택 박스 비활성
 			disableReceive() {
-				return this.kindType == "SPENDING";
+				return this.item.kind == "SPENDING";
 			},
 			validatePay() {
 				return this.disablePay ? "" : "required";
 			},
 			validateReceive() {
-				if (this.kindType == "SPENDING") {
+				if (this.item.kind == "SPENDING") {
 					return "";
 				}
 				// 이체에서는 지출계좌와 수입 계좌가 같으면 안됨.
-				if (this.kindType == "TRANSFER") {
+				if (this.item.kind == "TRANSFER") {
 					return { required: true, notEquals: this.item.payAccount };
 				}
 				return "required";
@@ -219,11 +195,11 @@
 		},
 		methods: {
 			// 등록 폼
-			addForm(kindType, date) {
+			addForm(kind, date) {
 				this.actionType = 'add';
 				this.selectDate = date;
 				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
-				this.item.kind = kindType;
+				this.item.kind = kind;
 				this.openForm(this.item.kind);
 			},
 			//수정 폼
@@ -240,10 +216,11 @@
 				this.item.transactionDate = d;
 			},
 			// 계좌 입력 팝업창.
-			openForm(kindType) {
-				this.kindType = kindType;
+			openForm(kind) {
+				this.item.kind = kind;
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
-				this.loadAttribute(ITEM_TYPE_ATTR[this.kindType]);
+				this.loadAttribute(ITEM_TYPE_ATTR[this.item.kind]);
+				this.loadOftenUsed(kind);
 
 				$('._datepicker').daterangepicker({
 					singleDatePicker: true,
@@ -286,13 +263,19 @@
 					}
 				});
 			},
+			// 자주쓰는 거래 정보
+			loadOftenUsed(kind){
+				VueUtil.get("/hab/oftenUsed/list.json", { kind: kind }, (result) => {
+					this.oftenUsedList = result.data;
+				});
+			},
 			// 항목 선택 팝업.
-			openCategoryList(kindType) {
-				EventBus.$emit('openCategoryListEvent', kindType, 'add');
+			openCategoryList(kind) {
+				EventBus.$emit('openCategoryListEvent', kind, 'add');
 			},
 			// 자주쓰는 거래
-			openOften(){
-				EventBus.$emit('openOftenEvent', this.kindType);
+			openOften(type){
+				EventBus.$emit('openOftenEvent', this.item.kind, type);
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertCategory(mainItem, subItem) {

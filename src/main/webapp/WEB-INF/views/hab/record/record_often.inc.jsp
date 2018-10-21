@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">수정</h4>
+					<h4 class="modal-title">{{actionType == 'add' ? '등록' : '수정'}}</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -27,7 +27,7 @@
 										<input type="text" class="form-control" readonly="readonly" name="item" v-model="itemPath" v-validate="'required'"
 										 data-vv-as="항목 ">
 										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" @click="openCategoryList(kindType)">선택</button>
+											<button class="btn btn-default" type="button" @click="openCategoryList(item.kind)">선택</button>
 										</span>
 									</div>
 									<div v-if="errors.has('item')">
@@ -103,44 +103,51 @@
 		template: '#item-often-add',
 		data() {
 			return {
-				item: {money: 0},
+				item: {money: 0,kind:null},
 				accountList: [],
 				itemPath: null,
 				attributeList: [],
-				kindType: null,
+				actionType: null,
 			};
 		},
 		computed:{
-			// 지출계좌 선택 박스 비활성
+			// 출금계좌 선택 박스 비활성
 			disablePay() {
-				return this.kindType == "INCOME";
+				return this.item.kind == "INCOME";
 			},
 			// 수입계좌 선택 박스 비활성
 			disableReceive() {
-				return this.kindType == "SPENDING";
+				return this.item.kind == "SPENDING";
 			},
 			validatePay() {
 				return this.disablePay ? "" : "required";
 			},
 			validateReceive() {
+				if (this.item.kind == "SPENDING") {
+					return "";
+				}
+				// 이체에서는 지출계좌와 수입 계좌가 같으면 안됨.
+				if (this.item.kind == "TRANSFER") {
+					return { required: true, notEquals: this.item.payAccount };
+				}
 				return "required";
 			},
 		},
 		methods: {
 			// 자주 쓰는 계좌
-			openForm(kindType) {
-				this.kindType = kindType;
+			openForm(kind, actionType) {
+				this.actionType = actionType;
+				this.item.kind = kind;
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
-				this.loadAttribute(ITEM_TYPE_ATTR[this.kindType]);
-
+				this.loadAttribute(ITEM_TYPE_ATTR[this.item.kind]);
 				$("#addOftenItem").modal();
 			},
 			close() {
 				$("#addOftenItem").modal("hide");
 			},
 			// 항목 선택 팝업.
-			openCategoryList(kindType) {
-				EventBus.$emit('openCategoryListEvent', kindType, 'often');
+			openCategoryList(kind) {
+				EventBus.$emit('openCategoryListEvent', kind, 'often');
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertCategory(mainItem, subItem) {
@@ -149,6 +156,13 @@
 			},
 			// 등록 또는 수정
 			addAction() {
+				this.$validator.validateAll().then((result) => {
+					let url = this.actionType == 'add' ? '/hab/oftenUsed/add.do' : '/hab/oftenUsed/edit.do'
+					VueUtil.post(url, this.item, (result) => {
+						$("#addOftenItem").modal('hide');
+						EventBus.$emit('reloadEvent');
+					});
+				});
 			},
 			// 계좌 목록
 			loadAccount() {
