@@ -83,7 +83,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">속성: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<select class="form-control" v-model="item.attribute" name="attribute" v-validate="'required'" data-vv-as="속성 ">
-										<option v-for="attribute in attributeList" v-bind:value="attribute.codeItemKey.codeItemSeq">
+										<option v-for="attribute in attributeList" v-bind:value="attribute.oftenUsedSeq">
 											{{attribute.name}}
 										</option>
 									</select>
@@ -113,11 +113,11 @@
 											<td>{{index + 1}}</td>
 											<td>{{often.title}}</td>
 											<td>
-												<a href="javascript:"><i class="fa fa-arrow-up"></i></a>
-												<a href="javascript:"><i class="fa fa-arrow-down"></i></a>
+												<a href="javascript:" @click="changeOrder(oftenUsedList[index - 1].oftenUsedSeq, often.oftenUsedSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
+												<a href="javascript:" @click="changeOrder(often.oftenUsedSeq, oftenUsedList[index + 1].oftenUsedSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
 											</td>
 											<td>
-												<a href="javascript:" @click="editOftenForm(often.oftenUsedSeq)"><i class="fa fa-edit"></i></a>
+												<a href="javascript:" @click="openOften('edit', often)"><i class="fa fa-edit"></i></a>
 												<a href="javascript:" @click="deleteOftenForm(often.oftenUsedSeq)"><i class="fa fa-remove"></i></a>
 											</td>
 										</tr>
@@ -125,7 +125,7 @@
 								</table>
 							</div>
 							<div class="x_content">
-								<button type="button" class="btn btn-primary btn-xs" @click="openOften('add')">자주쓰는 거래 저장</button>
+								<button type="button" class="btn btn-primary btn-xs" @click="openOften('add', {kind: item.kind, money: 0})">자주쓰는 거래 저장</button>
 							</div>
 						</div>
 					</form>
@@ -220,7 +220,7 @@
 				this.item.kind = kind;
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
 				this.loadAttribute(ITEM_TYPE_ATTR[this.item.kind]);
-				this.loadOftenUsed(kind);
+				this.loadOftenUsed();
 
 				$('._datepicker').daterangepicker({
 					singleDatePicker: true,
@@ -259,13 +259,13 @@
 				VueUtil.get("/code/list.json", { codeMainId: codeMainId }, (result) => {
 					this.attributeList = result.data;
 					if (this.actionType == "add") {
-						this.item.attribute = this.attributeList[0].codeItemKey.codeItemSeq;
+						this.item.attribute = this.attributeList[0].oftenUsedSeq;
 					}
 				});
 			},
 			// 자주쓰는 거래 정보
-			loadOftenUsed(kind){
-				VueUtil.get("/hab/oftenUsed/list.json", { kind: kind }, (result) => {
+			loadOftenUsed(){
+				VueUtil.get("/hab/oftenUsed/list.json", { kind: this.item.kind }, (result) => {
 					this.oftenUsedList = result.data;
 				});
 			},
@@ -273,15 +273,44 @@
 			openCategoryList(kind) {
 				EventBus.$emit('openCategoryListEvent', kind, 'add');
 			},
-			// 자주쓰는 거래
-			openOften(type){
-				EventBus.$emit('openOftenEvent', this.item.kind, type);
-			},
 			// 항목 팝업에서 선택한 값 입력
 			insertCategory(mainItem, subItem) {
 				this.item.categorySeq = subItem.categorySeq;
 				this.itemPath = mainItem.name + " > " + subItem.name;
-			}
+			},
+			// 자주쓰는 거래
+			openOften(type, often){
+				EventBus.$emit('openOftenEvent', type, $.extend(true, {}, often));
+			},
+			// 정렬 순서 변경
+			changeOrder(downOftenUsedSeq, upOftenUsedSeq){
+				let param = {downOftenUsedSeq: downOftenUsedSeq, upOftenUsedSeq: upOftenUsedSeq};
+				VueUtil.post('/hab/oftenUsed/changeOrder.do', param, (result) => {
+					this.loadOftenUsed();
+				});
+			},
+			// 자주 쓰는 거래 삭제
+			deleteOftenForm(oftenUsedSeq){
+				if(!confirm("삭제할거야?")){
+					return;
+				}
+				let param = {oftenUsedSeq: oftenUsedSeq};
+				VueUtil.post('/hab/oftenUsed/delete.do', param, (result) => {
+					this.loadOftenUsed();
+				});
+			},
+			isUpable(index){
+				if(this.oftenUsedList<= 1){
+					return false;
+				}
+				return index !== 0;
+			},
+			isDownable(index){
+				if(this.oftenUsedList.length <= 1){
+					return false;
+				}
+				return index + 1 !== this.oftenUsedList.length;
+			},
 		},
 		mounted() {
 			this.loadAccount();
@@ -290,6 +319,7 @@
 			EventBus.$on('addFormEvent', this.addForm);
 			EventBus.$on('editFormEvent', this.editForm);
 			EventBus.$on('insertCategoryEvent', this.insertCategory);
+			EventBus.$on('listOftenUsedEvent', this.loadOftenUsed);
 
 			// 커스텀 validation
 			this.$validator.extend('notEquals', {

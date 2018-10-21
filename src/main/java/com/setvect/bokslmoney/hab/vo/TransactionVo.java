@@ -41,6 +41,7 @@ public class TransactionVo {
 	@JoinColumn(name = "CATEGORY_SEQ", nullable = false)
 	private CategoryVo category;
 
+	/** 부모 분류 정보*/
 	@Transient
 	private CategoryVo parentCategory;
 

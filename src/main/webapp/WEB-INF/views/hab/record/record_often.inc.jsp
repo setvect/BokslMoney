@@ -135,11 +135,17 @@
 		},
 		methods: {
 			// 자주 쓰는 계좌
-			openForm(kind, actionType) {
+			openForm(actionType, item) {
 				this.actionType = actionType;
-				this.item.kind = kind;
+				this.item = item;
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
 				this.loadAttribute(ITEM_TYPE_ATTR[this.item.kind]);
+
+				if(actionType == "edit"){
+					this.insertCategory(item.parentCategory, item.category);
+					delete item.category;
+					delete item.parentCategory;
+				}
 				$("#addOftenItem").modal();
 			},
 			close() {
@@ -160,7 +166,7 @@
 					let url = this.actionType == 'add' ? '/hab/oftenUsed/add.do' : '/hab/oftenUsed/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addOftenItem").modal('hide');
-						EventBus.$emit('reloadEvent');
+						EventBus.$emit('listOftenUsedEvent');
 					});
 				});
 			},

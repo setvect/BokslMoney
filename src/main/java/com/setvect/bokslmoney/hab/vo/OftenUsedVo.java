@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -37,6 +38,10 @@ public class OftenUsedVo {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CATEGORY_SEQ", nullable = false)
 	private CategoryVo category;
+
+	/** 부모 분류 정보*/
+	@Transient
+	private CategoryVo parentCategory;
 
 	/** 유형(지출, 수입, 이체) */
 	@Column(name = "KIND", length = 20, nullable = false)

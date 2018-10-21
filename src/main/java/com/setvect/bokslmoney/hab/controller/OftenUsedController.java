@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.OftenUsedRepository;
+import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.hab.vo.OftenUsedVo;
 
@@ -37,6 +38,11 @@ public class OftenUsedController {
 	@ResponseBody
 	public List<OftenUsedVo> list(@RequestParam(name = "kind") KindType kind) {
 		List<OftenUsedVo> list = oftenUsedRepository.list(kind);
+		list.stream().forEach(t -> {
+			int parentSeq = t.getCategory().getParentSeq();
+			CategoryVo parent = categoryRepository.findById(parentSeq).orElse(null);
+			t.setParentCategory(parent);
+		});
 		return list;
 	}
 
@@ -57,6 +63,31 @@ public class OftenUsedController {
 	public void edit(final OftenUsedVo item, @RequestParam("categorySeq") final int categorySeq) {
 		item.setCategory(categoryRepository.findById(categorySeq).get());
 		oftenUsedRepository.save(item);
+	}
+
+	/**
+	 * 정렬 순서 변경
+	 *
+	 * @param downOftenUsedSeq
+	 *            내려갈 항목
+	 * @param upOftenUsedSeq
+	 *            올라갈 항목
+	 */
+	@RequestMapping(value = "/changeOrder.do")
+	@ResponseBody
+	public void changeOrder(@RequestParam("downOftenUsedSeq") final int downOftenUsedSeq,
+			@RequestParam("upOftenUsedSeq") final int upOftenUsedSeq) {
+		OftenUsedVo downOften = oftenUsedRepository.findById(downOftenUsedSeq).get();
+		OftenUsedVo upOften = oftenUsedRepository.findById(upOftenUsedSeq).get();
+
+		int downOrder = downOften.getOrderNo();
+		int upOrder = upOften.getOrderNo();
+
+		downOften.setOrderNo(upOrder);
+		upOften.setOrderNo(downOrder);
+
+		oftenUsedRepository.save(downOften);
+		oftenUsedRepository.save(upOften);
 	}
 
 	// ============== 삭제 ==============
