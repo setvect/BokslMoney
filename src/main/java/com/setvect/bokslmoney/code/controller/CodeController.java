@@ -23,8 +23,6 @@ import com.setvect.bokslmoney.code.vo.CodeMainVo;
 @Controller
 @RequestMapping(value = "/code")
 public class CodeController {
-	/** 로깅 */
-	private static Logger logger = LoggerFactory.getLogger(CodeController.class);
 
 	@Autowired
 	private CodeMainRepository codeMainRepository;
