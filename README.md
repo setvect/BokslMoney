@@ -7,4 +7,3 @@
 
 
 ### TODO
-- checkstyle.xml 버전 관리되게 경로 변경
