@@ -1,5 +1,12 @@
 package com.setvect.bokslmoney;
 
+import java.awt.Desktop;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.catalina.Container;
@@ -21,6 +28,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import com.setvect.bokslmoney.code.service.CodeService;
 import com.setvect.bokslmoney.user.service.UserService;
 import com.setvect.bokslmoney.util.BeanUtils;
+import com.setvect.bokslmoney.util.TrayIconHandler;
+
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Spring boot application 시작점.
@@ -29,11 +39,15 @@ import com.setvect.bokslmoney.util.BeanUtils;
 @ImportResource({ "classpath:/spring/context-transaction.xml" })
 @EnableScheduling
 @EnableAspectJAutoProxy
+@Log4j2
 public class BokslMoneyApplication extends SpringBootServletInitializer {
 	/** 설정 파일 경로. */
 	private static final String CONFIG_PROPERTIES = "/application.properties";
 	/** 테스트 설정 파일 경로 */
 	private static final String CONFIG_PROPERTIES_TEST = "/test.properties";
+
+	/** 초기화 완료 여부 */
+	private static boolean initComplete = false;
 
 	/**
 	 * Application 시작점.
@@ -42,10 +56,53 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
+		applyTray();
+
 		// spring boot에서 클래스가 및 properties 변경되었을 때 restart 안되게 함.
 		// 즉 reload 효과
 		System.setProperty("spring.devtools.restart.enabled", "false");
 		SpringApplication.run(BokslMoneyApplication.class, args);
+
+		initComplete = true;
+
+		// openWeb();
+	}
+
+	/**
+	 * 윈도우 트레이 아이콘 적용
+	 */
+	private static void applyTray() {
+		// 팝업 항목
+		final PopupMenu popup = new PopupMenu();
+		MenuItem openItem = new MenuItem("Open");
+		openItem.addActionListener((e) -> openWeb());
+		MenuItem exitItem = new MenuItem("Exit");
+		exitItem.addActionListener((e) -> System.exit(1));
+		popup.add(openItem);
+		popup.add(exitItem);
+
+		TrayIconHandler.registerTrayIcon(
+				Toolkit.getDefaultToolkit().getImage("src/main/resources/icon/paw-solid-32.png"), "복슬머니", () -> {
+					openWeb();
+				}, popup);
+	}
+
+	/**
+	 * 웹 페이지 오픈
+	 */
+	private static void openWeb() {
+		if (!initComplete) {
+			log.info("Not initialized.");
+			return;
+		}
+
+		if (Desktop.isDesktopSupported()) {
+			try {
+				Desktop.getDesktop().browse(new URI("http://127.0.0.1:" + BokslMoneyConstant.WEB_PORT));
+			} catch (IOException | URISyntaxException e) {
+				log.error(e);
+			}
+		}
 	}
 
 	@Override

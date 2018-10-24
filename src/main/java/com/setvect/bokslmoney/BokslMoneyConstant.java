@@ -16,6 +16,9 @@ public final class BokslMoneyConstant {
 	 */
 	public static final long CACHE_VER = System.currentTimeMillis();
 
+	/** 웹 포트 */
+	public static final int WEB_PORT = EnvirmentProperty.getInt("server.port");
+
 	/**
 	 * 웹 관련 상수
 	 */
