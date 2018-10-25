@@ -83,7 +83,7 @@
 			</div>
 		</div>
 	</div>
-	<add/>
+	<add />
 </div>
 
 <jsp:include page="../record_add.inc.jsp"></jsp:include>
@@ -120,26 +120,26 @@
 				calendar: null,
 				currentMonth: null,
 				// 지출, 수입, 이체 내역
-				transferList:[],
+				transferList: [],
 				selectDate: moment(),
 			};
 		},
 		components: {
 			'add': itemAddComponent
 		},
-		computed:{
-			sumIncome(){
+		computed: {
+			sumIncome() {
 				return this.sumCalculation(t => t.kind == 'INCOME');
 			},
-			sumSpending(){
+			sumSpending() {
 				return this.sumCalculation(t => t.kind == 'SPENDING');
 			},
-			sumTransfer(){
+			sumTransfer() {
 				return this.sumCalculation(t => t.kind == 'TRANSFER');
 			},
 			// 선택된 날짜의 지출, 수입, 이체 내역
-			listSelectDayTransfer(){
-				let r = this.transferList.filter((t) =>{
+			listSelectDayTransfer() {
+				let r = this.transferList.filter((t) => {
 					return this.selectDate.toDate().getDate() == new Date(t.transactionDate).getDate();
 				});
 				return r;
@@ -179,7 +179,7 @@
 					select(start, end, allDay) {
 						self.selectDate = start;
 						$(".fc-day").removeClass("cal-select");
-						$(".fc-day[data-date='" + self.selectDate.format("YYYY-MM-DD")  + "']").addClass("cal-select");
+						$(".fc-day[data-date='" + self.selectDate.format("YYYY-MM-DD") + "']").addClass("cal-select");
 					},
 					// 이벤트를 표시할 때
 					eventRender(event, element) {
@@ -189,7 +189,7 @@
 						}
 					},
 					// 이벤트 항목 클릭 시 달력 셀(날짜) 클릭 효과 부여
-					eventClick(calEvent, jsEvent, view){
+					eventClick(calEvent, jsEvent, view) {
 						self.calendar.fullCalendar('select', calEvent.start);
 					},
 					// 최초, 월이 변경 되었을 때 발생하는 이벤트
@@ -198,10 +198,25 @@
 						let end = view.end._d;
 						let dates = { start: start, end: end };
 						self.currentMonth = view.start;
-						self.loadRecord(self.currentMonth.toDate().getFullYear(), self.currentMonth.toDate().getMonth()+1);
+						self.loadRecord(self.currentMonth.toDate().getFullYear(), self.currentMonth.toDate().getMonth() + 1);
 						self.holiydayDisplay();
 					},
 				});
+
+				// 오른쪽 마우스 클릭
+				$.contextMenu({
+					selector: '#calendar',
+					callback: function (type, options) {
+						EventBus.$emit('addFormEvent', type, self.selectDate);
+					},
+					items: {
+						"SPENDING": { name: "지출", icon: "fa-minus-square" },
+						"INCOME": { name: "수입", icon: "fa-check-square-o" },
+						"TRANSFER": { name: "이체", icon: "fa-plus-square" },
+						"MEMO": { name: "메모", icon: "fa-sticky-note-o" },
+					}
+				});
+
 				$(".fc-next-button, .fc-prev-button, .fc-today-button").click((event) => {
 					let d = this.calendar.fullCalendar('getDate');
 					if ($(event.target).hasClass("fc-today-button")) {
@@ -212,11 +227,11 @@
 				});
 			},
 			// 해당 월에 등록된 지출,수입,이체 항목 조회
-			loadRecord(year, month){
-				VueUtil.get("/hab/transaction/listByMonth.json", {year: year, month: month}, (result) => {
+			loadRecord(year, month) {
+				VueUtil.get("/hab/transaction/listByMonth.json", { year: year, month: month }, (result) => {
 					this.calendar.fullCalendar('removeEvents');
 					this.transferList = result.data;
-					for(let idx in this.transferList) {
+					for (let idx in this.transferList) {
 						let t = this.transferList[idx];
 						this.displayTransfer(moment(t.transactionDate), t.kind, t.money);
 					}
@@ -249,39 +264,39 @@
 				}
 			},
 			// 수입, 지출, 이체 합산
-			sumCalculation(filterCondition){
-				return this.transferList.filter(filterCondition).reduce((acc, t) => {return acc + t.money;}, 0);
+			sumCalculation(filterCondition) {
+				return this.transferList.filter(filterCondition).reduce((acc, t) => { return acc + t.money; }, 0);
 			},
-			kindMapValue(kind){
+			kindMapValue(kind) {
 				return TYPE_VALUE[kind];
 			},
 			// 현재 보고 있는 달력 거래 내역 트랜.
-			reload(){
+			reload() {
 				this.loadRecord(this.currentMonth.toDate().getFullYear(), this.currentMonth.toDate().getMonth() + 1);
 			},
-			editForm(item){
+			editForm(item) {
 				var d = $.extend(true, {}, item);
 				EventBus.$emit('editFormEvent', d);
 			},
-			deleteAction(item){
-				if(!confirm("삭제하시겠습니까?")){
+			deleteAction(item) {
+				if (!confirm("삭제하시겠습니까?")) {
 					return;
 				}
-				VueUtil.post('/hab/transaction/delete.do', {itemSeq: item.transactionSeq}, (result) => {
+				VueUtil.post('/hab/transaction/delete.do', { itemSeq: item.transactionSeq }, (result) => {
 					this.reload();
 				});
 			},
 			// 달력에 공휴일, 주요 행사 정보 표시
-			holiydayDisplay(){
+			holiydayDisplay() {
 				let dayList = CalendarUtil.getAnniversary(this.currentMonth.toDate().getFullYear());
 				dayList.forEach((value) => {
-					if(value.event.holiday){
+					if (value.event.holiday) {
 						$("td[data-date='" + value.date + "']").addClass("fc-holiday");
 					}
-					if($("td[data-date='" + value.date + "'] span._day-label").length == 0){
-						$("td[data-date='" + value.date + "']").prepend("<span class='_day-label'>" + value.event.name +  "</span>");
+					if ($("td[data-date='" + value.date + "'] span._day-label").length == 0) {
+						$("td[data-date='" + value.date + "']").prepend("<span class='_day-label'>" + value.event.name + "</span>");
 					}
-					else{
+					else {
 						$("td[data-date='" + value.date + "'] span._day-label").append(", " + value.event.name);
 					}
 				});
