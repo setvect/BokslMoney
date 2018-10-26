@@ -18,6 +18,7 @@
 							<button type="button" data-type="SPENDING" class="btn btn-info _input">지출</button>
 							<button type="button" data-type="INCOME" class="btn btn-info _input">수입</button>
 							<button type="button" data-type="TRANSFER" class="btn btn-info _input">이체</button>
+							<button type="button" data-type="MEMO" class="btn btn-warning _input">메모</button>
 						</div>
 						<div>
 							<h4>{{selectDate | dateFormat("YYYY년 MM월 DD일")}} 내역</h4>
@@ -83,10 +84,16 @@
 			</div>
 		</div>
 	</div>
-	<add />
+	<div>
+		<add/>
+	</div>
+	<div>
+		<memo/>
+	</div>
 </div>
 
 <jsp:include page="../record_add.inc.jsp"></jsp:include>
+<jsp:include page="../memo.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	const TYPE_VALUE = {
@@ -125,7 +132,8 @@
 			};
 		},
 		components: {
-			'add': itemAddComponent
+			'add': itemAddComponent,
+			'memo': memoComponent
 		},
 		computed: {
 			sumIncome() {
@@ -202,12 +210,15 @@
 						self.holiydayDisplay();
 					},
 				});
-
 				// 오른쪽 마우스 클릭
 				$.contextMenu({
 					selector: '#calendar',
 					callback: function (type, options) {
-						EventBus.$emit('addFormEvent', type, self.selectDate);
+						if(type == "MEMO"){
+							EventBus.$emit('addMemoFormEvent', this.selectDate);
+						} else {
+							EventBus.$emit('addFormEvent', type, this.selectDate);
+						}
 					},
 					items: {
 						"SPENDING": { name: "지출", icon: "fa-minus-square" },
@@ -307,7 +318,11 @@
 			// 지출, 이체, 수입 버튼 클릭
 			$("._input").click((event) => {
 				let type = $(event.target).attr("data-type");
-				EventBus.$emit('addFormEvent', type, this.selectDate);
+				if(type == "MEMO"){
+					EventBus.$emit('addMemoFormEvent', this.selectDate);
+				} else {
+					EventBus.$emit('addFormEvent', type, this.selectDate);
+				}
 			});
 			EventBus.$on('reloadEvent', this.reload);
 		}
