@@ -85,10 +85,10 @@
 		</div>
 	</div>
 	<div>
-		<add/>
+		<add />
 	</div>
 	<div>
-		<memo/>
+		<memo />
 	</div>
 </div>
 
@@ -128,6 +128,7 @@
 				currentMonth: null,
 				// 지출, 수입, 이체 내역
 				transferList: [],
+				memoList: [],
 				selectDate: moment(),
 			};
 		},
@@ -157,7 +158,6 @@
 			initCalendar() {
 				let self = this;
 				if (typeof ($.fn.fullCalendar) === 'undefined') { return; }
-				//  console.log('initCalendar');
 
 				let date = new Date(),
 					d = date.getDate(),
@@ -189,11 +189,16 @@
 						$(".fc-day").removeClass("cal-select");
 						$(".fc-day[data-date='" + self.selectDate.format("YYYY-MM-DD") + "']").addClass("cal-select");
 					},
-					// 이벤트를 표시할 때
+					// 이벤트를 달력 셀에 표시
 					eventRender(event, element) {
+						// 거래별 합산
 						if (event.type) {
 							let t = TYPE_VALUE[event.type];
 							element.find(".fc-title").prepend("<i class='fa " + t.icon + "'></i>" + t.title + ' : ' + CommonUtil.toComma(event.cost));
+						}
+						// 메모
+						if (event.text) {
+							element.find(".fc-title").prepend("<i class='fa fa-sticky-note-o'></i>" + event.text);
 						}
 					},
 					// 이벤트 항목 클릭 시 달력 셀(날짜) 클릭 효과 부여
@@ -206,7 +211,7 @@
 						let end = view.end._d;
 						let dates = { start: start, end: end };
 						self.currentMonth = view.start;
-						self.loadRecord(self.currentMonth.toDate().getFullYear(), self.currentMonth.toDate().getMonth() + 1);
+						self.loadMonthData(self.currentMonth.toDate().getFullYear(), self.currentMonth.toDate().getMonth() + 1);
 						self.holiydayDisplay();
 					},
 				});
@@ -214,11 +219,7 @@
 				$.contextMenu({
 					selector: '#calendar',
 					callback: function (type, options) {
-						if(type == "MEMO"){
-							EventBus.$emit('addMemoFormEvent', this.selectDate);
-						} else {
-							EventBus.$emit('addFormEvent', type, this.selectDate);
-						}
+						self.addItemForm(type);
 					},
 					items: {
 						"SPENDING": { name: "지출", icon: "fa-minus-square" },
@@ -227,7 +228,6 @@
 						"MEMO": { name: "메모", icon: "fa-sticky-note-o" },
 					}
 				});
-
 				$(".fc-next-button, .fc-prev-button, .fc-today-button").click((event) => {
 					let d = this.calendar.fullCalendar('getDate');
 					if ($(event.target).hasClass("fc-today-button")) {
@@ -237,8 +237,23 @@
 					}
 				});
 			},
-			// 해당 월에 등록된 지출,수입,이체 항목 조회
-			loadRecord(year, month) {
+			// 거래내역 또는 메모 등록 폼
+			addItemForm(type) {
+				if (type == "MEMO") {
+					let memo = this.getMemo(this.selectDate);
+					// 해당 날짜에 등록된 메모가 있다면 수정으로 없다면 새롭게 등록
+					if (memo) {
+						EventBus.$emit('editMemoFormEvent', memo);
+					} else {
+						EventBus.$emit('addMemoFormEvent', this.selectDate);
+					}
+				} else {
+					EventBus.$emit('addFormEvent', type, this.selectDate);
+				}
+			},
+			// 해당 월에 거래 내역 및 메모 조회
+			loadMonthData(year, month) {
+				// 해당 월에 등록된 지출,수입,이체 항목 조회
 				VueUtil.get("/hab/transaction/listByMonth.json", { year: year, month: month }, (result) => {
 					this.calendar.fullCalendar('removeEvents');
 					this.transferList = result.data;
@@ -246,10 +261,25 @@
 						let t = this.transferList[idx];
 						this.displayTransfer(moment(t.transactionDate), t.kind, t.money);
 					}
+					// 해당 월에 등록된 메모 조회
+					VueUtil.get("/hab/memo/listByMonth.json", { year: year, month: month }, (result) => {
+						this.memoList = result.data;
+						for (let idx in this.memoList) {
+							let memo = this.memoList[idx];
+							this.displayMemo(memo);
+						}
+					});
 				});
 			},
+			// 해당 날짜에 등록된 메모 항목 반환
+			getMemo(date) {
+				let memo = this.memoList.find((memo) => {
+					return moment(memo.memoDate).format("YYYYMMDD") == date.format("YYYYMMDD");
+				 });
+				return memo;
+			},
 			/**
-			 * 지출, 이체, 수입 항목 달력 셀에 입력
+			 * 지출, 이체, 수입 항목 달력 셀에 표시 값 지정
 			 * date: 날짜(moment 객체)
 			 * type: 유형코드(지출, 이체, 수입)
 			 * cost: 금액
@@ -274,6 +304,14 @@
 					this.calendar.fullCalendar('updateEvent', list[0]);
 				}
 			},
+			// 달력 셀에 메모 표시 값 지정
+			displayMemo(memo) {
+				this.calendar.fullCalendar('renderEvent', {
+					text: memo.note,
+					color: '#aaa',
+					start: moment(memo.memoDate).format("YYYY-MM-DD"),
+				});
+			},
 			// 수입, 지출, 이체 합산
 			sumCalculation(filterCondition) {
 				return this.transferList.filter(filterCondition).reduce((acc, t) => { return acc + t.money; }, 0);
@@ -283,7 +321,7 @@
 			},
 			// 현재 보고 있는 달력 거래 내역 트랜.
 			reload() {
-				this.loadRecord(this.currentMonth.toDate().getFullYear(), this.currentMonth.toDate().getMonth() + 1);
+				this.loadMonthData(this.currentMonth.toDate().getFullYear(), this.currentMonth.toDate().getMonth() + 1);
 			},
 			editForm(item) {
 				var d = $.extend(true, {}, item);
@@ -318,11 +356,7 @@
 			// 지출, 이체, 수입 버튼 클릭
 			$("._input").click((event) => {
 				let type = $(event.target).attr("data-type");
-				if(type == "MEMO"){
-					EventBus.$emit('addMemoFormEvent', this.selectDate);
-				} else {
-					EventBus.$emit('addFormEvent', type, this.selectDate);
-				}
+				this.addItemForm(type);
 			});
 			EventBus.$on('reloadEvent', this.reload);
 		}

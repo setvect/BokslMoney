@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">메모 등록</h4>
+					<h4 class="modal-title">메모 {{actionType == 'add' ? '등록' : '수정'}}</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -25,7 +25,8 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info" @click="addAction()">저장</button>
-					<button type="button" class="btn btn-default"@click="close()">닫기</button>
+					<button type="button" class="btn btn-warning" @click="deleteAction(item.memoSeq)" v-show="actionType == 'edit'">삭제</button>
+					<button type="button" class="btn btn-default" @click="close()">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -37,12 +38,27 @@
 		template: '#memo-add',
 		data() {
 			return {
-				item: {note:""},
+				item: { note: "" },
+				actionType: 'add',
+				selectDate: null,
 			};
 		},
-		computed:{
+		computed: {
 		},
 		methods: {
+			// 등록 폼
+			addForm(date) {
+				this.item = {};
+				this.actionType = 'add';
+				this.item.memoDate = date.format("YYYY-MM-DD");
+				this.openForm();
+			},
+			//수정 폼
+			editForm(memo) {
+				this.actionType = 'edit';
+				this.item = memo;
+				this.openForm();
+			},
 			// 자주 쓰는 계좌
 			openForm(actionType, item) {
 				$("#addMemo").modal();
@@ -50,28 +66,34 @@
 			close() {
 				$("#addMemo").modal("hide");
 			},
-			// 항목 선택 팝업.
-			openCategoryList(kind) {
-				EventBus.$emit('openCategoryListEvent', kind, 'often');
-			},
 			addAction() {
 				this.$validator.validateAll().then((result) => {
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/oftenUsed/add.do' : '/hab/oftenUsed/edit.do'
+					let url = this.actionType == 'add' ? '/hab/memo/add.do' : '/hab/memo/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addMemo").modal('hide');
 						EventBus.$emit('reloadEvent');
 					});
 				});
 			},
+			// 삭제
+			deleteAction(memoSeq) {
+				if (!confirm("삭제?")) {
+					return;
+				}
+				VueUtil.post('/hab/memo/delete.do', { memoSeq: memoSeq }, (result) => {
+					$("#addMemo").modal('hide');
+					EventBus.$emit('reloadEvent');
+				});
+			},
 		},
 		mounted() {
-			this.loadAccount();
 		},
 		created() {
-			EventBus.$on('addMemoFormEvent', this.openForm);
+			EventBus.$on('addMemoFormEvent', this.addForm);
+			EventBus.$on('editMemoFormEvent', this.editForm);
 		},
 	});
 </script>

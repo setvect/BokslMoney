@@ -35,7 +35,7 @@ public class MemoVo {
 	private String note;
 
 	/** 메모 일 */
-	@Column(name = "NOTE_DATE", nullable = false)
+	@Column(name = "MEMO_DATE", nullable = false)
 	private Date memoDate;
 
 	/** 삭제 여부 */
