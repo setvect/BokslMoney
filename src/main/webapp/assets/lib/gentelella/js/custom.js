@@ -146,9 +146,7 @@ $(document).ready(function () {
 	init_sidebar();
 
 	let menuSmall = $.cookie('menu-small') == "true";
-	console.log(menuSmall);
 	if (menuSmall) {
-		console.log($MENU_TOGGLE);
 		$MENU_TOGGLE.trigger("click");
 	}
 });

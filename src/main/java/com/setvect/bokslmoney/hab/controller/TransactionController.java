@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.setvect.bokslmoney.ApplicationUtil;
 import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
-import com.setvect.bokslmoney.code.repository.CodeItemRepository;
-import com.setvect.bokslmoney.code.repository.CodeMainRepository;
-import com.setvect.bokslmoney.code.service.CodeService;
-import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.TransactionRepository;
 import com.setvect.bokslmoney.hab.service.TransactionService;
@@ -32,26 +26,12 @@ import com.setvect.bokslmoney.util.PageResult;
 @Controller
 @RequestMapping(value = "/hab/transaction/")
 public class TransactionController {
-	/** 로깅 */
-	private static Logger logger = LoggerFactory.getLogger(TransactionController.class);
-
-	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
-	private CodeItemRepository codeItemRepository;
-
-	@Autowired
-	private CodeMainRepository codeMainRepository;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private TransactionRepository transactionRepository;
-
-	@Autowired
-	private CodeService codeService;
 
 	@Autowired
 	private TransactionService transactionService;
@@ -66,6 +46,17 @@ public class TransactionController {
 	@RequestMapping(value = "/calendar.do")
 	public String page(final HttpServletRequest request) {
 		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/record/calendar/calendar.jsp");
+		return "template";
+	}
+
+	/**
+	 * @param request
+	 *            servlet
+	 * @return view 페이지
+	 */
+	@RequestMapping(value = "/grid.do")
+	public String grid(final HttpServletRequest request) {
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/record/grid/grid.jsp");
 		return "template";
 	}
 
