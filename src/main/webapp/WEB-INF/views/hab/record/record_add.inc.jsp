@@ -39,7 +39,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">메모: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control _note" name="note" v-model="item.note" v-validate="'required'" data-vv-as="메모 ">
+									<input type="text" class="form-control _note" name="note" v-model="item.note" v-validate="'required'"
+									 data-vv-as="메모 " @keyup.13="addAction(true)">
 									<span class="error" v-if="errors.has('note')">{{errors.first('note')}}</span>
 								</div>
 							</div>
@@ -48,7 +49,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">금액: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<my-currency-input v-model="item.money" class="form-control" name="money" maxlength="10" v-validate="'required'"
-									 data-vv-as="금액 "></my-currency-input>
+									 data-vv-as="금액 " @press-enter="addAction(true)"></my-currency-input>
 									<span class="error" v-if="errors.has('money')">{{errors.first('money')}}</span>
 								</div>
 							</div>
@@ -136,7 +137,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info" @click="addAction(true)">계속입력</button>
 					<button type="button" class="btn btn-info" @click="addAction(false)">저장</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-default" @click="close()">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -167,6 +168,8 @@
 				// 유형별 거래 내용
 				// Key: kind, Value: 거래 내용
 				beforeTransaction: {},
+				// 모달 창 닫을 시 부모 페이지를 리로딩 할 지 여부
+				closeReload: false
 			};
 		},
 		components: {
@@ -234,6 +237,7 @@
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
 				this.loadAttribute(ITEM_TYPE_ATTR[this.item.kind]);
 				this.loadOftenUsed();
+				this.closeReload = false;
 
 				$('._datepicker').daterangepicker({
 					singleDatePicker: true,
@@ -260,6 +264,7 @@
 
 					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
+						this.closeReload = true;
 						if (cont) {
 							this.item.note = "";
 							this.item.money = "";
@@ -270,6 +275,12 @@
 						}
 					});
 				});
+			},
+			close() {
+				$("#addItem").modal('hide');
+				if(this.closeReload){
+					EventBus.$emit('reloadEvent');
+				}
 			},
 			// 계좌 목록
 			loadAccount() {

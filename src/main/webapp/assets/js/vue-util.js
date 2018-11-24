@@ -112,7 +112,7 @@ Vue.component('datepicker', {
 Vue.component('my-currency-input', {
 	props: ["value"],
 	template: `
-			<input type="text" v-model="displayValue" @blur="isInputActive = false" @focus="isInputActive = true"/>
+			<input type="text" v-model="displayValue" @blur="isInputActive = false" @focus="isInputActive = true" @keyup.13="emitEnter()"/>
 		`,
 	data: function() {
 		return {
@@ -141,6 +141,11 @@ Vue.component('my-currency-input', {
 				// $emit the event so that parent component gets it
 				this.$emit('input', newValue)
 			}
+		}
+	},
+	methods: {
+		emitEnter(){
+			this.$emit('press-enter');
 		}
 	}
 });
