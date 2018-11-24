@@ -241,6 +241,8 @@
 				}, (start) => {
 					this.item.transactionDate = start.format("YYYY-MM-DD");
 				});
+				this.$validator.reset();
+				console.log("reset");
 
 				$("#addItem").modal();
 			},
