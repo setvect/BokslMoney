@@ -274,6 +274,7 @@
 			// 해당 날짜에 등록된 메모 항목 반환
 			getMemo(date) {
 				let memo = this.memoList.find((memo) => {
+					console.log(moment(memo.memoDate).format("YYYYMMDD"), date.format("YYYYMMDD"));
 					return moment(memo.memoDate).format("YYYYMMDD") == date.format("YYYYMMDD");
 				 });
 				return memo;
