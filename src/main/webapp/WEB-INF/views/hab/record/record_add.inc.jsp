@@ -268,7 +268,10 @@
 						if (cont) {
 							this.item.note = "";
 							this.item.money = "";
-							$("._note").focus();
+							// 포커스가 제대로 안되서 timeout 적용. $nextTick 안됨.
+							setTimeout(() => {
+								$("._note").focus();
+							}, 100);
 						} else {
 							$("#addItem").modal('hide');
 							EventBus.$emit('reloadEvent');
@@ -278,7 +281,7 @@
 			},
 			close() {
 				$("#addItem").modal('hide');
-				if(this.closeReload){
+				if (this.closeReload) {
 					EventBus.$emit('reloadEvent');
 				}
 			},
