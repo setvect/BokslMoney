@@ -2,12 +2,15 @@
 <template id='item-list'>
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="form-row">
-			<div class="form-group col-md-4"><label for="inputCity">재산(내가 모은 돈)</label><span class="form-control text-right">{{property | numberFormat}}</span></div>
-			<div class="form-group col-md-4"><label for="inputCity">자산(마이너스가 아닌 계좌 합)</label><span class="form-control text-right">{{asset | numberFormat}}</span></div>
-			<div class="form-group col-md-4"><label for="inputCity">부채(마이너스 계좌 합)</label><span class="form-control text-right">{{debt | numberFormat}}</span></div>
+			<div class="form-group col-md-4"><label for="inputCity">재산(내가 모은 돈)</label><span class="form-control text-right">{{property
+					| numberFormat}}</span></div>
+			<div class="form-group col-md-4"><label for="inputCity">자산(마이너스가 아닌 계좌 합)</label><span class="form-control text-right">{{asset
+					| numberFormat}}</span></div>
+			<div class="form-group col-md-4"><label for="inputCity">부채(마이너스 계좌 합)</label><span class="form-control text-right">{{debt
+					| numberFormat}}</span></div>
 		</div>
 
-		<table class="table table-striped jambo_table bulk_action table-bordered">
+		<table class="table table-striped jambo_table bulk_action table-bordered" id="grid">
 			<thead>
 				<tr class="headings">
 					<th>자산종류</th>
@@ -38,30 +41,32 @@
 </template>
 
 <script type="text/javascript">
-	const itemListComponent = Vue.component("itemList", { template: '#item-list',
-		data(){
+	const itemListComponent = Vue.component("itemList", {
+		template: '#item-list',
+		data() {
 			return {
-				itemList: []
+				itemList: [],
+				grid: null
 			};
 		},
 		props: {
 		},
 		computed: {
-			property(){
+			property() {
 				return this.asset + this.debt;
 			},
-			asset(){
-				let value = this.itemList.reduce(function(acc, item){
-					if(item.balance > 0){
+			asset() {
+				let value = this.itemList.reduce(function (acc, item) {
+					if (item.balance > 0) {
 						return acc + item.balance;
 					}
 					return acc
 				}, 0);
 				return value;
 			},
-			debt(){
-				let value = this.itemList.reduce(function(acc, item){
-					if(item.balance < 0){
+			debt() {
+				let value = this.itemList.reduce(function (acc, item) {
+					if (item.balance < 0) {
 						return acc + item.balance;
 					}
 					return acc
@@ -71,26 +76,32 @@
 		},
 		methods: {
 			// 리스트
-			list(){
+			list() {
 				VueUtil.get("/hab/account/list.json", {}, (result) => {
 					this.itemList = result.data;
+					this.$nextTick(() => {
+						if(this.grid != null){
+							this.grid.destroy();
+						}
+						this.grid = $('#grid').DataTable({ paging: false, bInfo: false });
+					})
 				});
 			},
-			readForm(item){
+			readForm(item) {
 				EventBus.$emit('readFormEvent', item);
 			},
 			// 등록 폼
-			addForm(){
+			addForm() {
 				EventBus.$emit('addFormEvent', {});
 			},
 			// 수정폼
-			editForm(item){
+			editForm(item) {
 			},
 		},
 		mounted() {
 			this.list();
 		},
-		created(){
+		created() {
 			EventBus.$on('listEvent', this.list);
 		}
 	});

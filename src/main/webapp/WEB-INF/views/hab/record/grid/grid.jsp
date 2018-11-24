@@ -104,7 +104,7 @@
 		methods: {
 		},
 		mounted() {
-			$('#grid').DataTable({ paging: false });
+			$('#grid').DataTable({ paging: false, bInfo: false });
 		}
 	}).$mount('#app');
 </script>
