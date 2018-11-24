@@ -39,7 +39,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">메모: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control" name="note" v-model="item.note" v-validate="'required'" data-vv-as="메모 ">
+									<input type="text" class="form-control _note" name="note" v-model="item.note" v-validate="'required'" data-vv-as="메모 ">
 									<span class="error" v-if="errors.has('note')">{{errors.first('note')}}</span>
 								</div>
 							</div>
@@ -134,7 +134,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-info" @click="addAction()">저장</button>
+					<button type="button" class="btn btn-info" @click="addAction(true)">계속입력</button>
+					<button type="button" class="btn btn-info" @click="addAction(false)">저장</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				</div>
 			</div>
@@ -247,7 +248,7 @@
 				$("#addItem").modal();
 			},
 			// 등록 또는 수정
-			addAction() {
+			addAction(cont) {
 				this.$validator.validateAll().then((result) => {
 					if (!result) {
 						return;
@@ -259,8 +260,14 @@
 
 					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
-						$("#addItem").modal('hide');
-						EventBus.$emit('reloadEvent');
+						if (cont) {
+							this.item.note = "";
+							this.item.money = "";
+							$("._note").focus();
+						} else {
+							$("#addItem").modal('hide');
+							EventBus.$emit('reloadEvent');
+						}
 					});
 				});
 			},
