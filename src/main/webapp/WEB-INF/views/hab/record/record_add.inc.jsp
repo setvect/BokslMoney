@@ -113,8 +113,10 @@
 											<td>{{index + 1}}</td>
 											<td><a href="javascript:" @click="selectOftenUsed(often)">{{often.title}}</a></td>
 											<td>
-												<a href="javascript:" @click="changeOrder(oftenUsedList[index - 1].oftenUsedSeq, often.oftenUsedSeq)" :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
-												<a href="javascript:" @click="changeOrder(often.oftenUsedSeq, oftenUsedList[index + 1].oftenUsedSeq)" :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
+												<a href="javascript:" @click="changeOrder(oftenUsedList[index - 1].oftenUsedSeq, often.oftenUsedSeq)"
+												 :style="{visibility: isUpable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-up"></i></a>
+												<a href="javascript:" @click="changeOrder(often.oftenUsedSeq, oftenUsedList[index + 1].oftenUsedSeq)"
+												 :style="{visibility: isDownable(index) ? '' : 'hidden'}"><i class="fa fa-arrow-down"></i></a>
 											</td>
 											<td>
 												<a href="javascript:" @click="openOften('edit', often)"><i class="fa fa-edit"></i></a>
@@ -125,7 +127,8 @@
 								</table>
 							</div>
 							<div class="x_content">
-								<button type="button" class="btn btn-primary btn-xs" @click="openOften('add', {kind: item.kind, money: 0})">자주쓰는 거래 저장</button>
+								<button type="button" class="btn btn-primary btn-xs" @click="openOften('add', {kind: item.kind, money: 0})">자주쓰는
+									거래 저장</button>
 							</div>
 						</div>
 					</form>
@@ -137,7 +140,7 @@
 			</div>
 		</div>
 		<div>
-			<often/>
+			<often />
 		</div>
 		<div>
 			<category />
@@ -159,7 +162,10 @@
 				attributeList: [],
 				itemPath: null,
 				selectDate: null,
-				oftenUsedList:[],
+				oftenUsedList: [],
+				// 유형별 거래 내용
+				// Key: kind, Value: 거래 내용
+				beforeTransaction: {},
 			};
 		},
 		components: {
@@ -198,6 +204,12 @@
 			addForm(kind, date) {
 				this.actionType = 'add';
 				this.selectDate = date;
+				if (this.beforeTransaction[kind]) {
+					this.item = this.beforeTransaction[kind];
+				} else {
+					this.item = { money: 0, fee: 0, kind: null };
+				}
+				this.insertCategory(this.item.parentCategory, this.item.category);
 				this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
 				this.item.kind = kind;
 				this.openForm(this.item.kind);
@@ -238,6 +250,8 @@
 					if (!result) {
 						return;
 					}
+					this.beforeTransaction[this.item.kind] = $.extend(true, {}, this.item);
+
 					delete this.item.category;
 					delete this.item.parentCategory;
 
@@ -258,13 +272,13 @@
 			loadAttribute(codeMainId) {
 				VueUtil.get("/code/list.json", { codeMainId: codeMainId }, (result) => {
 					this.attributeList = result.data;
-					if (this.actionType == "add") {
-						this.item.attribute = this.attributeList[0].oftenUsedSeq;
+					if (!this.item.attribute) {
+						this.item.attribute = this.attributeList[0].codeItemKey.codeItemSeq;
 					}
 				});
 			},
 			// 자주쓰는 거래 정보
-			loadOftenUsed(){
+			loadOftenUsed() {
 				VueUtil.get("/hab/oftenUsed/list.json", { kind: this.item.kind }, (result) => {
 					this.oftenUsedList = result.data;
 				});
@@ -275,43 +289,46 @@
 			},
 			// 항목 팝업에서 선택한 값 입력
 			insertCategory(mainItem, subItem) {
-				this.item.categorySeq = subItem.categorySeq;
-				this.itemPath = mainItem.name + " > " + subItem.name;
+				this.itemPath = "";
+				if (mainItem) {
+					this.item.categorySeq = subItem.categorySeq;
+					this.itemPath = mainItem.name + " > " + subItem.name;
+				}
 			},
 			// 자주쓰는 거래 선택
-			selectOftenUsed(often){
+			selectOftenUsed(often) {
 				this.item = Object.assign(this.item, $.extend(true, {}, often));
 				this.insertCategory(often.parentCategory, often.category);
 			},
 			// 자주쓰는 거래 팝업 열기
-			openOften(type, often){
+			openOften(type, often) {
 				EventBus.$emit('openOftenEvent', type, $.extend(true, {}, often));
 			},
 			// 정렬 순서 변경
-			changeOrder(downOftenUsedSeq, upOftenUsedSeq){
-				let param = {downOftenUsedSeq: downOftenUsedSeq, upOftenUsedSeq: upOftenUsedSeq};
+			changeOrder(downOftenUsedSeq, upOftenUsedSeq) {
+				let param = { downOftenUsedSeq: downOftenUsedSeq, upOftenUsedSeq: upOftenUsedSeq };
 				VueUtil.post('/hab/oftenUsed/changeOrder.do', param, (result) => {
 					this.loadOftenUsed();
 				});
 			},
 			// 자주 쓰는 거래 삭제
-			deleteOftenForm(oftenUsedSeq){
-				if(!confirm("삭제할거야?")){
+			deleteOftenForm(oftenUsedSeq) {
+				if (!confirm("삭제할거야?")) {
 					return;
 				}
-				let param = {oftenUsedSeq: oftenUsedSeq};
+				let param = { oftenUsedSeq: oftenUsedSeq };
 				VueUtil.post('/hab/oftenUsed/delete.do', param, (result) => {
 					this.loadOftenUsed();
 				});
 			},
-			isUpable(index){
-				if(this.oftenUsedList<= 1){
+			isUpable(index) {
+				if (this.oftenUsedList <= 1) {
 					return false;
 				}
 				return index !== 0;
 			},
-			isDownable(index){
-				if(this.oftenUsedList.length <= 1){
+			isDownable(index) {
+				if (this.oftenUsedList.length <= 1) {
 					return false;
 				}
 				return index + 1 !== this.oftenUsedList.length;
