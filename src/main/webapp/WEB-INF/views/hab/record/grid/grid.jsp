@@ -96,7 +96,8 @@
 								<div class="form-group">
 									<label class="control-label col-sm-3" for="start_date">시작일:</label>
 									<div class="col-sm-9">
-										<input type="input" class="form-control _datepicker_from" readonly="readonly" placeholder="Enter start_date" name="start_date">
+										<input type="input" class="form-control _datepicker_from" readonly="readonly" placeholder="Enter start_date"
+										 name="start_date">
 									</div>
 								</div>
 								<div class="form-group">
@@ -112,9 +113,32 @@
 								</div>
 								<div class="form-group"></div>
 								<div class="ln_solid" style="margin:10px 0;"></div>
-
-
 							</div>
+							<div>
+								<h4>{{from | dateFormat('YYYY.MM.DD')}} ~ {{to | dateFormat('YYYY.MM.DD')}} 결산</h4>
+								<table class="table table-bordered">
+									<tbody>
+										<tr>
+											<td>수입</td>
+											<td class="text-right">1,000</td>
+										</tr>
+										<tr>
+											<td>지출</td>
+											<td class="text-right">536,165</td>
+										</tr>
+										<tr>
+											<td>수입 - 지출</td>
+											<td class="text-right">-535,165</td>
+										</tr>
+										<tr>
+											<td>이체</td>
+											<td class="text-right">20,000</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+
 						</div>
 					</div>
 				</div>
