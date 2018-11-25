@@ -11,10 +11,29 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div v-cloak>
-					<div class="col-md-2 col-sm-2 col-xs-12">
-						aaaa
-					</div>
-					<div class="col-md-10 col-sm-10 col-xs-12">
+					<div class="col-md-9 col-sm-9 col-xs-12">
+
+						<div class="form-inline" action="/action_page.php">
+							<div class="form-group">
+								<label for="memo_field">메모:</label>
+								<input type="text" class="form-control" id="memo_field">
+							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" value="" class="flat"> 지출
+								</label>
+								<label>
+									<input type="checkbox" value="" class="flat"> 수입
+								</label>
+								<label>
+									<input type="checkbox" value="" class="flat"> 이체
+								</label>
+							</div>
+							<button type="submit" class="btn btn-info" style="margin: 0">검색</button>
+							<button type="submit" class="btn btn-success" style="margin: 0;float: right">내보내기(엑셀)</button>
+						</div>
+
+
 						<table class="table table-striped jambo_table bulk_action table-bordered" id="grid">
 							<thead>
 								<tr class="headings">
@@ -66,6 +85,38 @@
 							</tbody>
 						</table>
 					</div>
+					<div class="col-md-3 col-sm-3 col-xs-12">
+						<div class="page-header">
+							<button type="button" data-type="SPENDING" class="btn btn-info _input">지출</button>
+							<button type="button" data-type="INCOME" class="btn btn-info _input">수입</button>
+							<button type="button" data-type="TRANSFER" class="btn btn-info _input">이체</button>
+						</div>
+						<div>
+							<div class="form-horizontal">
+								<div class="form-group">
+									<label class="control-label col-sm-3" for="start_date">시작일:</label>
+									<div class="col-sm-9">
+										<input type="input" class="form-control _datepicker_from" readonly="readonly" placeholder="Enter start_date" name="start_date">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3" for="end_date">종료일:</label>
+									<div class="col-sm-9">
+										<input type="input" class="form-control _datepicker_to" readonly="readonly" placeholder="Enter end_date" name="end_date">
+									</div>
+								</div>
+								<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+									<button type="button" class="btn btn-primary">저번달</button>
+									<button class="btn btn-primary" type="reset">이번달</button>
+									<button type="submit" class="btn btn-success">다음달</button>
+								</div>
+								<div class="form-group"></div>
+								<div class="ln_solid" style="margin:10px 0;"></div>
+
+
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -89,10 +140,13 @@
 	});
 	let EventBus = new Vue();
 
+	const NOW_DATE = new Date();
 	// vue 객체 생성
 	const app = new Vue({
 		data: function () {
 			return {
+				from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]),
+				to: moment(),
 			};
 		},
 		components: {
@@ -104,7 +158,28 @@
 		methods: {
 		},
 		mounted() {
-			$('#grid').DataTable({ paging: false, bInfo: false });
+			$('#grid').DataTable({ paging: false, bInfo: false, searching: false });
+
+			$('input.flat').iCheck({
+				checkboxClass: 'icheckbox_flat-green',
+			});
+
+
+			$('._datepicker_from').daterangepicker({
+				singleDatePicker: true,
+				singleClasses: "",
+				startDate: this.from.format("YYYY-MM-DD")
+			}, (start) => {
+			});
+
+			$('._datepicker_to').daterangepicker({
+				singleDatePicker: true,
+				singleClasses: "",
+				startDate: this.to.format("YYYY-MM-DD")
+			}, (start) => {
+			});
+
+
 		}
 	}).$mount('#app');
 </script>

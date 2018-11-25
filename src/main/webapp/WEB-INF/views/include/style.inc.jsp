@@ -30,6 +30,9 @@
 <!-- FullCalendar -->
 <link href="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.min.css" rel="stylesheet">
 
+<!-- icheck-bootstrap -->
+<link href="${pageContext.request.contextPath}/assets/lib/iCheck/skins/flat/green.css" rel="stylesheet">
+
 <!-- 오른쪽 마우스 클릭, 메뉴 -->
 <link href="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.contextMenu.css" rel="stylesheet">
 

@@ -36,6 +36,8 @@
 <!-- FullCalendar -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fullcalendar/locale/ko.js"></script>
+<!-- icheck-bootstrap -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/iCheck/icheck.js"></script>
 
 <!-- 양.음력 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-lunar/moment-lunar.js"></script>
