@@ -47,6 +47,7 @@
 									<th>출금계좌</th>
 									<th>일금계좌</th>
 									<th>날짜</th>
+									<th>기능</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -61,6 +62,12 @@
 									<td>{{item.payAccount | accountName}}</td>
 									<td>{{item.receiveAccount | accountName}}</td>
 									<td>{{item.transactionDate | dateFormat('YYYY.MM.DD')}}</td>
+									<td class="text-center">
+										<div class="btn-group  btn-group-xs">
+											<button type="button" class="btn btn-success btn-xs">수정</button>
+											<button type="button" class="btn btn-dark btn-xs">삭제</button>
+											</div>
+									</td>
 								</tr>
 							</tbody>
 						</table>
