@@ -81,6 +81,9 @@ Vue.filter('dateFormat', function (value, format) {
 	if (value instanceof Date) {
 		return moment(value).format(format)
 	}
+	if (!isNaN(value)) {
+		return moment(value).format(format)
+	}
 	return moment().format(format);
 });
 

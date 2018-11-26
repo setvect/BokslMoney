@@ -13,7 +13,7 @@
 				<div v-cloak>
 					<div class="col-md-9 col-sm-9 col-xs-12">
 
-						<div class="form-inline" action="/action_page.php">
+						<div class="form-inline">
 							<div class="form-group">
 								<label for="memo_field">메모:</label>
 								<input type="text" class="form-control" id="memo_field">
@@ -46,6 +46,7 @@
 									<th>수수료</th>
 									<th>출금계좌</th>
 									<th>일금계좌</th>
+									<th>날짜</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -59,6 +60,7 @@
 									<td class="text-right">{{item.fee | numberFormat}}</td>
 									<td>{{item.payAccount | accountName}}</td>
 									<td>{{item.receiveAccount | accountName}}</td>
+									<td>{{item.transactionDate | dateFormat('YYYY.MM.DD')}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -85,9 +87,10 @@
 									</div>
 								</div>
 								<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-									<button type="button" class="btn btn-primary">저번달</button>
-									<button class="btn btn-primary" type="reset">이번달</button>
-									<button type="submit" class="btn btn-success">다음달</button>
+									<button type="button" class="btn btn-info btn-sm" @click="search();">조회</button>
+									<button type="button" class="btn btn-primary btn-sm">저번달</button>
+									<button type="button" class="btn btn-primary btn-sm" >이번달</button>
+									<button type="button" class="btn btn-primary btn-sm">다음달</button>
 								</div>
 								<div class="form-group"></div>
 								<div class="ln_solid" style="margin:10px 0;"></div>
