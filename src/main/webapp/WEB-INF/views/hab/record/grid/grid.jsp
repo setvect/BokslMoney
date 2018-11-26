@@ -20,13 +20,13 @@
 							</div>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" value="" class="flat"> 지출
+									<input type="checkbox" value="INCOME" class="flat" v-model="condition.kindFilter"> 지출
 								</label>
 								<label>
-									<input type="checkbox" value="" class="flat"> 수입
+									<input type="checkbox" value="SPENDING" class="flat" v-model="condition.kindFilter"> 수입
 								</label>
 								<label>
-									<input type="checkbox" value="" class="flat"> 이체
+									<input type="checkbox" value="TRANSFER" class="flat" v-model="condition.kindFilter"> 이체
 								</label>
 							</div>
 							<button type="submit" class="btn btn-info" style="margin: 0">검색</button>
@@ -169,8 +169,12 @@
 	const app = new Vue({
 		data: function () {
 			return {
-				from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]),
-				to: moment(),
+				// 검색 조건
+				condition: {
+					kindFilter: ["INCOME", "SPENDING", "TRANSFER"],
+					fromDate: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
+					toDate: moment().format("YYYY-MM-DD"),
+				}
 			};
 		},
 		components: {
@@ -180,30 +184,42 @@
 		computed: {
 		},
 		methods: {
+			// UI 객체 초기화
+			initUi() {
+				let self = this;
+
+				$('#grid').DataTable({ paging: false, bInfo: false, searching: false });
+				$('input.flat').iCheck({
+					checkboxClass: 'icheckbox_flat-green',
+				});
+
+				let kind = self.condition.kindFilter;
+				$('input.flat').on('ifChecked', function (e) {
+					kind.push($(this).val());
+				});
+				$('input.flat').on('ifUnchecked', function (e) {
+					kind.splice(kind.indexOf($(this).val()), 1)
+				});
+
+				$('._datepicker_from').daterangepicker({
+					singleDatePicker: true,
+					singleClasses: "",
+					startDate: this.condition.fromDate
+				}, (from) => {
+					this.condition.fromDate = from.format("YYYY-MM-DD");
+				});
+
+				$('._datepicker_to').daterangepicker({
+					singleDatePicker: true,
+					singleClasses: "",
+					startDate: this.condition.toDate
+				}, (to) => {
+					this.condition.toDate = to.format("YYYY-MM-DD");
+				});
+			}
 		},
 		mounted() {
-			$('#grid').DataTable({ paging: false, bInfo: false, searching: false });
-
-			$('input.flat').iCheck({
-				checkboxClass: 'icheckbox_flat-green',
-			});
-
-
-			$('._datepicker_from').daterangepicker({
-				singleDatePicker: true,
-				singleClasses: "",
-				startDate: this.from.format("YYYY-MM-DD")
-			}, (start) => {
-			});
-
-			$('._datepicker_to').daterangepicker({
-				singleDatePicker: true,
-				singleClasses: "",
-				startDate: this.to.format("YYYY-MM-DD")
-			}, (start) => {
-			});
-
-
+			this.initUi();
 		}
 	}).$mount('#app');
 </script>
