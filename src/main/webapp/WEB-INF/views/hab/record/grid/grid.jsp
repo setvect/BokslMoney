@@ -20,16 +20,16 @@
 							</div>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" value="INCOME" class="flat" v-model="condition.kindFilter"> 지출
+									<input type="checkbox" value="SPENDING" class="flat" v-model="condition.kindTypeSet"> 지출
 								</label>
 								<label>
-									<input type="checkbox" value="SPENDING" class="flat" v-model="condition.kindFilter"> 수입
+									<input type="checkbox" value="INCOME" class="flat" v-model="condition.kindTypeSet"> 수입
 								</label>
 								<label>
-									<input type="checkbox" value="TRANSFER" class="flat" v-model="condition.kindFilter"> 이체
+									<input type="checkbox" value="TRANSFER" class="flat" v-model="condition.kindTypeSet"> 이체
 								</label>
 							</div>
-							<button type="submit" class="btn btn-info" style="margin: 0">검색</button>
+							<button type="submit" class="btn btn-info" style="margin: 0" @click="search();">검색</button>
 							<button type="submit" class="btn btn-success" style="margin: 0;float: right">내보내기(엑셀)</button>
 						</div>
 
@@ -115,7 +115,7 @@
 								<div class="ln_solid" style="margin:10px 0;"></div>
 							</div>
 							<div>
-								<h4>{{from | dateFormat('YYYY.MM.DD')}} ~ {{to | dateFormat('YYYY.MM.DD')}} 결산</h4>
+								<h4>{{condition.from}} ~ {{condition.to}} 결산</h4>
 								<table class="table table-bordered">
 									<tbody>
 										<tr>
@@ -171,9 +171,9 @@
 			return {
 				// 검색 조건
 				condition: {
-					kindFilter: ["INCOME", "SPENDING", "TRANSFER"],
-					fromDate: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
-					toDate: moment().format("YYYY-MM-DD"),
+					kindTypeSet: ["INCOME", "SPENDING", "TRANSFER"],
+					from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
+					to: moment().format("YYYY-MM-DD"),
 				}
 			};
 		},
@@ -193,7 +193,7 @@
 					checkboxClass: 'icheckbox_flat-green',
 				});
 
-				let kind = self.condition.kindFilter;
+				let kind = self.condition.kindTypeSet;
 				$('input.flat').on('ifChecked', function (e) {
 					kind.push($(this).val());
 				});
@@ -204,22 +204,33 @@
 				$('._datepicker_from').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
-					startDate: this.condition.fromDate
+					startDate: this.condition.from
 				}, (from) => {
-					this.condition.fromDate = from.format("YYYY-MM-DD");
+					this.condition.from = from.format("YYYY-MM-DD");
 				});
 
 				$('._datepicker_to').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
-					startDate: this.condition.toDate
+					startDate: this.condition.to
 				}, (to) => {
-					this.condition.toDate = to.format("YYYY-MM-DD");
+					this.condition.to = to.format("YYYY-MM-DD");
 				});
+			},
+			// 거래내역 조회
+			loadTransaction() {
+				VueUtil.get("/hab/transaction/listByRange.json", this.condition, (result) => {
+					console.log('result.data :', result.data);
+				}, { paramParsing: true })
+			},
+			// 검색
+			search() {
+				this.loadTransaction();
 			}
 		},
 		mounted() {
 			this.initUi();
+			this.loadTransaction();
 		}
 	}).$mount('#app');
 </script>

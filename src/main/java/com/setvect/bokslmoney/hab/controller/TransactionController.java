@@ -88,6 +88,18 @@ public class TransactionController {
 		searchCondition.setFrom(DateUtil.toDate(fromDate));
 		searchCondition.setTo(DateUtil.toDate(toDate));
 
+		return listByRange(searchCondition);
+	}
+
+	/**
+	 * @param searchCondition
+	 *            검색 조건
+	 * @return 검위내 등록된 지출, 수입, 이체 내역
+	 */
+	@RequestMapping(value = "/listByRange.json")
+	@ResponseBody
+	public String listByRange(final TransactionSearchParam searchCondition) {
+		searchCondition.setReturnCount(Integer.MAX_VALUE);
 		PageResult<TransactionVo> page = transactionRepository.getPagingList(searchCondition);
 		List<TransactionVo> list = page.getList();
 		transactionService.mappingParentItem(list);

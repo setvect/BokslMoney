@@ -2,7 +2,7 @@
  * Vue 관련 공통 함수.
  *****/
 var VueUtil = {};
-const NOTING_OPERATION = ()=>{};
+const NOTING_OPERATION = () => { };
 /*
  * url: 호출 주소
  * param: 전달 파라미터
@@ -34,24 +34,30 @@ VueUtil._ajaxCall = function (callType, url, _param, _callback, _option) {
 	let sendParam;
 	if (callType == "get") {
 		axiosMethod = axios.get;
-		sendParam = { params: param };
+		let paramParsing = option.paramParsing || false;
+		if (paramParsing) {
+			let searchParams = new URLSearchParams($.param(param, true));
+			sendParam = { params: searchParams };
+		} else {
+			sendParam = { params: param };
+		}
 	} else if (callType == "post") {
 		axiosMethod = axios.post;
 		sendParam = $.param(param, true);
 	}
 
 	let finallyCall = option.finallyCall || NOTING_OPERATION;
-	let errorCall =	option.errorCall || function (err) {CommonUtil.popupError(err);};
+	let errorCall = option.errorCall || function (err) { CommonUtil.popupError(err); };
 
 	waitDialog.show(waitMsg, { dialogSize: "sm" });
 
 	axiosMethod(CommonUtil.appendContextRoot(url), sendParam)
-	.then((result) => _callback(result))
-	.catch((err) => errorCall(err))
-	.finally(() =>{
-		waitDialog.hide();
-		finallyCall();
-	});
+		.then((result) => _callback(result))
+		.catch((err) => errorCall(err))
+		.finally(() => {
+			waitDialog.hide();
+			finallyCall();
+		});
 };
 
 /**
@@ -60,7 +66,7 @@ VueUtil._ajaxCall = function (callType, url, _param, _callback, _option) {
 
 // 숫자 (,)콤마 추가
 Vue.filter('numberFormat', function (value) {
-	if(value === undefined){
+	if (value === undefined) {
 		return null;
 	}
 	return value.toLocaleString();
@@ -69,10 +75,10 @@ Vue.filter('numberFormat', function (value) {
 // 날짜 포맷 변환
 // moment format pattern
 Vue.filter('dateFormat', function (value, format) {
-	if(moment.isMoment(value)){
+	if (moment.isMoment(value)) {
 		return value.format(format)
 	}
-	if(value instanceof Date){
+	if (value instanceof Date) {
 		return moment(value).format(format)
 	}
 	return moment().format(format);
@@ -80,7 +86,7 @@ Vue.filter('dateFormat', function (value, format) {
 
 // 목록 번호 계산. 내림차순(높은 번호 부터)으로 표시
 Vue.filter('indexSeq', function (index, page) {
-	return page.totalCount - ((page.currentPage - 1) * page.returnCount)  - index;
+	return page.totalCount - ((page.currentPage - 1) * page.returnCount) - index;
 });
 
 /*
@@ -114,23 +120,23 @@ Vue.component('my-currency-input', {
 	template: `
 			<input type="text" v-model="displayValue" @blur="isInputActive = false" @focus="isInputActive = true" @keyup.13="emitEnter()"/>
 		`,
-	data: function() {
+	data: function () {
 		return {
 			isInputActive: false
 		}
 	},
 	computed: {
 		displayValue: {
-			get: function() {
+			get: function () {
 				if (this.isInputActive) {
 					// Cursor is inside the input field. unformat display value for user
 					return this.value.toString()
 				} else {
 					// User is not modifying now. Format display value for user interface
-						return this.value.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
+					return this.value.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
 				}
 			},
-			set: function(modifiedValue) {
+			set: function (modifiedValue) {
 				// Recalculate value after ignoring "$" and "," in user input
 				let newValue = parseFloat(modifiedValue.replace(/[^\d\.]/g, ""))
 				// Ensure that it is not NaN
@@ -144,7 +150,7 @@ Vue.component('my-currency-input', {
 		}
 	},
 	methods: {
-		emitEnter(){
+		emitEnter() {
 			this.$emit('press-enter');
 		}
 	}

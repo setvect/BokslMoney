@@ -1,9 +1,9 @@
 package com.setvect.bokslmoney.hab.controller;
 
 import java.util.Date;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.setvect.bokslmoney.BokslMoneyConstant;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.util.SearchListParam;
 
@@ -25,7 +25,13 @@ public class TransactionSearchParam extends SearchListParam {
 	private String note;
 
 	/** 유형 검색 */
-	private KindType kindType;
+	private Set<KindType> kindTypeSet;
+
+	/**
+	 */
+	public TransactionSearchParam() {
+		super(0, BokslMoneyConstant.Web.DEFAULT_PAGE_SIZE);
+	}
 
 	/**
 	 * @param startCursor
@@ -33,7 +39,6 @@ public class TransactionSearchParam extends SearchListParam {
 	 * @param returnCount
 	 *            반환
 	 */
-	@Autowired
 	public TransactionSearchParam(final int startCursor, final int returnCount) {
 		super(startCursor, returnCount);
 	}

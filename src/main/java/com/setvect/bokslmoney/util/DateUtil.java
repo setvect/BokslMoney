@@ -603,4 +603,14 @@ public abstract class DateUtil {
 	public static Date toDate(final LocalDate localDate) {
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
+
+	/**
+	 * @param date
+	 *            날짜
+	 * @return LocalDate로 변환
+	 */
+	public static LocalDate toLocalDate(final Date date) {
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		return localDate;
+	}
 }
