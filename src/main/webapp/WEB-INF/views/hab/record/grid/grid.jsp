@@ -88,9 +88,9 @@
 								</div>
 								<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
 									<button type="button" class="btn btn-info btn-sm" @click="search();">조회</button>
-									<button type="button" class="btn btn-primary btn-sm">저번달</button>
-									<button type="button" class="btn btn-primary btn-sm" >이번달</button>
-									<button type="button" class="btn btn-primary btn-sm">다음달</button>
+									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(-1)">다음달</button>
+									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(0)">이번달</button>
+									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(1)">다음달</button>
 								</div>
 								<div class="form-group"></div>
 								<div class="ln_solid" style="margin:10px 0;"></div>
@@ -185,6 +185,10 @@
 					kind.splice(kind.indexOf($(this).val()), 1)
 				});
 
+				this.initDatepicker();
+			},
+			// datepicker 선택
+			initDatepicker(){
 				$('._datepicker_from').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
@@ -222,6 +226,23 @@
 			// 검색
 			search() {
 				this.loadTransaction();
+			},
+			// 달 이동
+			moveMonth(diff) {
+				let fromDate = moment(this.condition.from, 'YYYY-MM-DD');
+				fromDate.add(diff, "months");
+				if (diff == 0) {
+					fromDate = moment();
+				}
+
+				fromDate.date(1);
+				let toDate = fromDate.clone();
+				toDate.add(1, "months").add(-1, 'Days');
+
+				this.condition.from = fromDate.format("YYYY-MM-DD");
+				this.condition.to = toDate.format("YYYY-MM-DD");
+				this.initDatepicker();
+				this.search();
 			}
 		},
 		mounted() {
