@@ -110,8 +110,6 @@
 			return {
 				calendar: null,
 				currentMonth: null,
-				// 지출, 수입, 이체 내역
-				transferList: [],
 				memoList: [],
 				selectDate: moment(),
 			};
@@ -121,18 +119,9 @@
 			'memo': memoComponent
 		},
 		computed: {
-			sumIncome() {
-				return this.sumCalculation(t => t.kind == 'INCOME');
-			},
-			sumSpending() {
-				return this.sumCalculation(t => t.kind == 'SPENDING');
-			},
-			sumTransfer() {
-				return this.sumCalculation(t => t.kind == 'TRANSFER');
-			},
 			// 선택된 날짜의 지출, 수입, 이체 내역
 			listSelectDayTransfer() {
-				let r = this.transferList.filter((t) => {
+				let r = this.transactionList.filter((t) => {
 					return this.selectDate.toDate().getDate() == new Date(t.transactionDate).getDate();
 				});
 				return r;
@@ -240,9 +229,9 @@
 				// 해당 월에 등록된 지출,수입,이체 항목 조회
 				VueUtil.get("/hab/transaction/listByMonth.json", { year: year, month: month }, (result) => {
 					this.calendar.fullCalendar('removeEvents');
-					this.transferList = result.data;
-					for (let idx in this.transferList) {
-						let t = this.transferList[idx];
+					this.transactionList = result.data;
+					for (let idx in this.transactionList) {
+						let t = this.transactionList[idx];
 						this.displayTransfer(moment(t.transactionDate), t.kind, t.money);
 					}
 					// 해당 월에 등록된 메모 조회
@@ -296,10 +285,6 @@
 					color: '#aaa',
 					start: moment(memo.memoDate).format("YYYY-MM-DD"),
 				});
-			},
-			// 수입, 지출, 이체 합산
-			sumCalculation(filterCondition) {
-				return this.transferList.filter(filterCondition).reduce((acc, t) => { return acc + t.money; }, 0);
 			},
 			kindMapValue(kind) {
 				return TYPE_VALUE[kind];

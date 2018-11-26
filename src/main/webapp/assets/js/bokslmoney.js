@@ -18,11 +18,32 @@ const TYPE_VALUE = {
 
 // 거래 내역 mixin
 let TransactionMixin = {
+	data: function () {
+		return {
+			// 지출, 수입, 이체 내역
+			transactionList: [],
+		};
+	},
+	computed: {
+		sumIncome() {
+			return this.sumCalculation(t => t.kind == 'INCOME');
+		},
+		sumSpending() {
+			return this.sumCalculation(t => t.kind == 'SPENDING');
+		},
+		sumTransfer() {
+			return this.sumCalculation(t => t.kind == 'TRANSFER');
+		},
+	},
 	methods: {
 		// 유형에 따른 UI 표현 속성값
 		getKindAttr(kind) {
 			return TYPE_VALUE[kind];
-		}
+		},
+		// 수입, 지출, 이체 합산
+		sumCalculation(filterCondition) {
+			return this.transactionList.filter(filterCondition).reduce((acc, t) => { return acc + t.money; }, 0);
+		},
 	}
 }
 

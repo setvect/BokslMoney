@@ -101,19 +101,19 @@
 									<tbody>
 										<tr>
 											<td>수입</td>
-											<td class="text-right">1,000</td>
+											<td class="text-right">{{sumIncome | numberFormat}}</td>
 										</tr>
 										<tr>
 											<td>지출</td>
-											<td class="text-right">536,165</td>
+											<td class="text-right">{{sumSpending | numberFormat}}</td>
 										</tr>
 										<tr>
 											<td>수입 - 지출</td>
-											<td class="text-right">-535,165</td>
+											<td class="text-right">{{sumIncome - sumSpending | numberFormat}}</td>
 										</tr>
 										<tr>
 											<td>이체</td>
-											<td class="text-right">20,000</td>
+											<td class="text-right">{{sumTransfer | numberFormat}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -158,7 +158,6 @@
 					from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
 					to: moment().format("YYYY-MM-DD"),
 				},
-				transactionList: [],
 				gridTable: null,
 			};
 		},
@@ -188,7 +187,7 @@
 				this.initDatepicker();
 			},
 			// datepicker 선택
-			initDatepicker(){
+			initDatepicker() {
 				$('._datepicker_from').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
