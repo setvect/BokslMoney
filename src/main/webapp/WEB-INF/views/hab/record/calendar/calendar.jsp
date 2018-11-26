@@ -96,24 +96,6 @@
 <jsp:include page="../memo.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
-	const TYPE_VALUE = {
-		'SPENDING': {
-			title: '지출',
-			color: '#00bb33',
-			icon: 'fa-minus-square'
-		},
-		'INCOME': {
-			title: '수입',
-			color: '#ff99cc',
-			icon: 'fa-plus-square'
-		},
-		'TRANSFER': {
-			title: '이체',
-			color: '#66ccff',
-			icon: 'fa-check-square-o'
-		}
-	}
-
 	Vue.use(VeeValidate, {
 		locale: 'ko',
 		events: 'blur',
@@ -122,6 +104,8 @@
 
 	// vue 객체 생성
 	const app = new Vue({
+		mixins: [TransactionMixin],
+
 		data: function () {
 			return {
 				calendar: null,

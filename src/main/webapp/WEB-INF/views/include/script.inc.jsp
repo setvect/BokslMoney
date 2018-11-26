@@ -45,7 +45,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/common-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/vue-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/calendar-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/bokslmoney.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
 <!-- 오른쪽 마우스 클릭, 메뉴 -->

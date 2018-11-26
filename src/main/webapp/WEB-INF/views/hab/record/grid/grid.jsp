@@ -37,6 +37,7 @@
 						<table class="table table-striped jambo_table bulk_action table-bordered" id="grid">
 							<thead>
 								<tr class="headings">
+									<th>No</th>
 									<th>유형</th>
 									<th>메모</th>
 									<th>대분류</th>
@@ -49,31 +50,10 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1유형</td>
+								<tr v-for="(item, idx) in transactionList">
+									<td>{{idx + 1}}</td>
+									<td><span :style="{color:getKindAttr(item.kind).color}"><strong>{{getKindAttr(item.kind).title}}</strong></span></td>
 									<td>1메모</td>
-									<td>대분류</td>
-									<td>소분류</td>
-									<td>출금액</td>
-									<td>입금액</td>
-									<td>수수료</td>
-									<td>출금계좌</td>
-									<td>일금계좌</td>
-								</tr>
-								<tr>
-									<td>2유형</td>
-									<td>2메모</td>
-									<td>대분류</td>
-									<td>소분류</td>
-									<td>출금액</td>
-									<td>입금액</td>
-									<td>수수료</td>
-									<td>출금계좌</td>
-									<td>일금계좌</td>
-								</tr>
-								<tr>
-									<td>3유형</td>
-									<td>3메모</td>
 									<td>대분류</td>
 									<td>소분류</td>
 									<td>출금액</td>
@@ -167,6 +147,8 @@
 	const NOW_DATE = new Date();
 	// vue 객체 생성
 	const app = new Vue({
+		mixins: [TransactionMixin],
+
 		data: function () {
 			return {
 				// 검색 조건
@@ -174,7 +156,9 @@
 					kindTypeSet: ["INCOME", "SPENDING", "TRANSFER"],
 					from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
 					to: moment().format("YYYY-MM-DD"),
-				}
+				},
+				transactionList: [],
+				gridTable: null,
 			};
 		},
 		components: {
@@ -188,7 +172,6 @@
 			initUi() {
 				let self = this;
 
-				$('#grid').DataTable({ paging: false, bInfo: false, searching: false });
 				$('input.flat').iCheck({
 					checkboxClass: 'icheckbox_flat-green',
 				});
@@ -217,10 +200,22 @@
 					this.condition.to = to.format("YYYY-MM-DD");
 				});
 			},
+			initGrid() {
+				this.gridTable = $('#grid').DataTable({ paging: false, bInfo: false, searching: false });
+			},
+			destroyGrid() {
+				if (this.gridTable != null) {
+					this.gridTable.destroy();
+				}
+			},
 			// 거래내역 조회
 			loadTransaction() {
 				VueUtil.get("/hab/transaction/listByRange.json", this.condition, (result) => {
-					console.log('result.data :', result.data);
+					this.destroyGrid();
+					this.transactionList = result.data;
+					this.$nextTick(() => {
+						this.initGrid();
+					});
 				}, { paramParsing: true })
 			},
 			// 검색
