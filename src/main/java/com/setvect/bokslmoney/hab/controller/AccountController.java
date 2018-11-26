@@ -2,6 +2,7 @@ package com.setvect.bokslmoney.hab.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -56,6 +57,19 @@ public class AccountController {
 		});
 
 		return list;
+	}
+
+	/**
+	 * 계좌 일련번호에 대한 계좌 이름 맵핑 정보
+	 *
+	 * @return Key:일련번호, Value: 계좌 이름
+	 */
+	@RequestMapping(value = "/mapName.json")
+	@ResponseBody
+	public Map<Integer, String> mapName() {
+		List<AccountVo> list = accountRepository.list();
+		Map<Integer, String> accMap = list.stream().collect(Collectors.toMap(a -> a.getAccountSeq(), a -> a.getName()));
+		return accMap;
 	}
 
 	private void applyKindName(AccountVo account, Map<Integer, String> mapping) {

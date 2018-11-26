@@ -42,8 +42,7 @@
 									<th>메모</th>
 									<th>대분류</th>
 									<th>소분류</th>
-									<th>출금액</th>
-									<th>입금액</th>
+									<th>금액</th>
 									<th>수수료</th>
 									<th>출금계좌</th>
 									<th>일금계좌</th>
@@ -53,14 +52,13 @@
 								<tr v-for="(item, idx) in transactionList">
 									<td>{{idx + 1}}</td>
 									<td><span :style="{color:getKindAttr(item.kind).color}"><strong>{{getKindAttr(item.kind).title}}</strong></span></td>
-									<td>1메모</td>
-									<td>대분류</td>
-									<td>소분류</td>
-									<td>출금액</td>
-									<td>입금액</td>
-									<td>수수료</td>
-									<td>출금계좌</td>
-									<td>일금계좌</td>
+									<td>{{item.note}}</td>
+									<td>{{item.parentCategory.name}}</td>
+									<td>{{item.category.name}}</td>
+									<td class="text-right">{{item.money | numberFormat}}</td>
+									<td class="text-right">{{item.fee | numberFormat}}</td>
+									<td>{{item.payAccount | accountName}}</td>
+									<td>{{item.receiveAccount | accountName}}</td>
 								</tr>
 							</tbody>
 						</table>

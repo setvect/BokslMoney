@@ -20,8 +20,30 @@ const TYPE_VALUE = {
 let TransactionMixin = {
 	methods: {
 		// 유형에 따른 UI 표현 속성값
-		getKindAttr(kind){
+		getKindAttr(kind) {
 			return TYPE_VALUE[kind];
 		}
 	}
 }
+
+/** 응용어플리케이션에 의존된 공통 기능 */
+let AppUtil = {};
+/**
+ * 계좌 이름
+ */
+AppUtil.getAccountName = function (accountSeq) {
+	if (AppUtil.accountMap == null) {
+		var v = $.ajax({
+			type: "GET",
+			url: CommonUtil.appendContextRoot("/hab/account/mapName.json"),
+			async: false
+		}).responseText;
+		AppUtil.accountMap = JSON.parse(v);
+	}
+	return AppUtil.accountMap[accountSeq];
+}
+
+// 계좌 이름
+Vue.filter('accountName', function (accountSeq) {
+	return AppUtil.getAccountName(accountSeq);
+});
