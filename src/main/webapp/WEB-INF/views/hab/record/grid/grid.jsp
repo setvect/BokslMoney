@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<style>
+	#grid tr td{vertical-align: middle;}
+</style>
 <div id="app">
 	<div class="page-title">
 		<div class="title_left">
@@ -16,7 +19,7 @@
 						<div class="form-inline">
 							<div class="form-group">
 								<label for="memo_field">메모:</label>
-								<input type="text" class="form-control" id="memo_field">
+								<input type="text" class="form-control" id="memo_field" v-model="condition.note" @keyup.13="search()">
 							</div>
 							<div class="checkbox">
 								<label>
@@ -51,9 +54,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(item, idx) in transactionList">
+								<tr v-for="(item, idx) in transactionList" class="">
 									<td>{{idx + 1}}</td>
-									<td><span :style="{color:getKindAttr(item.kind).color}"><strong>{{getKindAttr(item.kind).title}}</strong></span></td>
+									<td :style="{color:getKindAttr(item.kind).color}" style="font-weight: bold">{{getKindAttr(item.kind).title}}</td>
 									<td>{{item.note}}</td>
 									<td>{{item.parentCategory.name}}</td>
 									<td>{{item.category.name}}</td>
@@ -64,9 +67,9 @@
 									<td>{{item.transactionDate | dateFormat('YYYY.MM.DD')}}</td>
 									<td class="text-center">
 										<div class="btn-group  btn-group-xs">
-											<button type="button" class="btn btn-success btn-xs">수정</button>
-											<button type="button" class="btn btn-dark btn-xs">삭제</button>
-											</div>
+											<button type="button" class="btn btn-success btn-xs" @click="editForm(item)">수정</button>
+											<button type="button" class="btn btn-dark btn-xs" @click="deleteAction(item)">삭제</button>
+										</div>
 									</td>
 								</tr>
 							</tbody>
@@ -137,13 +140,9 @@
 	<div>
 		<add />
 	</div>
-	<div>
-		<memo />
-	</div>
 </div>
 
 <jsp:include page="../record_add.inc.jsp"></jsp:include>
-<jsp:include page="../memo.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	Vue.use(VeeValidate, {
@@ -164,13 +163,13 @@
 					kindTypeSet: ["INCOME", "SPENDING", "TRANSFER"],
 					from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
 					to: moment().format("YYYY-MM-DD"),
+					note: "",
 				},
 				gridTable: null,
 			};
 		},
 		components: {
 			'add': itemAddComponent,
-			'memo': memoComponent
 		},
 		computed: {
 		},
@@ -219,6 +218,10 @@
 					this.gridTable.destroy();
 				}
 			},
+			//  거래 내역 다시 조회
+			reload() {
+				this.search();
+			},
 			// 거래내역 조회
 			loadTransaction() {
 				VueUtil.get("/hab/transaction/listByRange.json", this.condition, (result) => {
@@ -254,6 +257,12 @@
 		mounted() {
 			this.initUi();
 			this.loadTransaction();
+			// 지출, 이체, 수입 버튼 클릭
+			$("._input").click((event) => {
+				let type = $(event.target).attr("data-type");
+				this.addItemForm(type);
+			});
+			EventBus.$on('reloadEvent', this.search);
 		}
 	}).$mount('#app');
 </script>

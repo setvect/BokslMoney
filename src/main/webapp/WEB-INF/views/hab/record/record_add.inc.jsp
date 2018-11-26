@@ -135,7 +135,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-info" @click="addAction(true)">계속입력</button>
+					<button type="button" class="btn btn-info" @click="addAction(true)" v-show="this.actionType == 'add'">계속입력</button>
 					<button type="button" class="btn btn-info" @click="addAction(false)">저장</button>
 					<button type="button" class="btn btn-default" @click="close()">닫기</button>
 				</div>
@@ -264,7 +264,7 @@
 					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						this.closeReload = true;
-						if (cont) {
+						if (cont && this.actionType == "add") {
 							this.item.note = "";
 							this.item.money = "";
 							// 포커스가 제대로 안되서 timeout 적용. $nextTick 안됨.

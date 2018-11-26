@@ -22,6 +22,7 @@ let TransactionMixin = {
 		return {
 			// 지출, 수입, 이체 내역
 			transactionList: [],
+			selectDate: moment(),
 		};
 	},
 	computed: {
@@ -36,6 +37,32 @@ let TransactionMixin = {
 		},
 	},
 	methods: {
+		// 거래내역 또는 메모 등록 폼
+		addItemForm(type) {
+			if (type == "MEMO") {
+				let memo = this.getMemo(this.selectDate);
+				// 해당 날짜에 등록된 메모가 있다면 수정으로 없다면 새롭게 등록
+				if (memo) {
+					EventBus.$emit('editMemoFormEvent', memo);
+				} else {
+					EventBus.$emit('addMemoFormEvent', this.selectDate);
+				}
+			} else {
+				EventBus.$emit('addFormEvent', type, this.selectDate);
+			}
+		},
+		editForm(item) {
+			var d = $.extend(true, {}, item);
+			EventBus.$emit('editFormEvent', d);
+		},
+		deleteAction(item) {
+			if (!confirm("삭제하시겠습니까?")) {
+				return;
+			}
+			VueUtil.post('/hab/transaction/delete.do', { itemSeq: item.transactionSeq }, (result) => {
+				this.reload();
+			});
+		},
 		// 유형에 따른 UI 표현 속성값
 		getKindAttr(kind) {
 			return TYPE_VALUE[kind];

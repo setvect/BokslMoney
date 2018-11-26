@@ -111,7 +111,6 @@
 				calendar: null,
 				currentMonth: null,
 				memoList: [],
-				selectDate: moment(),
 			};
 		},
 		components: {
@@ -210,20 +209,6 @@
 					}
 				});
 			},
-			// 거래내역 또는 메모 등록 폼
-			addItemForm(type) {
-				if (type == "MEMO") {
-					let memo = this.getMemo(this.selectDate);
-					// 해당 날짜에 등록된 메모가 있다면 수정으로 없다면 새롭게 등록
-					if (memo) {
-						EventBus.$emit('editMemoFormEvent', memo);
-					} else {
-						EventBus.$emit('addMemoFormEvent', this.selectDate);
-					}
-				} else {
-					EventBus.$emit('addFormEvent', type, this.selectDate);
-				}
-			},
 			// 해당 월에 거래 내역 및 메모 조회
 			loadMonthData(year, month) {
 				// 해당 월에 등록된 지출,수입,이체 항목 조회
@@ -289,21 +274,9 @@
 			kindMapValue(kind) {
 				return TYPE_VALUE[kind];
 			},
-			// 현재 보고 있는 달력 거래 내역 트랜.
+			// 현재 보고 있는 달력 거래 내역 다시 읽기.
 			reload() {
 				this.loadMonthData(this.currentMonth.toDate().getFullYear(), this.currentMonth.toDate().getMonth() + 1);
-			},
-			editForm(item) {
-				var d = $.extend(true, {}, item);
-				EventBus.$emit('editFormEvent', d);
-			},
-			deleteAction(item) {
-				if (!confirm("삭제하시겠습니까?")) {
-					return;
-				}
-				VueUtil.post('/hab/transaction/delete.do', { itemSeq: item.transactionSeq }, (result) => {
-					this.reload();
-				});
 			},
 			// 달력에 공휴일, 주요 행사 정보 표시
 			holiydayDisplay() {
