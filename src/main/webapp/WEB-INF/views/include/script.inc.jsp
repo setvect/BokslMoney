@@ -52,8 +52,13 @@
 <script src="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.contextMenu.js"></script>
 <script src="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.ui.position.js"></script>
 
+
 <!-- 테이블 정렬 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jszip/dist/jszip.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/dataTables.buttons.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/buttons.html5.js"></script>
 
 <script type="text/javascript">
 	moment.locale('ko');

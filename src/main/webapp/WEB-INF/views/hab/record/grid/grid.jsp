@@ -32,8 +32,8 @@
 									<input type="checkbox" value="TRANSFER" class="flat" v-model="condition.kindTypeSet"> 이체
 								</label>
 							</div>
-							<button type="submit" class="btn btn-info" style="margin: 0" @click="search();">검색</button>
-							<button type="submit" class="btn btn-success" style="margin: 0;float: right">내보내기(엑셀)</button>
+							<button type="button" class="btn btn-info" style="margin: 0" @click="search();">검색</button>
+							<button type="button" class="btn btn-success" style="margin: 0;float: right" @click="exportExcel();">내보내기(엑셀)</button>
 						</div>
 
 
@@ -62,8 +62,8 @@
 									<td>{{item.category.name}}</td>
 									<td class="text-right">{{item.money | numberFormat}}</td>
 									<td class="text-right">{{item.fee | numberFormat}}</td>
-									<td>{{item.payAccount | accountName}}</td>
-									<td>{{item.receiveAccount | accountName}}</td>
+									<td>{{item.payAccount | accountName}}&nbsp;</td>
+									<td>{{item.receiveAccount | accountName}}&nbsp;</td>
 									<td>{{item.transactionDate | dateFormat('YYYY.MM.DD')}}</td>
 									<td class="text-center">
 										<div class="btn-group  btn-group-xs">
@@ -211,7 +211,24 @@
 				});
 			},
 			initGrid() {
-				this.gridTable = $('#grid').DataTable({ paging: false, bInfo: false, searching: false });
+				this.gridTable = $('#grid').DataTable({
+					paging: false, bInfo: false, searching: false,
+					dom: 'Bfrtip',
+					buttons: [{
+						extend: 'excelHtml5',
+						exportOptions: {
+							columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+						},
+						title: '복슬머니(' + this.condition.from + '_' + this.condition.to + ')',
+						customize: function (xlsx) {
+							var sheet = xlsx.xl.worksheets['sheet1.xml'];
+							$('cols col:eq(10)', sheet).remove();
+							$('row c', sheet).attr('s', '25');
+						}
+					}]
+				});
+				// 엑셀 다운로드 button 감추기
+				$(".buttons-excel").hide();
 			},
 			destroyGrid() {
 				if (this.gridTable != null) {
@@ -252,6 +269,11 @@
 				this.condition.to = toDate.format("YYYY-MM-DD");
 				this.initDatepicker();
 				this.search();
+			},
+			// 엑셀 다운로드
+			exportExcel() {
+				// datatables에 있는 버튼 클릭
+				$(".buttons-excel").trigger("click");
 			}
 		},
 		mounted() {
