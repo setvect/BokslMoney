@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.setvect.bokslmoney.ApplicationUtil;
 import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
+import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.TransactionRepository;
 import com.setvect.bokslmoney.hab.service.TransactionService;
+import com.setvect.bokslmoney.hab.vo.AccountVo;
+import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.hab.vo.TransactionVo;
 import com.setvect.bokslmoney.util.DateUtil;
 import com.setvect.bokslmoney.util.PageResult;
@@ -32,6 +35,9 @@ public class TransactionController {
 
 	@Autowired
 	private TransactionRepository transactionRepository;
+
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Autowired
 	private TransactionService transactionService;
@@ -112,14 +118,20 @@ public class TransactionController {
 	public void add(final TransactionVo item, @RequestParam("categorySeq") final int categorySeq) {
 		item.setCategory(categoryRepository.findById(categorySeq).get());
 		transactionRepository.save(item);
+
+		applyAccount(item);
 	}
 
 	// ============== 수정 ==============
 	@RequestMapping(value = "/edit.do")
 	@ResponseBody
-	public void edit(final TransactionVo transaction, @RequestParam("categorySeq") final int categorySeq) {
-		transaction.setCategory(categoryRepository.findById(categorySeq).get());
-		transactionRepository.save(transaction);
+	public void edit(final TransactionVo item, @RequestParam("categorySeq") final int categorySeq) {
+		TransactionVo beforeTrans = transactionRepository.findById(item.getTransactionSeq()).get();
+		revertAccount(beforeTrans);
+
+		item.setCategory(categoryRepository.findById(categorySeq).get());
+		transactionRepository.save(item);
+		applyAccount(item);
 	}
 
 	// ============== 삭제 ==============
@@ -127,6 +139,75 @@ public class TransactionController {
 	@ResponseBody
 	public void delete(@RequestParam("itemSeq") final int itemSeq) {
 		TransactionVo item = transactionRepository.findById(itemSeq).get();
+
+		revertAccount(item);
+
 		transactionRepository.delete(item);
+	}
+
+	// ============== 공통 ==============
+
+	/**
+	 * 거래 내용 계좌에 반영
+	 *
+	 * @param trans
+	 *            거래정보
+	 */
+	private void applyAccount(final TransactionVo trans) {
+		int money = trans.getMoney();
+		if (trans.getKind() == KindType.INCOME) {
+			addAcount(trans.getReceiveAccount(), money);
+		} else if (trans.getKind() == KindType.SPENDING) {
+			subAcount(trans.getPayAccount(), money);
+		} else if (trans.getKind() == KindType.TRANSFER) {
+			subAcount(trans.getPayAccount(), money + trans.getFee());
+			addAcount(trans.getReceiveAccount(), money);
+		}
+	}
+
+	/**
+	 * 거래 이전 내용으로 계좌 반영
+	 *
+	 * @param trans
+	 *            거래정보
+	 */
+	private void revertAccount(final TransactionVo trans) {
+		int money = trans.getMoney();
+		if (trans.getKind() == KindType.INCOME) {
+			subAcount(trans.getReceiveAccount(), money);
+		} else if (trans.getKind() == KindType.SPENDING) {
+			addAcount(trans.getPayAccount(), money);
+		} else if (trans.getKind() == KindType.TRANSFER) {
+			addAcount(trans.getPayAccount(), money + trans.getFee());
+			subAcount(trans.getReceiveAccount(), money);
+		}
+	}
+
+	/**
+	 * 특정 계좌에 돈을 뺀다
+	 *
+	 * @param accountSeq
+	 *            계좌정보보 일련번호
+	 * @param money
+	 *            금액
+	 */
+	private void subAcount(final int accountSeq, final int money) {
+		AccountVo receiveAcount = accountRepository.findById(accountSeq).get();
+		receiveAcount.setBalance(receiveAcount.getBalance() - money);
+		accountRepository.saveAndFlush(receiveAcount);
+	}
+
+	/**
+	 * 특정 계좌에 돈을 더한다
+	 *
+	 * @param accountSeq
+	 *            계좌정보보 일련번호
+	 * @param money
+	 *            금액
+	 */
+	private void addAcount(final int accountSeq, final int money) {
+		AccountVo receiveAcount = accountRepository.findById(accountSeq).get();
+		receiveAcount.setBalance(receiveAcount.getBalance() + money);
+		accountRepository.saveAndFlush(receiveAcount);
 	}
 }
