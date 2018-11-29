@@ -95,7 +95,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">수수료: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<my-currency-input v-model="item.fee" class="form-control" name="money" maxlength="5"></my-currency-input>
+									<my-currency-input v-model="item.fee" class="form-control" name="money" maxlength="5" :disabled="disableFee"></my-currency-input>
 								</div>
 							</div>
 						</div>
@@ -188,6 +188,10 @@
 			// 수입계좌 선택 박스 비활성
 			disableReceive() {
 				return this.item.kind == "SPENDING";
+			},
+			// 수수료 비활성
+			disableFee(){
+				return this.item.kind == "INCOME" || this.item.kind == "SPENDING";
 			},
 			validatePay() {
 				return this.disablePay ? "" : "required";
