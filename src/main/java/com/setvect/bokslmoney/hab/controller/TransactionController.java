@@ -33,6 +33,7 @@ public class TransactionController {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	/** 거래 내역 */
 	@Autowired
 	private TransactionRepository transactionRepository;
 
@@ -67,15 +68,6 @@ public class TransactionController {
 	}
 
 	// ============== 조회 ==============
-	/**
-	 * @param searchParam
-	 * @return 지출, 수입, 이체내역
-	 */
-	@RequestMapping(value = "/list.json")
-	@ResponseBody
-	public List<TransactionVo> list(final TransactionSearchParam searchParam) {
-		return null;
-	}
 
 	/**
 	 * @param year

@@ -3,7 +3,7 @@
 <div class="" id="app" v-cloak>
 	<div class="page-title">
 		<div class="title_left">
-			<h3>Plain Page</h3>
+			<h3>분류 관리</h3>
 		</div>
 	</div>
 	<div class="clearfix"></div>

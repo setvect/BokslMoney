@@ -28,7 +28,7 @@ public class CategoryVo {
 	@Id
 	@Column(name = "CATEGORY_SEQ", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int CategorySeq;
+	private int categorySeq;
 
 	/** 유형 */
 	@Column(name = "KIND", length = 20, nullable = false)

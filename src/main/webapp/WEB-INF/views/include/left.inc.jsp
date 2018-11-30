@@ -2,7 +2,7 @@
 
 <div class="left_col scroll-view">
 	<div class="navbar nav_title" style="border: 0;">
-		<a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>복슬머니</span></a>
+		<a href="/" class="site_title"><i class="fa fa-paw"></i> <span>복슬머니</span></a>
 	</div>
 	<div class="clearfix"></div>
 	<!-- sidebar menu -->
@@ -16,7 +16,7 @@
 					<a href="${pageContext.request.contextPath}/hab/transaction/grid.do"><i class="fa fa-th"></i> 가계부 쓰기(표)</a>
 				</li>
 				<li>
-					<a><i class="fa fa-database"></i> 결산 </a>
+					<a href="${pageContext.request.contextPath}/hab/settlement.do"><i class="fa fa-database"></i> 결산 </a>
 				</li>
 				<li>
 					<a><i class="fa fa-bar-chart-o"></i> 통계 </a>

@@ -80,10 +80,10 @@
 				VueUtil.get("/hab/account/list.json", {}, (result) => {
 					this.itemList = result.data;
 					this.$nextTick(() => {
-						if(this.grid != null){
+						if (this.grid != null) {
 							this.grid.destroy();
 						}
-						this.grid = $('#grid').DataTable({ paging: false, bInfo: false });
+						this.grid = $('#grid').DataTable({ paging: false, bInfo: false, searching: false });
 					})
 				});
 			},
