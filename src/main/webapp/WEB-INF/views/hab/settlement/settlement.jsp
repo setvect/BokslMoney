@@ -31,18 +31,7 @@
 						<tbody>
 							<tr v-for="spending in spendingList">
 								<td>{{spending.name}}</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
+								<td class="text-right" v-for="month in monthList">{{getSpending(month.month(), spending.categorySeq) | numberFormat}}</td>
 							</tr>
 							<tr class="active">
 								<td>지출합계</td>
@@ -125,7 +114,8 @@
 			return {
 				spendingList: [],
 				year: currentYear,
-				yearChoice: currentYear
+				yearChoice: currentYear,
+				spendingGroupSum: {}
 			};
 		},
 		computed: {
@@ -157,11 +147,22 @@
 			// 결산
 			runSettlement() {
 				this.year = this.yearChoice;
-				VueUtil.get("/hab/settlement/statSpending.json", { year: this.year }, (result) => {
-					this.spendingList = result.data;
+				VueUtil.get("/hab/settlement/groupOfMonth.json", { year: this.year, kind: "SPENDING" }, (result) => {
+					this.spendingGroupSum = result.data;
 				});
+			},
+			// month: 0부터 시작,
+			// categorySeq: 대분류 아이디
+			getSpending(month, categorySeq) {
+				console.log('month :', month);
+				console.log('categorySeq :', categorySeq);
+				let monthGroup = this.spendingGroupSum[month];
+				if (!monthGroup) {
+					return 0;
+				}
+				return monthGroup[categorySeq] || 0;
+			},
 
-			}
 		},
 		mounted() {
 			this.listSpending();

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,15 +58,18 @@ public class SettlementController {
 
 	// ============== 조회 ==============
 	/**
-	 * 지출 결산
+	 * 유형별 결산
 	 *
 	 * @param year
 	 *            년도
-	 * @return Key: 월, Value: (Key: 대분류 아이디, Value: 합산 금액)
+	 * @param kind
+	 *            조회 항목 유형
+	 * @return Key: 월(0 부터 시작), Value: (Key: 대분류 아이디, Value: 합산 금액)
 	 */
-	@RequestMapping(value = "/statSpending.json")
+	@RequestMapping(value = "/groupOfMonth.json")
 	@ResponseBody
-	public ResponseEntity<Map<Integer, Map<Integer, Integer>>> listByRange(@RequestParam("year") final int year) {
+	public ResponseEntity<Map<Integer, Map<Integer, Integer>>> listByRange(@RequestParam("year") final int year,
+			@RequestParam("kind") final KindType kind) {
 		TransactionSearchParam searchCondition = new TransactionSearchParam();
 
 		LocalDate from = LocalDate.of(year, 1, 1);
@@ -74,30 +78,16 @@ public class SettlementController {
 		searchCondition.setFrom(DateUtil.toDate(from));
 		searchCondition.setTo(DateUtil.toDate(to));
 		searchCondition.setReturnCount(Integer.MAX_VALUE);
-		searchCondition.setKindType(KindType.SPENDING);
+		searchCondition.setKindType(kind);
 		List<TransactionVo> transactionList = transactionService.list(searchCondition);
 
-		Map<Integer, Integer> mapping = categoryService.getChildCategoryParentMapping(KindType.SPENDING);
-
-		// 1차 완성
-		// Map<Integer, Collection<TransactionVo>> tranOfMonth =
-		// transactionList.stream()
-		// .collect(Collectors.groupingBy(tran -> tran.getMonth(),
-		// Collectors.mapping(Function.identity(),
-		// Collectors.toCollection(HashSet::new))));
-		// Map<Integer, Map<Integer, Integer>> result = new HashMap<>();
-		// Map<Integer, Map<Integer, List<TransactionVo>>>
 		// Key: 월, Value: (Key: 대분류 아이디, Value: 합산 금액)
-		Map<Integer, Map<Integer, Integer>> tranOfMonth = transactionList.stream()
+		Map<Integer, Map<Integer, Integer>> groupOfMonth = transactionList.stream()
 				.collect(Collectors.groupingBy(tran -> tran.getMonth(),
 						Collectors.groupingBy(tran -> tran.getParentCategory().getCategorySeq(),
 								Collectors.summingInt(tran -> tran.getMoney()))));
 
-		System.out.println(tranOfMonth);
-
-		// return ApplicationUtil.toJson(result,
-		// "**,item[-handler,-hibernateLazyInitializer]");
-		return null;
+		return new ResponseEntity<>(groupOfMonth, HttpStatus.OK);
 	}
 
 }

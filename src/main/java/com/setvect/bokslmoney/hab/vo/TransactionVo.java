@@ -81,10 +81,10 @@ public class TransactionVo {
 	private int fee;
 
 	/**
-	 * @return 사용 월. 1(1월)부터 12까지
+	 * @return 사용 월. 0(1월)부터 11까지
 	 */
 	public int getMonth() {
-		return DateUtil.toLocalDate(transactionDate).getMonthValue();
+		return DateUtil.toLocalDate(transactionDate).getMonthValue() - 1;
 	}
 
 }
