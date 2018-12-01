@@ -1,9 +1,6 @@
 package com.setvect.bokslmoney.hab.controller;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,8 +18,6 @@ import com.setvect.bokslmoney.hab.repository.TransactionRepository;
 import com.setvect.bokslmoney.hab.service.CategoryService;
 import com.setvect.bokslmoney.hab.service.TransactionService;
 import com.setvect.bokslmoney.hab.vo.KindType;
-import com.setvect.bokslmoney.hab.vo.TransactionVo;
-import com.setvect.bokslmoney.util.DateUtil;
 
 /**
  * 결산
@@ -68,26 +63,23 @@ public class SettlementController {
 	 */
 	@RequestMapping(value = "/groupOfMonth.json")
 	@ResponseBody
-	public ResponseEntity<Map<Integer, Map<Integer, Integer>>> listByRange(@RequestParam("year") final int year,
+	public ResponseEntity<Map<Integer, Map<Integer, Integer>>> groupOfMonth(@RequestParam("year") final int year,
 			@RequestParam("kind") final KindType kind) {
-		TransactionSearchParam searchCondition = new TransactionSearchParam();
-
-		LocalDate from = LocalDate.of(year, 1, 1);
-		LocalDate to = from.plusYears(1).minusDays(1);
-
-		searchCondition.setFrom(DateUtil.toDate(from));
-		searchCondition.setTo(DateUtil.toDate(to));
-		searchCondition.setReturnCount(Integer.MAX_VALUE);
-		searchCondition.setKindType(kind);
-		List<TransactionVo> transactionList = transactionService.list(searchCondition);
-
-		// Key: 월, Value: (Key: 대분류 아이디, Value: 합산 금액)
-		Map<Integer, Map<Integer, Integer>> groupOfMonth = transactionList.stream()
-				.collect(Collectors.groupingBy(tran -> tran.getMonth(),
-						Collectors.groupingBy(tran -> tran.getParentCategory().getCategorySeq(),
-								Collectors.summingInt(tran -> tran.getMoney()))));
-
+		Map<Integer, Map<Integer, Integer>> groupOfMonth = transactionService.groupCategoryOfMonth(year, kind);
 		return new ResponseEntity<>(groupOfMonth, HttpStatus.OK);
 	}
 
+	/**
+	 * 유형별 결산
+	 *
+	 * @param year
+	 *            년도
+	 * @return Key: 월(0 부터 시작), Value: (Key: 대분류 아이디, Value: 합산 금액)
+	 */
+	@RequestMapping(value = "/groupKindOfMonth.json")
+	@ResponseBody
+	public ResponseEntity<Map<Integer, Map<KindType, Integer>>> groupKindOfMonth(@RequestParam("year") final int year) {
+		Map<Integer, Map<KindType, Integer>> groupKindOfMonth = transactionService.groupKindOfMonth(year);
+		return new ResponseEntity<>(groupKindOfMonth, HttpStatus.OK);
+	}
 }

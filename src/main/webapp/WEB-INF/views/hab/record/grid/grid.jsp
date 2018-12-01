@@ -222,7 +222,6 @@
 						title: '복슬머니(' + this.condition.from + '_' + this.condition.to + ')',
 						customize: function (xlsx) {
 							var sheet = xlsx.xl.worksheets['sheet1.xml'];
-							$('cols col:eq(10)', sheet).remove();
 							$('row c', sheet).attr('s', '25');
 						}
 					}]

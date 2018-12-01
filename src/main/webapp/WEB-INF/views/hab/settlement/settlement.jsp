@@ -10,7 +10,7 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 
 			<div class="x_panel">
-				<div class="form-inline" style="margin-bottom: 10px; padding-left: 10px;">
+				<div class="form-inline" style="padding: 0 10px;">
 					<div class="form-group">
 						<select class="form-control" v-model="yearChoice">
 							<option value="">--결산 년도 선택--</option>
@@ -18,6 +18,7 @@
 						</select>
 					</div>
 					<button type="submit" class="btn btn-default" style="margin: 0" @click="runSettlement()">조회</button>
+					<button type="button" class="btn btn-success" style="margin: 0;float: right" @click="exportExcel();">내보내기(엑셀)</button>
 				</div>
 
 				<div class="col-md-12 col-sm-12 col-xs-12">
@@ -31,67 +32,19 @@
 						<tbody>
 							<tr v-for="spending in spendingList">
 								<td>{{spending.name}}</td>
-								<td class="text-right" v-for="month in monthList">{{getSpending(month.month(), spending.categorySeq) | numberFormat}}</td>
+								<td class="text-right" v-for="month in monthList">{{getSpending(month.month(), spending.categorySeq) |
+									numberFormat}}</td>
 							</tr>
-							<tr class="active">
-								<td>지출합계</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-							</tr>
-							<tr class="active">
-								<td>수입합계</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-							</tr>
-							<tr class="active">
-								<td>이체합계</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
+							<tr class="info" v-for="kindMap in kindList">
+								<td>{{Object.values(kindMap)[0]}}</td>
+								<td class="text-right" v-for="month in monthList">{{getKindSum(month.month(), Object.keys(kindMap)[0])|
+									numberFormat}}</td>
 							</tr>
 							<tr class="success">
 								<td>수입-지출</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
-								<td class="text-right">10,000</td>
-								<td class="text-right">15,000</td>
+								<td class="text-right" v-for="month in monthList">{{getKindSum(month.month(), 'INCOME') -
+									getKindSum(month.month(), 'SPENDING') |
+									numberFormat}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -115,7 +68,9 @@
 				spendingList: [],
 				year: currentYear,
 				yearChoice: currentYear,
-				spendingGroupSum: {}
+				spendingGroupSum: {},
+				kindGroupSum: {},
+				gridTable: null,
 			};
 		},
 		computed: {
@@ -134,9 +89,34 @@
 					months.push(start.clone().add(m, 'month'));
 				}
 				return months;
+			},
+			// 유형 리스트
+			kindList() {
+				return [{ 'INCOME': "지출합계" }, { 'SPENDING': "수입합계" }, { 'TRANSFER': "이체합계" }];
 			}
 		},
 		methods: {
+			initGrid() {
+				this.gridTable = $('#grid').DataTable({
+					paging: false, bInfo: false, searching: false, ordering: false,
+					dom: 'Bfrtip',
+					buttons: [{
+						extend: 'excelHtml5',
+						title: '복슬머니 결산(' + this.yearChoice + ')',
+						customize: function (xlsx) {
+							var sheet = xlsx.xl.worksheets['sheet1.xml'];
+							$('row c', sheet).attr('s', '25');
+						}
+					}]
+				});
+				// 엑셀 다운로드 button 감추기
+				$(".buttons-excel").hide();
+			},
+			destroyGrid() {
+				if (this.gridTable != null) {
+					this.gridTable.destroy();
+				}
+			},
 			// 리스트
 			listSpending() {
 				let param = { kind: "SPENDING", parent: 0 };
@@ -149,23 +129,42 @@
 				this.year = this.yearChoice;
 				VueUtil.get("/hab/settlement/groupOfMonth.json", { year: this.year, kind: "SPENDING" }, (result) => {
 					this.spendingGroupSum = result.data;
+					VueUtil.get("/hab/settlement/groupKindOfMonth.json", { year: this.year }, (result) => {
+						this.kindGroupSum = result.data;
+						this.$nextTick(() => {
+							this.destroyGrid();
+							this.initGrid();
+						})
+					});
 				});
 			},
 			// month: 0부터 시작,
 			// categorySeq: 대분류 아이디
 			getSpending(month, categorySeq) {
-				console.log('month :', month);
-				console.log('categorySeq :', categorySeq);
 				let monthGroup = this.spendingGroupSum[month];
 				if (!monthGroup) {
 					return 0;
 				}
 				return monthGroup[categorySeq] || 0;
 			},
-
+			// month: 0부터 시작,
+			// kind: 유형
+			getKindSum(month, kind) {
+				let monthGroup = this.kindGroupSum[month];
+				if (!monthGroup) {
+					return 0;
+				}
+				return monthGroup[kind] || 0;
+			},
+			// 엑셀 다운로드
+			exportExcel() {
+				// datatables에 있는 버튼 클릭
+				$(".buttons-excel").trigger("click");
+			}
 		},
 		mounted() {
 			this.listSpending();
+			this.runSettlement();
 		}
 	}).$mount('#app');
 </script>
