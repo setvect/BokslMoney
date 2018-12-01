@@ -21,7 +21,6 @@ import com.setvect.bokslmoney.hab.vo.AccountVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.hab.vo.TransactionVo;
 import com.setvect.bokslmoney.util.DateUtil;
-import com.setvect.bokslmoney.util.PageResult;
 
 /**
  * 달력 기반 가계부 입력
@@ -98,9 +97,7 @@ public class TransactionController {
 	@ResponseBody
 	public String listByRange(final TransactionSearchParam searchCondition) {
 		searchCondition.setReturnCount(Integer.MAX_VALUE);
-		PageResult<TransactionVo> page = transactionRepository.getPagingList(searchCondition);
-		List<TransactionVo> list = page.getList();
-		transactionService.mappingParentItem(list);
+		List<TransactionVo> list = transactionService.list(searchCondition);
 		return ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
 	}
 

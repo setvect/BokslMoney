@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
-import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
+import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.util.TreeNode;
 
 @Service
@@ -54,6 +54,20 @@ public class CategoryService {
 		}).collect(Collectors.toList());
 
 		return result;
+	}
+
+	/**
+	 * @param type
+	 *            유형
+	 * @return 자식 카테고리와 부모 카테고리의 맴핑 정보. <br>
+	 *         Key: 자식카테고리 아이디, Value: 부모카테고리 아이디
+	 */
+	public Map<Integer, Integer> getChildCategoryParentMapping(final KindType type) {
+		List<CategoryVo> spendingAll = itemRepository.list(type);
+
+		Map<Integer, Integer> mapping = spendingAll.stream().filter(c -> !c.isRoot())
+				.collect(Collectors.toMap(c -> c.getCategorySeq(), c -> c.getParentSeq()));
+		return mapping;
 	}
 
 }

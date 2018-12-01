@@ -1,6 +1,8 @@
 package com.setvect.bokslmoney.hab.controller;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.setvect.bokslmoney.BokslMoneyConstant;
@@ -48,5 +50,14 @@ public class TransactionSearchParam extends SearchListParam {
 	 */
 	public boolean isRangeSearch() {
 		return from != null && to != null;
+	}
+
+	/**
+	 * @param kindType
+	 *            .
+	 */
+	public void setKindType(final KindType kindType) {
+		kindTypeSet = new HashSet<>(Arrays.asList(kindType));
+
 	}
 }

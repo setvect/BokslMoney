@@ -23,4 +23,12 @@ public interface CategoryRepository extends JpaRepository<CategoryVo, Integer> {
 	@Query("select i from CategoryVo i where deleteFlag = false and i.kind = :kind and i.parentSeq = :parent order by i.orderNo")
 	public List<CategoryVo> list(@Param("kind") KindType kindType, @Param("parent") int parent);
 
+	/**
+	 * @param kindType
+	 *            유형
+	 * @return 항목 목록
+	 */
+	@Query("select i from CategoryVo i where deleteFlag = false and i.kind = :kind order by i.orderNo")
+	public List<CategoryVo> list(@Param("kind") KindType kindType);
+
 }

@@ -52,4 +52,8 @@ public class CategoryVo {
 	@Type(type = "yes_no")
 	private boolean deleteFlag;
 
+	public boolean isRoot() {
+		return parentSeq == 0;
+	}
+
 }

@@ -16,7 +16,7 @@
 					<a href="${pageContext.request.contextPath}/hab/transaction/grid.do"><i class="fa fa-th"></i> 가계부 쓰기(표)</a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/hab/settlement.do"><i class="fa fa-database"></i> 결산 </a>
+					<a href="${pageContext.request.contextPath}/hab/settlement/settlement.do"><i class="fa fa-database"></i> 결산 </a>
 				</li>
 				<li>
 					<a><i class="fa fa-bar-chart-o"></i> 통계 </a>

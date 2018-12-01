@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.setvect.bokslmoney.util.DateUtil;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,7 +43,7 @@ public class TransactionVo {
 	@JoinColumn(name = "CATEGORY_SEQ", nullable = false)
 	private CategoryVo category;
 
-	/** 부모 분류 정보*/
+	/** 부모 분류 정보 */
 	@Transient
 	private CategoryVo parentCategory;
 
@@ -77,5 +79,12 @@ public class TransactionVo {
 	/** 수수료 */
 	@Column(name = "FEE", nullable = true)
 	private int fee;
+
+	/**
+	 * @return 사용 월. 1(1월)부터 12까지
+	 */
+	public int getMonth() {
+		return DateUtil.toLocalDate(transactionDate).getMonthValue();
+	}
 
 }

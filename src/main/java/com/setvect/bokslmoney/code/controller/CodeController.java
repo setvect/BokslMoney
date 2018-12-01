@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +17,7 @@ import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.vo.CodeItemKey;
 import com.setvect.bokslmoney.code.vo.CodeItemVo;
 import com.setvect.bokslmoney.code.vo.CodeMainVo;
+import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 
 @Controller
 @RequestMapping(value = "/code")
@@ -29,6 +28,9 @@ public class CodeController {
 
 	@Autowired
 	private CodeItemRepository codeItemRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	// ============== 뷰==============
 
