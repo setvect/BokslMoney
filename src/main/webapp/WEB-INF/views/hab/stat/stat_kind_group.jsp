@@ -52,7 +52,7 @@
 				if (this.chart) {
 					this.chart.destroy();
 				}
-				var randomScalingFactor = function () {
+				let randomScalingFactor = function () {
 					return Math.round(Math.random() * 1000);
 				};
 				// 월 목록
@@ -69,16 +69,12 @@
 					let item = { label: value.title, backgroundColor: value.color, data: data };
 					return item;
 				});
-
-				console.log('dataset :', dataset);
-
-
-				var barChartData = {
+				let barChartData = {
 					labels: monthList.map((m) => (m + 1) + '월'),
 					datasets: dataset
 				};
 
-				var ctx = document.getElementById("canvas").getContext("2d");
+				let ctx = document.getElementById("canvas").getContext("2d");
 				this.chart = new Chart(ctx, {
 					type: 'bar',
 					data: barChartData,
@@ -97,7 +93,7 @@
 						tooltips: {
 							callbacks: {
 								label: function (tooltipItem, data) {
-									var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+									let value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 									return value.toString().split(/(?=(?:...)*$)/).join(',') + "원";
 								}
 							}
