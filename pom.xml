@@ -169,6 +169,11 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
