@@ -1,0 +1,1 @@
+@start javaw  -jar bokslmoney-0.0.1.war

@@ -56,15 +56,12 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
-		applyTray();
-
 		// spring boot에서 클래스가 및 properties 변경되었을 때 restart 안되게 함.
 		// 즉 reload 효과
 		System.setProperty("spring.devtools.restart.enabled", "false");
 		SpringApplication.run(BokslMoneyApplication.class, args);
-
+		applyTray();
 		initComplete = true;
-
 		// openWeb();
 	}
 
@@ -81,10 +78,10 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 		popup.add(openItem);
 		popup.add(exitItem);
 
-		TrayIconHandler.registerTrayIcon(
-				Toolkit.getDefaultToolkit().getImage("src/main/resources/icon/paw-solid-32.png"), "복슬머니", () -> {
-					openWeb();
-				}, popup);
+		URL img = BokslMoneyApplication.class.getResource("/icon/paw-solid-32.png");
+		TrayIconHandler.registerTrayIcon(Toolkit.getDefaultToolkit().getImage(img), "복슬머니", () -> {
+			openWeb();
+		}, popup);
 	}
 
 	/**
