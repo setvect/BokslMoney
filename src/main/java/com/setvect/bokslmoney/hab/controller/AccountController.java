@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +50,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
-	public List<AccountVo> list() {
+	public ResponseEntity<List<AccountVo>> list() {
 		Map<Integer, String> mapping = codeService.getMappingKindCode(CodeKind.KIND_CODE);
 
 		List<AccountVo> list = accountRepository.list();
@@ -56,7 +58,7 @@ public class AccountController {
 			applyKindName(a, mapping);
 		});
 
-		return list;
+		return new ResponseEntity<List<AccountVo>>(list, HttpStatus.OK);
 	}
 
 	/**
@@ -66,10 +68,10 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/mapName.json")
 	@ResponseBody
-	public Map<Integer, String> mapName() {
+	public ResponseEntity<Map<Integer, String>> mapName() {
 		List<AccountVo> list = accountRepository.list();
 		Map<Integer, String> accMap = list.stream().collect(Collectors.toMap(a -> a.getAccountSeq(), a -> a.getName()));
-		return accMap;
+		return new ResponseEntity<>(accMap, HttpStatus.OK);
 	}
 
 	private void applyKindName(AccountVo account, Map<Integer, String> mapping) {

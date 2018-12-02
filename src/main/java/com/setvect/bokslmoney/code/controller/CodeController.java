@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,15 +50,17 @@ public class CodeController {
 	// ============== 조회 ==============
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
-	public String list(@RequestParam("codeMainId") final String codeMainId) {
+	public ResponseEntity<String> list(@RequestParam("codeMainId") final String codeMainId) {
 		List<CodeItemVo> list = codeItemRepository.list(codeMainId);
-		return ApplicationUtil.toJson(list, "**,codeItemKey[**,codeMain[-handler,-hibernateLazyInitializer]]");
+		String json = ApplicationUtil.toJson(list, "**,codeItemKey[**,codeMain[-handler,-hibernateLazyInitializer]]");
+		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/getCodeMain.json")
 	@ResponseBody
-	public CodeMainVo getCodeMain(@RequestParam("codeMainId") final String codeMainId) {
-		return codeMainRepository.findById(codeMainId).get();
+	public ResponseEntity<CodeMainVo> getCodeMain(@RequestParam("codeMainId") final String codeMainId) {
+		CodeMainVo body = codeMainRepository.findById(codeMainId).get();
+		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 
 	// ============== 등록 ==============

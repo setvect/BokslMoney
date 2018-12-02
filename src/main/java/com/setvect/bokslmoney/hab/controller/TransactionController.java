@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,7 +79,7 @@ public class TransactionController {
 	 */
 	@RequestMapping(value = "/listByMonth.json")
 	@ResponseBody
-	public String listByMonth(final int year, final int month) {
+	public ResponseEntity<String> listByMonth(final int year, final int month) {
 		TransactionSearchParam searchCondition = new TransactionSearchParam(0, Integer.MAX_VALUE);
 		LocalDate fromDate = LocalDate.of(year, month, 1);
 		LocalDate toDate = fromDate.plusMonths(1).minusDays(1);
@@ -95,10 +97,11 @@ public class TransactionController {
 	 */
 	@RequestMapping(value = "/listByRange.json")
 	@ResponseBody
-	public String listByRange(final TransactionSearchParam searchCondition) {
+	public ResponseEntity<String> listByRange(final TransactionSearchParam searchCondition) {
 		searchCondition.setReturnCount(Integer.MAX_VALUE);
 		List<TransactionVo> list = transactionService.list(searchCondition);
-		return ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
+		String json = ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
+		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 	// ============== 등록 ==============

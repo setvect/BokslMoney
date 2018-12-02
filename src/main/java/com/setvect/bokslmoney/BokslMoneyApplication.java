@@ -5,6 +5,8 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -41,6 +43,8 @@ import lombok.extern.log4j.Log4j2;
 @EnableAspectJAutoProxy
 @Log4j2
 public class BokslMoneyApplication extends SpringBootServletInitializer {
+	/** 중복 방지를 위해 임의로 bind할 포드 */
+	private static final int PREVENT_DUPLICATION = 11228;
 	/** 설정 파일 경로. */
 	private static final String CONFIG_PROPERTIES = "/application.properties";
 	/** 테스트 설정 파일 경로 */
@@ -49,6 +53,9 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	/** 초기화 완료 여부 */
 	private static boolean initComplete = false;
 
+	/** 프로그램 실행 여부 체크 용도 */
+	private static DatagramSocket runCheck;
+
 	/**
 	 * Application 시작점.
 	 *
@@ -56,13 +63,36 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
+		checkDuplicateExecute();
+		applyTray();
+
 		// spring boot에서 클래스가 및 properties 변경되었을 때 restart 안되게 함.
 		// 즉 reload 효과
 		System.setProperty("spring.devtools.restart.enabled", "false");
 		SpringApplication.run(BokslMoneyApplication.class, args);
-		applyTray();
+
 		initComplete = true;
 		// openWeb();
+	}
+
+	/**
+	 * 중복 실행 여부 체크. 중복실행이 된 경우 지금 실행한 프로세스를 종료함.
+	 */
+	private static void checkDuplicateExecute() {
+		try {
+			System.out.println();
+			runCheck = new DatagramSocket(PREVENT_DUPLICATION);
+		} catch (SocketException e) {
+			System.err.println("프로그램이 중복 실행되었습니다.");
+			// TODO 아래 방법을에서 설정 파일에서 포트 정보를 얻을 수 있는 방법이 있을까?
+			try {
+				Desktop.getDesktop().browse(new URI("http://127.0.0.1:8080"));
+			} catch (IOException | URISyntaxException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	/**

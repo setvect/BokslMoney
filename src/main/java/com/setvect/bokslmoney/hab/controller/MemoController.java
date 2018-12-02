@@ -6,6 +6,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +44,7 @@ public class MemoController {
 	 */
 	@RequestMapping(value = "/listByMonth.json")
 	@ResponseBody
-	public String listByMonth(final int year, final int month) {
+	public ResponseEntity<String> listByMonth(final int year, final int month) {
 		MemoSearchParam searchCondition = new MemoSearchParam(0, Integer.MAX_VALUE);
 		LocalDate fromDate = LocalDate.of(year, month, 1);
 		LocalDate toDate = fromDate.plusMonths(1).minusDays(1);
@@ -52,7 +54,8 @@ public class MemoController {
 
 		PageResult<MemoVo> page = memoRepository.getPagingList(searchCondition);
 		List<MemoVo> list = page.getList();
-		return ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
+		String json = ApplicationUtil.toJson(list, "**,item[-handler,-hibernateLazyInitializer]");
+		return new ResponseEntity<>(json, HttpStatus.OK);
 	}
 
 	// ============== 등록 ==============

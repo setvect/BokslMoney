@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,14 +38,15 @@ public class OftenUsedController {
 	 */
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
-	public List<OftenUsedVo> list(@RequestParam(name = "kind") KindType kind) {
+	public ResponseEntity<List<OftenUsedVo>> list(@RequestParam(name = "kind") KindType kind) {
 		List<OftenUsedVo> list = oftenUsedRepository.list(kind);
 		list.stream().forEach(t -> {
 			int parentSeq = t.getCategory().getParentSeq();
 			CategoryVo parent = categoryRepository.findById(parentSeq).orElse(null);
 			t.setParentCategory(parent);
 		});
-		return list;
+
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	// ============== 등록 ==============
