@@ -60,6 +60,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/dataTables.buttons.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/buttons.html5.js"></script>
 
+<!-- 차트 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/Chart.js/dist/Chart.js"></script>
+
+
 <script type="text/javascript">
 	moment.locale('ko');
 

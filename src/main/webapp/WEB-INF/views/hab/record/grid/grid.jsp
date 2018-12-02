@@ -98,7 +98,7 @@
 								</div>
 								<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
 									<button type="button" class="btn btn-info btn-sm" @click="search();">조회</button>
-									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(-1)">다음달</button>
+									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(-1)">이전달</button>
 									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(0)">이번달</button>
 									<button type="button" class="btn btn-primary btn-sm" @click="moveMonth(1)">다음달</button>
 								</div>

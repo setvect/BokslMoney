@@ -19,7 +19,7 @@
 					<a href="${pageContext.request.contextPath}/hab/settlement/settlement.do"><i class="fa fa-database"></i> 결산 </a>
 				</li>
 				<li>
-					<a><i class="fa fa-bar-chart-o"></i> 통계 </a>
+					<a href="${pageContext.request.contextPath}/hab/stat/stat.do"><i class="fa fa-bar-chart-o"></i> 통계 </a>
 				</li>
 				<li>
 					<a href="${pageContext.request.contextPath}/hab/category/page.do"><i class="fa fa-building-o"></i> 분류 관리 </a>

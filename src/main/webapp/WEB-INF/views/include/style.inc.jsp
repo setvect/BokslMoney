@@ -36,4 +36,5 @@
 <!-- 오른쪽 마우스 클릭, 메뉴 -->
 <link href="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.contextMenu.css" rel="stylesheet">
 
+<!-- 테이블 정렬 -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.min.css"/>
