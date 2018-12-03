@@ -1,15 +1,10 @@
 package com.setvect.bokslmoney.test;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,67 +24,10 @@ import com.setvect.bokslmoney.BokslMoneyConstant;
 @RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest(classes = { BokslMoneyApplication.class })
-@TestPropertySource(locations = "classpath:test.properties")
+@TestPropertySource(locations = "classpath:application.properties")
 @Rollback(false)
 public class MainTestBase {
 	static {
 		System.setProperty(BokslMoneyConstant.TEST_CHECK_PROPERTY_NAME, "true");
 	}
-
-	/** 초기 데이터 입력 */
-	private static final String INIT_INSERT_SQL = "/init.sql";
-
-	/** 엔티티의 refrash, merge 등을 관리하기 위해 */
-	@Autowired
-	private EntityManager entityManager;
-
-	/**
-	 * DB 초기 값 등록.
-	 */
-	protected void insertInitValue() {
-		InputStream in = MainTestBase.class.getResourceAsStream(INIT_INSERT_SQL);
-
-		String text;
-		try {
-			text = IOUtils.toString(in, StandardCharsets.UTF_8.name());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
-		List<String> sqlInsertQueries = extractQeruy(text);
-
-		sqlInsertQueries.forEach(query -> {
-			Query insert = entityManager.createNativeQuery(query);
-			insert.executeUpdate();
-		});
-	}
-
-	/**
-	 * 텍스트에서 쿼리문을 문장 단위로 분리
-	 *
-	 * @param text
-	 *            sql문을 담고 있는 텍스트
-	 * @return 문장 단위 쿼리문
-	 */
-	private List<String> extractQeruy(final String text) {
-		List<String> result = new ArrayList<>();
-		StringBuffer r = new StringBuffer();
-		String[] sqlInsertQueries = text.split("\n");
-
-		for (String s : sqlInsertQueries) {
-			if (StringUtils.isBlank(s)) {
-				continue;
-			}
-			if (s.startsWith("--")) {
-				continue;
-			}
-			r.append(s);
-			if (s.trim().endsWith(";")) {
-				result.add(r.toString());
-				r.setLength(0);
-			}
-		}
-		return result;
-	}
-
 }

@@ -75,7 +75,7 @@ public class AccountVo {
 	private String transferDate;
 
 	/** 메모 내용 */
-	@Column(name = "NOTE", length = 100, nullable = true)
+	@Column(name = "NOTE", length = 1000, nullable = true)
 	private String note;
 
 	/** 삭제 여부 */

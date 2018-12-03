@@ -12,6 +12,7 @@ import com.setvect.bokslmoney.code.repository.CodeItemRepository;
 import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.vo.CodeItemVo;
 import com.setvect.bokslmoney.code.vo.CodeMainVo;
+import com.setvect.bokslmoney.migration.service.MigrationService;
 
 @Service
 public class CodeService {
@@ -20,6 +21,9 @@ public class CodeService {
 
 	@Autowired
 	private CodeMainRepository codeMainRepository;
+
+	@Autowired
+	private MigrationService migrationService;
 
 	/**
 	 * 대분류 코드 값을 넣음
@@ -35,6 +39,8 @@ public class CodeService {
 		}).collect(Collectors.toList());
 
 		codeMainRepository.saveAll(codes);
+
+		migrationService.run();
 	}
 
 	public Map<Integer, String> getMappingKindCode(CodeKind kindCode) {
