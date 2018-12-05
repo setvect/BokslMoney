@@ -94,6 +94,5 @@ public class MigrationService {
 				System.out.println(ex.getMessage());
 			}
 		}
-		System.out.println("끝.");
 	}
 }

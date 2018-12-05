@@ -15,7 +15,7 @@ public class MigrationTestCase extends MainTestBase {
 
 	@Test
 	public void run() {
-		// migrationService.run();
-		System.out.println("끝...");
+//		migrationService.run();
+//		System.out.println("끝...");
 	}
 }

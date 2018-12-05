@@ -28,6 +28,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.setvect.bokslmoney.code.service.CodeService;
+import com.setvect.bokslmoney.migration.service.MigrationService;
 import com.setvect.bokslmoney.user.service.UserService;
 import com.setvect.bokslmoney.util.BeanUtils;
 import com.setvect.bokslmoney.util.TrayIconHandler;
@@ -168,6 +169,9 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			userService.init();
 			CodeService codeService = BeanUtils.getBean(CodeService.class);
 			codeService.init();
+
+			MigrationService migrationService = BeanUtils.getBean(MigrationService.class);
+			migrationService.run();
 		};
 	}
 
