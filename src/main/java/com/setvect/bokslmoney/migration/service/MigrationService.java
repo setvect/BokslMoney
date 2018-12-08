@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +24,14 @@ import com.setvect.bokslmoney.code.vo.CodeItemVo;
 import com.setvect.bokslmoney.code.vo.CodeMainVo;
 import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
+import com.setvect.bokslmoney.hab.repository.MemoRepository;
 import com.setvect.bokslmoney.hab.repository.OftenUsedRepository;
 import com.setvect.bokslmoney.hab.vo.AccountVo;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
+import com.setvect.bokslmoney.hab.vo.MemoVo;
 import com.setvect.bokslmoney.hab.vo.OftenUsedVo;
+import com.setvect.bokslmoney.util.DateUtil;
 
 @Service
 public class MigrationService {
@@ -41,8 +46,12 @@ public class MigrationService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
 	@Autowired
 	private OftenUsedRepository oftenUsedRepository;
+
+	@Autowired
+	private MemoRepository memoRepository;
 
 	// 기존 정보와 새롭게 입력한 정보 맵핑
 	// Key: 기존 계좌 Key, 새롭게 입력한 계좌
@@ -193,6 +202,27 @@ public class MigrationService {
 			}
 			rs.close();
 			ps.close();
+
+			// 5. 메모
+			ps = conn.prepareStatement("select * from t_memo order by pkey");
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String dateStr = rs.getString("tdate");
+				Date date = DateUtil.getDate(dateStr, "yyyy-MM-dd");
+				String title = rs.getString("title");
+				String memo = rs.getString("tmemo");
+
+				MemoVo memoVo = new MemoVo();
+				memoVo.setMemoDate(date);
+				String note = title;
+				if (StringUtils.isNotBlank(memo)) {
+					note += "\n\n" + memo;
+				}
+				memoVo.setNote(note.trim());
+
+				memoRepository.saveAndFlush(memoVo);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
