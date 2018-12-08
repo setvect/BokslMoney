@@ -66,7 +66,7 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
-		//(new File("./db/BokslMoney_db.mv.db")).delete();
+		(new File("./db/BokslMoney_db.mv.db")).delete();
 		checkDuplicateExecute();
 		applyTray();
 
@@ -173,8 +173,8 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			CodeService codeService = BeanUtils.getBean(CodeService.class);
 			codeService.init();
 
-			// MigrationService migrationService = BeanUtils.getBean(MigrationService.class);
-			// migrationService.run();
+			MigrationService migrationService = BeanUtils.getBean(MigrationService.class);
+			migrationService.run();
 		};
 	}
 
