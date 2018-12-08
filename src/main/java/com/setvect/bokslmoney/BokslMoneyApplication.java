@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -29,7 +28,6 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.setvect.bokslmoney.code.service.CodeService;
-import com.setvect.bokslmoney.migration.service.MigrationService;
 import com.setvect.bokslmoney.user.service.UserService;
 import com.setvect.bokslmoney.util.BeanUtils;
 import com.setvect.bokslmoney.util.TrayIconHandler;
@@ -66,7 +64,7 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
-		(new File("./db/BokslMoney_db.mv.db")).delete();
+		// (new File("./db/BokslMoney_db.mv.db")).delete();
 		checkDuplicateExecute();
 		applyTray();
 
@@ -173,8 +171,9 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			CodeService codeService = BeanUtils.getBean(CodeService.class);
 			codeService.init();
 
-			MigrationService migrationService = BeanUtils.getBean(MigrationService.class);
-			migrationService.run();
+			// MigrationService migrationService =
+			// BeanUtils.getBean(MigrationService.class);
+			// migrationService.run();
 		};
 	}
 
