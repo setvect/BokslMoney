@@ -38,7 +38,7 @@
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<h1>복슬머니 로그인</h1>
 						<div>
-							<input name="password" type="password" class="form-control" placeholder="Password" value="1234"/>
+							<input name="password" type="password" class="form-control" placeholder="Password"/>
 						</div>
 						<div>
 							<label><input type="checkbox" name="remember-me"><i></i><em>로그인 정보 유지</em></label>

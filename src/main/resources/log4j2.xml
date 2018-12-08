@@ -17,11 +17,11 @@
 			<AppenderRef ref="console" />
 			<AppenderRef ref="file" />
 		</Logger>
-		<Logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+		<Logger name="org.hibernate.SQL" level="INFO" additivity="false">
 			<AppenderRef ref="console" />
 			<AppenderRef ref="file" />
 		</Logger>
-		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="INFO" additivity="false">
 			<AppenderRef ref="console" />
 			<AppenderRef ref="file" />
 		</Logger>

@@ -59,4 +59,7 @@ public final class BokslMoneyConstant {
 	/** 테스트 실행 여부을 알수 있는 System property 이름 */
 	public static final String TEST_CHECK_PROPERTY_NAME = "test_run";
 
+	/** 시작 후 웹페이지 열기 */
+	public static final boolean OPEN_WEB = EnvirmentProperty.getBoolean("com.setvect.bokslmoney.openweb");
+
 }

@@ -74,7 +74,10 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 		SpringApplication.run(BokslMoneyApplication.class, args);
 
 		initComplete = true;
-		// openWeb();
+
+		if (BokslMoneyConstant.OPEN_WEB) {
+			openWeb();
+		}
 	}
 
 	/**
