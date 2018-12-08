@@ -68,6 +68,9 @@ public class MigrationService {
 	/** 찾지 못한 분류(삭제된 분류라는 뜻) */
 	Map<KindType, CategoryVo> categoryVoMapNotFound = new HashMap<>();
 
+	/** 삭제된 계좌 유형 */
+	private static final int DELETE_KIND_CODE = 1000;
+
 	static Map<Integer, KindType> kindMap = new HashMap<>();
 	static {
 		kindMap.put(0, KindType.SPENDING);
@@ -115,6 +118,13 @@ public class MigrationService {
 				codeItem.setOrderNo(order);
 				codeItemRepository.saveAndFlush(codeItem);
 			}
+
+			CodeItemVo codeItem = new CodeItemVo();
+			codeItem.setCodeItemKey(new CodeItemKey(codeMainMap.get(CodeKind.KIND_CODE.name()), DELETE_KIND_CODE));
+			codeItem.setName("삭제 자산");
+			codeItem.setOrderNo(99);
+			codeItemRepository.saveAndFlush(codeItem);
+
 			rs.close();
 			ps.close();
 
@@ -172,14 +182,14 @@ public class MigrationService {
 			Stream.of(KindType.values()).forEach(kind -> {
 				CategoryVo categoryMain = new CategoryVo();
 				categoryMain.setKind(kind);
-				categoryMain.setName("삭제 분류(대)");
+				categoryMain.setName("삭제 분류(" + kind.name() + ", 대)");
 				categoryMain.setOrderNo(1);
 				categoryMain.setParentSeq(0);
 				categoryRepository.saveAndFlush(categoryMain);
 
 				CategoryVo categorySub = new CategoryVo();
 				categorySub.setKind(kind);
-				categorySub.setName("삭제 분류(대)");
+				categorySub.setName("삭제 분류(" + kind.name() + ", 소)");
 				categorySub.setOrderNo(1);
 				categorySub.setParentSeq(categoryMain.getCategorySeq());
 				categoryRepository.saveAndFlush(categorySub);
@@ -269,15 +279,21 @@ public class MigrationService {
 				int ttype = rs.getInt("t_ttype");
 				int fee = rs.getInt("t_fee");
 				CategoryVo category = getCategoryVoMap(low);
-				KindType kindType = getKindType(type);
+				KindType kind = KindType.INCOME;
+				if (type == 1) {
+					kind = KindType.SPENDING;
+				} else if (type == 2) {
+					kind = KindType.TRANSFER;
+				}
+
 				// 기존에 없으면 삭제된 카테고리라는 뜻.
 				if (category == null) {
-					category = categoryVoMapNotFound.get(kindType);
+					category = categoryVoMapNotFound.get(kind);
 				}
 
 				TransactionVo tran = new TransactionVo();
 				tran.setCategory(category);
-				tran.setKind(kindType);
+				tran.setKind(kind);
 				tran.setPayAccount(getAccountVoMapSeq(from));
 				tran.setReceiveAccount(getAccountVoMapSeq(to));
 				tran.setAttribute(ttype);
@@ -324,10 +340,19 @@ public class MigrationService {
 		return categoryVo;
 	}
 
-	private int getAccountVoMapSeq(int payAccountKey) {
-		AccountVo ac = getAccountVoMap(payAccountKey);
-		if (ac == null) {
+	private int getAccountVoMapSeq(int accountKey) {
+		if (accountKey == -1) {
 			return 0;
+		}
+		AccountVo ac = getAccountVoMap(accountKey);
+		if (ac == null) {
+			AccountVo acc = new AccountVo();
+			acc.setName("삭제된 계좌 #" + accountKey);
+			acc.setKindCode(DELETE_KIND_CODE);
+			acc.setDeleteFlag(true);
+			accountRepository.saveAndFlush(acc);
+			putAccountVoMap(accountKey, acc);
+			ac = acc;
 		}
 		return ac.getAccountSeq();
 	}
