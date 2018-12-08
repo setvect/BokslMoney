@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -54,7 +55,8 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	/** 초기화 완료 여부 */
 	private static boolean initComplete = false;
 
-	/** 프로그램 실행 여부 체크 용도 */
+	/** 프로그램 실행 여부 체크 용도(중복 실행 방지) */
+	@SuppressWarnings("unused")
 	private static DatagramSocket runCheck;
 
 	/**
@@ -64,6 +66,7 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
+		(new File("./db/BokslMoney_db.mv.db")).delete();
 		checkDuplicateExecute();
 		applyTray();
 
