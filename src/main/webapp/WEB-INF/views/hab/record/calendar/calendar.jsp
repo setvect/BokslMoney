@@ -215,10 +215,12 @@
 				VueUtil.get("/hab/transaction/listByMonth.json", { year: year, month: month }, (result) => {
 					this.calendar.fullCalendar('removeEvents');
 					this.transactionList = result.data;
-					for (let idx in this.transactionList) {
-						let t = this.transactionList[idx];
-						this.displayTransfer(moment(t.transactionDate), t.kind, t.money);
-					}
+
+					let transactionSet = this.transactionList.map((t) => {
+						return { date: moment(t.transactionDate).format("YYYY-MM-DD"), kind: t.kind, money: t.money };
+					});
+					this.multiUpdate(transactionSet);
+
 					// 해당 월에 등록된 메모 조회
 					VueUtil.get("/hab/memo/listByMonth.json", { year: year, month: month }, (result) => {
 						this.memoList = result.data;
@@ -234,34 +236,49 @@
 				let memo = this.memoList.find((memo) => {
 					console.log(moment(memo.memoDate).format("YYYYMMDD"), date.format("YYYYMMDD"));
 					return moment(memo.memoDate).format("YYYYMMDD") == date.format("YYYYMMDD");
-				 });
+				});
 				return memo;
 			},
-			/**
-			 * 지출, 이체, 수입 항목 달력 셀에 표시 값 지정
-			 * date: 날짜(moment 객체)
-			 * type: 유형코드(지출, 이체, 수입)
-			 * cost: 금액
-			 */
-			displayTransfer(date, type, cost) {
-				let list = this.calendar.fullCalendar('clientEvents',
-					function (events) {
-						let view_start = date.format("YYYY-MM-DD");
-						return (moment(events.start).format('YYYY-MM-DD') == view_start && events.type == type);
-					}
-				);
-				if (list.length == 0) {
-					this.calendar.fullCalendar('renderEvent', {
-						type: type,
-						color: TYPE_VALUE[type].color,
-						cost: cost,
-						start: date.format("YYYY-MM-DD"),
-					});
-				}
-				else {
-					list[0].cost += cost;
-					this.calendar.fullCalendar('updateEvent', list[0]);
-				}
+			// 지출, 이체, 수입 항목 달력 셀에 표시 값 지정
+			// 한꺼번에 등록(속도 향상을 위함 것임)
+			multiUpdate(transactionSet) {
+				// debugger;
+				// transactionSet
+				let transactionGroupDate = _.chain(transactionSet)
+					.groupBy('date')
+					.map(
+						(listGroupByDate, date) => {
+							var listGroupByDate = _.map(listGroupByDate, function (c) {
+								return _.omit(c, ['date']);
+							});
+							listGroupByDate = _.chain(listGroupByDate)
+								.groupBy("kind")
+								.map(
+									(listGroupByKind, kind) => {
+										return (
+											{ money: _.sumBy(listGroupByKind, 'money'), kind }
+										);
+									}
+								).value();
+							return { listGroupByDate, date };
+						}
+					)
+					.value();
+				let events = [];
+				transactionGroupDate.forEach((tranDate) => {
+					let date = tranDate['date'];
+					tranDate['listGroupByDate'].forEach((tranKind) => {
+						let kind = tranKind["kind"];
+						let money = tranKind["money"];
+						events.push({
+							type: kind,
+							color: TYPE_VALUE[kind].color,
+							cost: money,
+							start: date,
+						})
+					})
+				});
+				this.calendar.fullCalendar('addEventSource', events)
 			},
 			// 달력 셀에 메모 표시 값 지정
 			displayMemo(memo) {

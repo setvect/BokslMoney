@@ -63,6 +63,8 @@
 <!-- 차트 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/Chart.js/dist/Chart.js"></script>
 
+<!-- functional library -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/lodash/lodash.min.js"></script>
 
 <script type="text/javascript">
 	moment.locale('ko');
