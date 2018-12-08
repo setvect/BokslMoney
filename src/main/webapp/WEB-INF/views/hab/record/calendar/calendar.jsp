@@ -39,7 +39,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="t in listSelectDayTransfer">
-										<td>{{kindMapValue(t.kind).title}}</td>
+										<td :style="{color:getKindAttr(t.kind).color}">{{kindMapValue(t.kind).title}}</td>
 										<td>
 											{{t.parentCategory.name}} > {{t.category.name}}
 										</td>
@@ -61,19 +61,20 @@
 							<table class="table table-bordered">
 								<tbody>
 									<tr>
-										<td>수입</td>
+										<td><span :style="{color:getKindAttr('INCOME').color}" style="line-height: normal ">수입</span></td>
 										<td class="text-right">{{sumIncome | numberFormat}}</td>
 									</tr>
 									<tr>
-										<td>지출</td>
+										<td><span :style="{color:getKindAttr('SPENDING').color}" style="line-height: normal ">지출</span></td>
 										<td class="text-right">{{sumSpending | numberFormat}}</td>
 									</tr>
 									<tr>
-										<td>수입 - 지출</td>
+										<td><span :style="{color:getKindAttr('INCOME').color}" style="line-height: normal ">수입</span> - <span :style="{color:getKindAttr('SPENDING').color}"
+											 style="line-height: normal ">지출</span></td>
 										<td class="text-right">{{sumIncome - sumSpending | numberFormat}}</td>
 									</tr>
 									<tr>
-										<td>이체</td>
+										<td><span :style="{color:getKindAttr('TRANSFER').color}" style="line-height: normal ">이체</span></td>
 										<td class="text-right">{{sumTransfer | numberFormat}}</td>
 									</tr>
 								</tbody>

@@ -12,7 +12,7 @@
 <!-- Animate.css -->
 <link href="${pageContext.request.contextPath}/assets/lib/animate.css/animate.min.css" rel="stylesheet">
 <!-- Custom Theme Style -->
-<link href="${pageContext.request.contextPath}/assets/lib/gentelella/css/custom.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/lib/gentelella/css/custom.css" rel="stylesheet">
 <!-- NProgress -->
 <link href="${pageContext.request.contextPath}/assets/lib/nprogress/nprogress.css" rel="stylesheet">
 
