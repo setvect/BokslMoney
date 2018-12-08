@@ -26,11 +26,13 @@ import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.MemoRepository;
 import com.setvect.bokslmoney.hab.repository.OftenUsedRepository;
+import com.setvect.bokslmoney.hab.repository.TransactionRepository;
 import com.setvect.bokslmoney.hab.vo.AccountVo;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.hab.vo.MemoVo;
 import com.setvect.bokslmoney.hab.vo.OftenUsedVo;
+import com.setvect.bokslmoney.hab.vo.TransactionVo;
 import com.setvect.bokslmoney.util.DateUtil;
 
 @Service
@@ -51,13 +53,20 @@ public class MigrationService {
 	private OftenUsedRepository oftenUsedRepository;
 
 	@Autowired
+	private TransactionRepository transactionRepository;
+
+	@Autowired
 	private MemoRepository memoRepository;
 
 	// 기존 정보와 새롭게 입력한 정보 맵핑
-	// Key: 기존 계좌 Key, 새롭게 입력한 계좌
+	/** Key: 기존 계좌 Key, 새롭게 입력한 계좌 */
 	Map<Integer, AccountVo> accountVoMap = new HashMap<>();
-	// Key: 기존분류 Key, 새롭게 입력한 분류
+
+	/** Key: 기존분류 Key, 새롭게 입력한 분류 */
 	Map<Integer, CategoryVo> categoryVoMap = new HashMap<>();
+
+	/** 찾지 못한 분류(삭제된 분류라는 뜻) */
+	Map<KindType, CategoryVo> categoryVoMapNotFound = new HashMap<>();
 
 	static Map<Integer, KindType> kindMap = new HashMap<>();
 	static {
@@ -159,6 +168,25 @@ public class MigrationService {
 				categoryRepository.saveAndFlush(category);
 				putCategoryVoMap(key, category);
 			}
+
+			Stream.of(KindType.values()).forEach(kind -> {
+				CategoryVo categoryMain = new CategoryVo();
+				categoryMain.setKind(kind);
+				categoryMain.setName("삭제 분류(대)");
+				categoryMain.setOrderNo(1);
+				categoryMain.setParentSeq(0);
+				categoryRepository.saveAndFlush(categoryMain);
+
+				CategoryVo categorySub = new CategoryVo();
+				categorySub.setKind(kind);
+				categorySub.setName("삭제 분류(대)");
+				categorySub.setOrderNo(1);
+				categorySub.setParentSeq(categoryMain.getCategorySeq());
+				categoryRepository.saveAndFlush(categorySub);
+
+				categoryVoMapNotFound.put(kind, categorySub);
+			});
+
 			rs.close();
 			ps.close();
 
@@ -223,6 +251,45 @@ public class MigrationService {
 
 				memoRepository.saveAndFlush(memoVo);
 			}
+			rs.close();
+			ps.close();
+
+			// 6. 거래 내역
+			ps = conn.prepareStatement("select * from t_transfer order by t_key");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				String dateStr = rs.getString("t_date");
+				Date date = DateUtil.getDate(dateStr, "yyyy-MM-dd");
+				int low = rs.getInt("t_low");
+				String memo = rs.getString("t_memo");
+				int from = rs.getInt("t_from");
+				int to = rs.getInt("t_to");
+				int money = rs.getInt("t_money");
+				int type = rs.getInt("t_type");
+				int ttype = rs.getInt("t_ttype");
+				int fee = rs.getInt("t_fee");
+				CategoryVo category = getCategoryVoMap(low);
+				KindType kindType = getKindType(type);
+				// 기존에 없으면 삭제된 카테고리라는 뜻.
+				if (category == null) {
+					category = categoryVoMapNotFound.get(kindType);
+				}
+
+				TransactionVo tran = new TransactionVo();
+				tran.setCategory(category);
+				tran.setKind(kindType);
+				tran.setPayAccount(getAccountVoMapSeq(from));
+				tran.setReceiveAccount(getAccountVoMapSeq(to));
+				tran.setAttribute(ttype);
+				tran.setMoney(money);
+				tran.setTransactionDate(date);
+				tran.setNote(memo);
+				tran.setFee(fee);
+
+				transactionRepository.save(tran);
+			}
+			rs.close();
+			ps.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -252,8 +319,9 @@ public class MigrationService {
 		categoryVoMap.put(key, category);
 	}
 
-	private CategoryVo getCategoryVoMap(int highKey) {
-		return categoryVoMap.get(highKey);
+	private CategoryVo getCategoryVoMap(int category) {
+		CategoryVo categoryVo = categoryVoMap.get(category);
+		return categoryVo;
 	}
 
 	private int getAccountVoMapSeq(int payAccountKey) {
