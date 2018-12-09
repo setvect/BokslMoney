@@ -1,6 +1,7 @@
 package com.setvect.bokslmoney.hab.service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import com.setvect.bokslmoney.hab.controller.TransactionSearchParam;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.TransactionRepository;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
+import com.setvect.bokslmoney.hab.vo.DateKindSumVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.hab.vo.TransactionVo;
 import com.setvect.bokslmoney.util.DateUtil;
@@ -102,5 +104,27 @@ public class TransactionService {
 				.collect(Collectors.groupingBy(tran -> tran.getMonth(),
 						Collectors.groupingBy(tran -> tran.getKind(), Collectors.summingInt(tran -> tran.getMoney()))));
 		return groupCategoryOfMonth;
+	}
+
+	/**
+	 * 날짜별로, 유형별로 금액 합산
+	 *
+	 * @param from
+	 *            시작 날짜
+	 * @return 날짜별로, 유형별로 금액 합산
+	 */
+	public List<DateKindSumVo> sumKindOfMonth(final Date from) {
+		List<Object[]> list = transactionRepository.sumKindOfMonth(from);
+		List<DateKindSumVo> result = list.stream().map(objs -> {
+			Date date = DateUtil.getDate((String) objs[0], "yyyy-MM");
+			KindType kind = (KindType) objs[1];
+			long money = (long) objs[2];
+			long count = (long) objs[3];
+
+			DateKindSumVo dateKindSum = new DateKindSumVo(date, kind, (int) money, (int) count);
+			return dateKindSum;
+		}).collect(Collectors.toList());
+
+		return result;
 	}
 }

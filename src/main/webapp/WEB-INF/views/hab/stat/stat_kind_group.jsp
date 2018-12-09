@@ -17,7 +17,7 @@
 
 <script type="text/javascript">
 
-	const itemListComponent = Vue.component("kindGroup", {
+	const kindGroupComponent = Vue.component("kindGroup", {
 		template: '#stat-kind-group',
 		data() {
 			return {

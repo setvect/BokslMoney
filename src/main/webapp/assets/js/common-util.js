@@ -42,7 +42,6 @@ CommonUtil.dialogInfo = function(title, message){
  * twbsPagination 페이징 처리 관련 옵션
  */
 CommonUtil.makePageOption = function(page, callback){
-
 	return {
 		initiateStartPageClick : false,
 		totalPages : page.totalPage == 0 ? 1 : page.totalPage,
@@ -103,24 +102,4 @@ CommonUtil.appendContextRoot = function(url){
 // 정규표현식에서 사용하는 특수문자를 escape 처리함
 CommonUtil.escapeRegExp = function(str) {
 	return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
-// input text에 숫자 입력 시 콤마 표시
-CommonUtil.inputComma = function (event) {
-	// When user select text in the document, also abort.
-	var selection = window.getSelection().toString();
-	if (selection !== '') {
-		return;
-	}
-	// When the arrow keys are pressed, abort.
-	if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
-		return;
-	}
-	var $this = $(this);
-	// Get the value.
-	var input = $this.val();
-	var input = input.replace(/[\D\s\._\-]+/g, "");
-	input = input ? parseInt(input, 10) : 0;
-	$this.val(function () {
-		return (input === 0) ? "" : input.toLocaleString("en-US");
-	});
 }
