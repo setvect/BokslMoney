@@ -190,7 +190,7 @@
 				return this.item.kind == "SPENDING";
 			},
 			// 수수료 비활성
-			disableFee(){
+			disableFee() {
 				return this.item.kind == "INCOME" || this.item.kind == "SPENDING";
 			},
 			validatePay() {
@@ -324,6 +324,10 @@
 			// 자주쓰는 거래 선택
 			selectOftenUsed(often) {
 				this.item = Object.assign(this.item, $.extend(true, {}, often));
+				console.log('this.item :', this.item);
+				if (this.item.money == 0) {
+					this.item.money = "";
+				}
 				this.insertCategory(often.parentCategory, often.category);
 			},
 			// 자주쓰는 거래 팝업 열기
