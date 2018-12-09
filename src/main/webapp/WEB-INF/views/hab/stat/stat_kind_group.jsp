@@ -11,7 +11,7 @@
 			<button type="submit" class="btn btn-default" style="margin: 0" @click="runStat()">조회</button>
 		</div>
 
-		<canvas id="canvas"></canvas>
+		<canvas id="kind_group_chart"></canvas>
 	</div>
 </template>
 
@@ -52,9 +52,6 @@
 				if (this.chart) {
 					this.chart.destroy();
 				}
-				let randomScalingFactor = function () {
-					return Math.round(Math.random() * 1000);
-				};
 				// 월 목록
 				let monthList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
@@ -74,7 +71,7 @@
 					datasets: dataset
 				};
 
-				let ctx = document.getElementById("canvas").getContext("2d");
+				let ctx = document.getElementById("kind_group_chart").getContext("2d");
 				this.chart = new Chart(ctx, {
 					type: 'bar',
 					data: barChartData,

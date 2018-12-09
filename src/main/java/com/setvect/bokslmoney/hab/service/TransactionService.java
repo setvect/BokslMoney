@@ -4,14 +4,18 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.setvect.bokslmoney.hab.controller.TransactionSearchParam;
+import com.setvect.bokslmoney.hab.repository.AccountRepository;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.repository.TransactionRepository;
+import com.setvect.bokslmoney.hab.vo.AccountVo;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.DateKindSumVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
@@ -27,6 +31,9 @@ public class TransactionService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private AccountRepository accountRepository;
 
 	/**
 	 * @param searchCondition
@@ -107,6 +114,18 @@ public class TransactionService {
 	}
 
 	/**
+	 * @param from
+	 *            시작 날짜
+	 * @return Key: 날짜(타임스탬프), Value: 누적 자산
+	 */
+	public Map<Long, Integer> accumulateOfMonth(final Date from) {
+		List<DateKindSumVo> groupKindOfMonth = sumKindOfMonth(from);
+		Map<Date, Integer> accumulateAsset = getAccumulateAsset(groupKindOfMonth);
+		Map<Long, Integer> accumulateOfMonth = accumulateAssetOfMonth(accumulateAsset);
+		return accumulateOfMonth;
+	}
+
+	/**
 	 * 날짜별로, 유형별로 금액 합산
 	 *
 	 * @param from
@@ -126,5 +145,57 @@ public class TransactionService {
 		}).collect(Collectors.toList());
 
 		return result;
+	}
+
+	/**
+	 * 월별 누적 자산
+	 *
+	 * @param accumulateAsset
+	 *            .
+	 * @return Key: 날짜(타임스탬프), Value: 누적 자산
+	 */
+	private Map<Long, Integer> accumulateAssetOfMonth(final Map<Date, Integer> accumulateAsset) {
+		int accumulateTotal = accumulateAsset.entrySet().stream().mapToInt(e -> e.getValue()).sum();
+		int currentAsset = getCurrentAsset();
+		int baseAsset = currentAsset - accumulateTotal;
+
+		Map<Long, Integer> accumulateOfMonth = new TreeMap<>();
+		for (Entry<Date, Integer> entry : accumulateAsset.entrySet()) {
+			baseAsset += entry.getValue();
+			accumulateOfMonth.put(entry.getKey().getTime(), baseAsset);
+		}
+		return accumulateOfMonth;
+	}
+
+	/**
+	 * @param groupKindOfMonth
+	 *            날짜별로, 유형별로 금액 합산
+	 *
+	 * @return 누적 자산(Key: 날짜, Value: 수입 - 지출)
+	 */
+	private Map<Date, Integer> getAccumulateAsset(final List<DateKindSumVo> groupKindOfMonth) {
+		Map<Date, Map<KindType, Integer>> group = groupKindOfMonth.stream().collect(Collectors
+				.groupingBy(v -> v.getDate(), TreeMap::new, Collectors.toMap(v -> v.getKind(), v -> v.getMoney())));
+
+		Map<Date, Integer> accumulateAsset = group.entrySet().stream().collect(Collectors.toMap(g -> g.getKey(), g -> {
+			Map<KindType, Integer> value = g.getValue();
+			Integer income = value.get(KindType.INCOME);
+			Integer spending = value.get(KindType.SPENDING);
+			income = income == null ? 0 : income;
+			spending = spending == null ? 0 : spending;
+
+			return income - spending;
+		}, (k1, k2) -> k1, TreeMap::new));
+		return accumulateAsset;
+	}
+
+	/**
+	 * @return 현재 잔고
+	 */
+	private int getCurrentAsset() {
+		List<AccountVo> list = accountRepository.list();
+		// 현재 잔고
+		int currentAsset = list.stream().mapToInt(a -> a.getBalance()).sum();
+		return currentAsset;
 	}
 }
