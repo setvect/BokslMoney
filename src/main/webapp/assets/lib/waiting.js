@@ -75,17 +75,6 @@ var waitDialog = waitDialog || (function ($) {
 				watingOpenCount = 0;
 			}
 		},
-		/**
-		 * 강제로 닫기
-		 */
-		hideForce: function () {
-			waitDialog.hide();
-			// Modal 창 백그라운드 없어지지 않는 문제 해결. 아래 코드 필요 없음. 
-			// TODO 향후 삭제
-//			$dialog.modal('hide');
-//			watingOpenCount = 0;
-//			$(".modal-backdrop").remove();
-		}
 	};
 
 })(jQuery);
