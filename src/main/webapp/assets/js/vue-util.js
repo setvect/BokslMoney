@@ -49,13 +49,17 @@ VueUtil._ajaxCall = function (callType, url, _param, _callback, _option) {
 	let finallyCall = option.finallyCall || NOTING_OPERATION;
 	let errorCall = option.errorCall || function (err) { CommonUtil.popupError(err); };
 
-	waitDialog.show(waitMsg, { dialogSize: "sm" });
+	if (option.waitDialog != false) {
+		waitDialog.show(waitMsg, { dialogSize: "sm" });
+	}
 
 	axiosMethod(CommonUtil.appendContextRoot(url), sendParam)
 		.then((result) => _callback(result))
 		.catch((err) => errorCall(err))
 		.finally(() => {
-			waitDialog.hide();
+			if (option.waitDialog != false) {
+				waitDialog.hide();
+			}
 			finallyCall();
 		});
 };

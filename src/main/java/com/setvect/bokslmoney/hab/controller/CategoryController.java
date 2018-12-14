@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.service.CategoryService;
+import com.setvect.bokslmoney.hab.service.TransactionService;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
 import com.setvect.bokslmoney.util.TreeNode;
@@ -28,8 +27,6 @@ import com.setvect.bokslmoney.util.TreeNode;
 @Controller
 @RequestMapping(value = "/hab/category")
 public class CategoryController {
-	/** 로깅 */
-	private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -37,6 +34,8 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
+	@Autowired
+	private TransactionService transactionService;
 	// ============== 뷰==============
 
 	/**
@@ -76,6 +75,24 @@ public class CategoryController {
 	public ResponseEntity<Map<KindType, List<TreeNode<CategoryVo>>>> listAll() {
 		Map<KindType, List<TreeNode<CategoryVo>>> listHierarchyAll = categoryService.listHierarchyAll();
 		return new ResponseEntity<>(listHierarchyAll, HttpStatus.OK);
+	}
+
+	/**
+	 * 지난 거래 내역을 바탕으로 관련 있는 카테고리 추천
+	 *
+	 * @param note
+	 *            거래 내역 메모
+	 * @param kind
+	 *            유형
+	 * @return 카테고리 목록
+	 */
+	@RequestMapping(value = "/listRecommend.json")
+	@ResponseBody
+	public ResponseEntity<List<CategoryVo>> listRecommend(@RequestParam("note") final String note,
+			@RequestParam("kind") final KindType kind) {
+		List<CategoryVo> sorted = categoryService.listRecommend(note, kind);
+
+		return new ResponseEntity<>(sorted, HttpStatus.OK);
 	}
 
 	// ============== 등록 ==============

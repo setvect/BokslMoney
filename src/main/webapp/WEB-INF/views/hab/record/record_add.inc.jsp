@@ -169,7 +169,7 @@
 				// Key: kind, Value: 거래 내용
 				beforeTransaction: {},
 				// 모달 창 닫을 시 부모 페이지를 리로딩 할 지 여부
-				closeReload: false
+				closeReload: false,
 			};
 		},
 		components: {
@@ -253,8 +253,31 @@
 				this.$validator.reset();
 
 				$("#addItem").modal();
+
+				// 메모 입력시 관련 카테고리 추천
+				$("._note").autocomplete({
+					source: (request, response) => {
+						console.log('request :', request);
+						let note = request.term;
+						VueUtil.get("/hab/category/listRecommend.json", { note: note, kind: this.item.kind }, (result) => {
+							response(result.data);
+						}, { waitDialog: false });
+					},
+					focus: () => false,
+					select: (event, ui) => {
+						console.log('select ui :', ui.item);
+						// TODO 작업
+						// this.insertCategory()
+						return false;
+					},
+				}).data("ui-autocomplete")._renderItem = function (ul, item) {
+					return $("<li>")
+						.append("<div>" + item.name + "</div>")
+						.appendTo(ul);
+				};
 			},
 			// 등록 또는 수정
+			// cont. true: 연속입력, false: 입력후 모달 닫기
 			addAction(cont) {
 				this.$validator.validateAll().then((result) => {
 					if (!result) {

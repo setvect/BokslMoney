@@ -62,4 +62,16 @@ public final class BokslMoneyConstant {
 	/** 시작 후 웹페이지 열기 */
 	public static final boolean OPEN_WEB = EnvirmentProperty.getBoolean("com.setvect.bokslmoney.openweb");
 
+	/**
+	 * 거래 내역중 메모를 바탕으로 카테고리 추천
+	 */
+	public static class CategoryRecommend {
+		/** 현재를 기준으로 과거 거래 내역을 어디까지 조회 할 지 일(day)로 범위 지정 */
+		public static final int DAYS = 50;
+		/** 최대 조회 건수 */
+		public static final int MAX_ITEM_COUNT = 1000;
+		/** 후보 추천 갯수 */
+		public static final int CANDIDATE_COUNT = 10;
+	}
+
 }

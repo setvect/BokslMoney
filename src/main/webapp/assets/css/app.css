@@ -42,3 +42,7 @@ td.fc-holiday .fc-day-number {
 body {
   padding-right: 0 !important;
 }
+/* 거래 모달창에서 자동완성 레이어 표시되게 */
+.ui-autocomplete {
+  z-index: 9999 !important;
+}

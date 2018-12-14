@@ -1,5 +1,7 @@
 package com.setvect.bokslmoney.hab.service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -9,9 +11,13 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.setvect.bokslmoney.BokslMoneyConstant.CategoryRecommend;
+import com.setvect.bokslmoney.hab.controller.TransactionSearchParam;
 import com.setvect.bokslmoney.hab.repository.CategoryRepository;
 import com.setvect.bokslmoney.hab.vo.CategoryVo;
 import com.setvect.bokslmoney.hab.vo.KindType;
+import com.setvect.bokslmoney.hab.vo.TransactionVo;
+import com.setvect.bokslmoney.util.DateUtil;
 import com.setvect.bokslmoney.util.TreeNode;
 
 @Service
@@ -20,6 +26,11 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository itemRepository;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private TransactionService transactionService;
 	private static int ROOT_ITEM_SEQ = 0;
 
 	/**
@@ -70,4 +81,34 @@ public class CategoryService {
 		return mapping;
 	}
 
+	/**
+	 * @param note
+	 * @param kind
+	 * @return
+	 */
+	public List<CategoryVo> listRecommend(final String note, final KindType kind) {
+		LocalDate to = LocalDate.now();
+		LocalDate from = to.minusDays(CategoryRecommend.DAYS);
+
+		TransactionSearchParam searchCondition = new TransactionSearchParam();
+		searchCondition.setFrom(DateUtil.toDate(from));
+		searchCondition.setTo(DateUtil.toDate(to));
+		searchCondition.setNote(note);
+		searchCondition.setKindType(kind);
+		searchCondition.setReturnCount(CategoryRecommend.MAX_ITEM_COUNT);
+
+		// 가장 많이 나온 카테고리 순으로 정렬
+		List<TransactionVo> trans = transactionService.list(searchCondition);
+		Map<CategoryVo, Long> categoryGroup = trans.stream().map(tran -> tran.getCategory())
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+		List<CategoryVo> sorted = categoryGroup.entrySet().stream()
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).map(e -> e.getKey())
+				.limit(CategoryRecommend.CANDIDATE_COUNT).collect(Collectors.toList());
+
+		sorted.forEach(cate -> {
+			cate.setParentCategory(categoryRepository.findById(cate.getParentSeq()).get());
+		});
+		return sorted;
+	}
 }

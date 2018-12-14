@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@EqualsAndHashCode(of = { "categorySeq" })
 public class CategoryVo {
 	/** 아이템 일련번호 */
 	@Id
@@ -51,6 +54,10 @@ public class CategoryVo {
 	@Column(name = "DELETE_FLAG", length = 1, nullable = false)
 	@Type(type = "yes_no")
 	private boolean deleteFlag;
+
+	/** 부모 카테고리 */
+	@Transient
+	private CategoryVo parentCategory;
 
 	public boolean isRoot() {
 		return parentSeq == 0;

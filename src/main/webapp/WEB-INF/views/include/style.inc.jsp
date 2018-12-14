@@ -10,9 +10,6 @@
 <!-- Custom Theme Style -->
 <link href="${pageContext.request.contextPath}/assets/lib/gentelella/css/custom.css" rel="stylesheet">
 
-<!-- Custom Theme Style -->
-<link href="${pageContext.request.contextPath}/assets/lib/gentelella/css/custom.min.css" rel="stylesheet">
-
 <!-- App -->
 <link href="${pageContext.request.contextPath}/assets/css/app.css" rel="stylesheet">
 
