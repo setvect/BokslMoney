@@ -40,7 +40,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">메모: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<input type="text" class="form-control _note" name="note" v-model="item.note" v-validate="'required'"
-									 data-vv-as="메모 " @keyup.13="addAction(true)">
+									 data-vv-as="메모 ">
 									<span class="error" v-if="errors.has('note')">{{errors.first('note')}}</span>
 								</div>
 							</div>
@@ -170,6 +170,8 @@
 				beforeTransaction: {},
 				// 모달 창 닫을 시 부모 페이지를 리로딩 할 지 여부
 				closeReload: false,
+				// 추천 카테고리
+				recommendCategories: []
 			};
 		},
 		components: {
@@ -252,6 +254,7 @@
 				});
 				this.$validator.reset();
 
+				$('#addItem').on('shown.bs.modal', () => $("._note").focus())
 				$("#addItem").modal();
 
 				// 메모 입력시 관련 카테고리 추천
@@ -265,14 +268,12 @@
 					},
 					focus: () => false,
 					select: (event, ui) => {
-						console.log('select ui :', ui.item);
-						// TODO 작업
-						// this.insertCategory()
+						this.insertCategory(ui.item.parentCategory, ui.item);
 						return false;
 					},
 				}).data("ui-autocomplete")._renderItem = function (ul, item) {
 					return $("<li>")
-						.append("<div>" + item.name + "</div>")
+						.append("<div>" + item.parentCategory.name + " > " + item.name + "</div>")
 						.appendTo(ul);
 				};
 			},

@@ -102,6 +102,12 @@ public class CategoryService {
 		Map<CategoryVo, Long> categoryGroup = trans.stream().map(tran -> tran.getCategory())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
+		// 직접 분류에서 찾은 항목은 우선순위 높게 측정
+		List<CategoryVo> categories = categoryRepository.listSub(kind, note);
+		categories.forEach(category -> {
+			categoryGroup.put(category, Long.MAX_VALUE);
+		});
+
 		List<CategoryVo> sorted = categoryGroup.entrySet().stream()
 				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).map(e -> e.getKey())
 				.limit(CategoryRecommend.CANDIDATE_COUNT).collect(Collectors.toList());
