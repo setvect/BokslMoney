@@ -92,7 +92,7 @@
 			},
 			// 유형 리스트
 			kindList() {
-				return [{ 'INCOME': "지출합계" }, { 'SPENDING': "수입합계" }, { 'TRANSFER': "이체합계" }];
+				return [{ 'SPENDING': "지출합계" }, { 'INCOME': "수입합계" }, { 'TRANSFER': "이체합계" }];
 			}
 		},
 		methods: {
