@@ -9,7 +9,6 @@
 			<div class="form-group col-md-4"><label for="inputCity">부채(마이너스 계좌 합)</label><span class="form-control text-right">{{debt
 					| numberFormat}}</span></div>
 		</div>
-
 		<table class="table table-striped jambo_table bulk_action table-bordered" id="grid">
 			<thead>
 				<tr class="headings">
@@ -36,6 +35,7 @@
 		</table>
 		<div>
 			<button type="button" class="btn btn-success" @click="addForm()">추가</button>
+			<button type="button" class="btn btn-success" style="margin: 0;float: right" @click="exportExcel();">내보내기(엑셀)</button>
 		</div>
 	</div>
 </template>
@@ -83,7 +83,21 @@
 						if (this.grid != null) {
 							this.grid.destroy();
 						}
-						this.grid = $('#grid').DataTable({ paging: false, bInfo: false, searching: false });
+						this.grid = $('#grid').DataTable({
+							paging: false, bInfo: false, searching: false,
+							dom: 'Bfrtip',
+							buttons: [{
+								extend: 'excelHtml5',
+								title: '복슬머니 계좌목록',
+								customize: function (xlsx) {
+									var sheet = xlsx.xl.worksheets['sheet1.xml'];
+									$('row c', sheet).attr('s', '25');
+								}
+							}]
+						});
+
+						// 엑셀 다운로드 button 감추기
+						$(".buttons-excel").hide();
 					})
 				});
 			},
@@ -97,6 +111,11 @@
 			// 수정폼
 			editForm(item) {
 			},
+			// 엑셀 다운로드
+			exportExcel() {
+				// datatables에 있는 버튼 클릭
+				$(".buttons-excel").trigger("click");
+			}
 		},
 		mounted() {
 			this.list();

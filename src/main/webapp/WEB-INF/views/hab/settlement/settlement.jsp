@@ -32,12 +32,14 @@
 						<tbody>
 							<tr v-for="spending in spendingList">
 								<td>{{spending.name}}</td>
-								<td class="text-right" v-for="month in monthList">{{getSpending(month.month(), spending.categorySeq) |
+								<td class="text-right" v-for="month in monthList" @click="viewList(month, spending.kind, spending.categorySeq)">{{getSpending(month.month(),
+									spending.categorySeq) |
 									numberFormat}}</td>
 							</tr>
 							<tr class="info" v-for="kindMap in kindList">
 								<td>{{Object.values(kindMap)[0]}}</td>
-								<td class="text-right" v-for="month in monthList">{{getKindSum(month.month(), Object.keys(kindMap)[0])|
+								<td class="text-right" v-for="month in monthList" @click="viewList(month, Object.keys(kindMap)[0],0)">{{getKindSum(month.month(),
+									Object.keys(kindMap)[0])|
 									numberFormat}}</td>
 							</tr>
 							<tr class="success">
@@ -52,7 +54,10 @@
 			</div>
 		</div>
 	</div>
+	<record-list ref="recordListPopup"></record-list>
 </div>
+
+<jsp:include page="../component/component_record_list.jsp"></jsp:include>
 
 <script type="text/javascript">
 	const currentYear = (new Date()).getFullYear();
@@ -72,6 +77,9 @@
 				kindGroupSum: {},
 				gridTable: null,
 			};
+		},
+		components: {
+			'recordList': recordListComponent,
 		},
 		computed: {
 			yearList() {
@@ -93,7 +101,7 @@
 			// 유형 리스트
 			kindList() {
 				return [{ 'SPENDING': "지출합계" }, { 'INCOME': "수입합계" }, { 'TRANSFER': "이체합계" }];
-			}
+			},
 		},
 		methods: {
 			initGrid() {
@@ -137,6 +145,15 @@
 						})
 					});
 				});
+			},
+			// 선택항목 거래 내역 조회
+			// month: mement 객체
+			viewList(month, kind, categorySeq) {
+				let from = month.clone();
+				let to = month.clone().add('month', 1).add('second', -1);
+				console.log('kind :', kind);
+
+				this.$refs.recordListPopup.openForm(from, to, kind, categorySeq);
 			},
 			// month: 0부터 시작,
 			// categorySeq: 대분류 아이디

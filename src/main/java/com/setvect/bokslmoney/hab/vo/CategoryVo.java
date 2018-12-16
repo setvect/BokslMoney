@@ -59,6 +59,9 @@ public class CategoryVo {
 	@Transient
 	private CategoryVo parentCategory;
 
+	/**
+	 * @return true: 최상위 분류
+	 */
 	public boolean isRoot() {
 		return parentSeq == 0;
 	}

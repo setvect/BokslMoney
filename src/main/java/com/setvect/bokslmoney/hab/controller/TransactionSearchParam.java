@@ -29,6 +29,9 @@ public class TransactionSearchParam extends SearchListParam {
 	/** 유형 검색 */
 	private Set<KindType> kindTypeSet;
 
+	/** 대분류 코드 */
+	private int categorySeq;
+
 	/**
 	 */
 	public TransactionSearchParam() {

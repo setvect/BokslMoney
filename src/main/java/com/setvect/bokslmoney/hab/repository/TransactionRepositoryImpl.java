@@ -37,6 +37,11 @@ public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
 			where += " AND note like :note ";
 			bindParameter.put("note", ApplicationUtil.makeLikeString(searchCondition.getNote()));
 		}
+		if (searchCondition.getCategorySeq() != 0) {
+			where += " AND m.category.parentSeq = :categorySeq ";
+			bindParameter.put("categorySeq", searchCondition.getCategorySeq());
+		}
+
 		if (searchCondition.getKindTypeSet() != null && !searchCondition.getKindTypeSet().isEmpty()) {
 			where += " AND kind in :kind ";
 			bindParameter.put("kind", searchCondition.getKindTypeSet());

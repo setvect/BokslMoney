@@ -348,7 +348,6 @@
 			// 자주쓰는 거래 선택
 			selectOftenUsed(often) {
 				this.item = Object.assign(this.item, $.extend(true, {}, often));
-				console.log('this.item :', this.item);
 				if (this.item.money == 0) {
 					this.item.money = "";
 				}
