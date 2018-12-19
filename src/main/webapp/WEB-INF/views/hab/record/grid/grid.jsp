@@ -198,6 +198,7 @@
 				$('._datepicker_from').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
+					showDropdowns: true,
 					startDate: this.condition.from
 				}, (from) => {
 					this.condition.from = from.format("YYYY-MM-DD");
@@ -206,6 +207,7 @@
 				$('._datepicker_to').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
+					showDropdowns: true,
 					startDate: this.condition.to
 				}, (to) => {
 					this.condition.to = to.format("YYYY-MM-DD");

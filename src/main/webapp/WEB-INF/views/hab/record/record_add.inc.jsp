@@ -248,6 +248,7 @@
 				$('._datepicker').daterangepicker({
 					singleDatePicker: true,
 					singleClasses: "",
+					showDropdowns: true,
 					startDate: this.selectDate.format("YYYY-MM-DD")
 				}, (start) => {
 					this.item.transactionDate = start.format("YYYY-MM-DD");
