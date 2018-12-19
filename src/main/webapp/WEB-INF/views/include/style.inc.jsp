@@ -26,3 +26,6 @@
 
 <!-- 테이블 정렬 -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.min.css"/>
+
+<!-- inputpicker -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/lib/inputpicker-master/jquery.inputpicker.css"/>

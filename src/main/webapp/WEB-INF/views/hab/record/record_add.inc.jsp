@@ -57,6 +57,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">지출계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
+									<input class="form-control" id="test" value="2" />
 									<select class="form-control" v-model="item.payAccount" name="payAccount" v-validate="validatePay" data-vv-as="지출계좌 "
 									 :disabled="disablePay">
 										<option v-for="account in accountList" v-bind:value="account.accountSeq">
@@ -255,7 +256,20 @@
 				});
 				this.$validator.reset();
 
-				$('#addItem').on('shown.bs.modal', () => $("._note").focus())
+				$('#addItem').on('shown.bs.modal', () => {
+					$("._note").focus()
+
+					// inputpicker
+					$('#test').inputpicker({
+						data: this.accountList,
+						fieldText: 'name',
+						fieldValue: 'accountSeq',
+						headShow: false,
+						filterOpen: true,
+						autoOpen: true,
+						width: "100%",
+					});
+				});
 				$("#addItem").modal();
 
 				// 메모 입력시 관련 카테고리 추천

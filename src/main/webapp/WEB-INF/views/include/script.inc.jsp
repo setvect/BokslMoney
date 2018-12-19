@@ -59,6 +59,9 @@
 <!-- functional library -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/lodash/lodash.min.js"></script>
 
+<!-- inputpicker -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/inputpicker-master/jquery.inputpicker.js"></script>
+
 <script type="text/javascript">
 	moment.locale('ko');
 
