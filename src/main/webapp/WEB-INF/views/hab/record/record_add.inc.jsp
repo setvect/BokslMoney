@@ -57,13 +57,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">지출계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input class="form-control" id="test" value="2" />
-									<select class="form-control" v-model="item.payAccount" name="payAccount" v-validate="validatePay" data-vv-as="지출계좌 "
-									 :disabled="disablePay">
-										<option v-for="account in accountList" v-bind:value="account.accountSeq">
-											{{account.name}}
-										</option>
-									</select>
+									<input class="form-control" id="payAccountList" v-model="item.payAccount" name="payAccount" v-validate="validatePay"
+									 data-vv-as="지출계좌 " :disabled="disablePay" />
 									<span class="error" v-if="errors.has('payAccount')">{{errors.first('payAccount')}}</span>
 								</div>
 							</div>
@@ -71,12 +66,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">수입계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<select class="form-control" v-model="item.receiveAccount" name="receiveAccount" v-validate="validateReceive"
-									 data-vv-as="수입계좌 " :disabled="disableReceive">
-										<option v-for="account in accountList" v-bind:value="account.accountSeq">
-											{{account.name}}
-										</option>
-									</select>
+									<input class="form-control" id="receiveAccountList" v-model="item.receiveAccount" name="receiveAccount"
+									 v-validate="validateReceive" data-vv-as="수입계좌 " :disabled="disableReceive" />
 									<span class="error" v-if="errors.has('receiveAccount')">{{errors.first('receiveAccount')}}</span>
 								</div>
 							</div>
@@ -172,7 +163,7 @@
 				// 모달 창 닫을 시 부모 페이지를 리로딩 할 지 여부
 				closeReload: false,
 				// 추천 카테고리
-				recommendCategories: []
+				recommendCategories: [],
 			};
 		},
 		components: {
@@ -257,25 +248,13 @@
 				this.$validator.reset();
 
 				$('#addItem').on('shown.bs.modal', () => {
-					$("._note").focus()
-
-					// inputpicker
-					$('#test').inputpicker({
-						data: this.accountList,
-						fieldText: 'name',
-						fieldValue: 'accountSeq',
-						headShow: false,
-						filterOpen: true,
-						autoOpen: true,
-						width: "100%",
-					});
+					$("._note").focus();
+					this.initInputpicker();
 				});
 				$("#addItem").modal();
-
 				// 메모 입력시 관련 카테고리 추천
 				$("._note").autocomplete({
 					source: (request, response) => {
-						console.log('request :', request);
 						let note = request.term;
 						VueUtil.get("/hab/category/listRecommend.json", { note: note, kind: this.item.kind }, (result) => {
 							response(result.data);
@@ -291,6 +270,18 @@
 						.append("<div>" + item.parentCategory.name + " > " + item.name + "</div>")
 						.appendTo(ul);
 				};
+			},
+			initInputpicker() {
+				$('#payAccountList,#receiveAccountList').inputpicker({
+					data: this.accountList,
+					fieldText: 'name',
+					fieldValue: 'accountSeq',
+					headShow: false,
+					filterOpen: true,
+					autoOpen: true,
+					width: "100%",
+					selectMode: 'empty'
+				});
 			},
 			// 등록 또는 수정
 			// cont. true: 연속입력, false: 입력후 모달 닫기
@@ -367,6 +358,11 @@
 					this.item.money = "";
 				}
 				this.insertCategory(often.parentCategory, often.category);
+				// $('#payAccountList,#receiveAccountList').inputpicker('destroy');
+
+				this.$nextTick(() => {
+					this.initInputpicker();
+				})
 			},
 			// 자주쓰는 거래 팝업 열기
 			openOften(type, often) {
