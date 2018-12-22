@@ -35,7 +35,7 @@ public class SettlementController {
 	 */
 	@RequestMapping(value = "/settlement.do")
 	public String page(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/settlement/settlement.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/settlement/settlement.jsp");
 		return "template";
 	}
 

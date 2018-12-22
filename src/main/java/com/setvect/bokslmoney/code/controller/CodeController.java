@@ -43,7 +43,7 @@ public class CodeController {
 	 */
 	@RequestMapping(value = "/page.do")
 	public String page(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/code/code.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/code/code.jsp");
 		return "template";
 	}
 

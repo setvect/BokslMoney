@@ -37,7 +37,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/loginUserEdit.do")
 	public String page(final HttpServletRequest request) {
-		return "user/login_user_edit";
+		return "app/user/login_user_edit";
 	}
 
 	// ============== 수정 ==============

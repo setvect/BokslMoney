@@ -45,7 +45,7 @@ public class CategoryController {
 	 */
 	@RequestMapping(value = "/page.do")
 	public String page(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/category/category.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/category/category.jsp");
 		return "template";
 	}
 

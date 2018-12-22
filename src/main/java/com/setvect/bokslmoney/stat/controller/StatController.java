@@ -23,7 +23,7 @@ public class StatController {
 	 */
 	@RequestMapping(value = "/stat.do")
 	public String page(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/stat/stat.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/stat/stat.jsp");
 		return "template";
 
 		// ============== 조회 ==============

@@ -53,7 +53,7 @@ public class TransactionController {
 	 */
 	@RequestMapping(value = "/calendar.do")
 	public String page(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/transaction/calendar.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/transaction/calendar.jsp");
 		return "template";
 	}
 
@@ -64,7 +64,7 @@ public class TransactionController {
 	 */
 	@RequestMapping(value = "/grid.do")
 	public String grid(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/transaction/grid.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/transaction/grid.jsp");
 		return "template";
 	}
 

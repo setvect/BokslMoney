@@ -40,7 +40,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/page.do")
 	public String page(final HttpServletRequest request) {
-		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/hab/account/account.jsp");
+		request.setAttribute(AttributeName.LOAD_PAGE, "/WEB-INF/views/app/account/account.jsp");
 		return "template";
 	}
 
