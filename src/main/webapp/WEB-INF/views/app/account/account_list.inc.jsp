@@ -77,7 +77,7 @@
 		methods: {
 			// 리스트
 			list() {
-				VueUtil.get("/hab/account/list.json", {}, (result) => {
+				VueUtil.get("/account/list.json", {}, (result) => {
 					this.itemList = result.data;
 					this.$nextTick(() => {
 						if (this.grid != null) {

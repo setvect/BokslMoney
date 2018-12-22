@@ -128,16 +128,16 @@
 			// 리스트
 			listSpending() {
 				let param = { kind: "SPENDING", parent: 0 };
-				VueUtil.get("/hab/category/list.json", param, (result) => {
+				VueUtil.get("/category/list.json", param, (result) => {
 					this.spendingList = result.data;
 				});
 			},
 			// 결산
 			runSettlement() {
 				this.year = this.yearChoice;
-				VueUtil.get("/hab/settlement/groupOfMonth.json", { year: this.year, kind: "SPENDING" }, (result) => {
+				VueUtil.get("/settlement/groupOfMonth.json", { year: this.year, kind: "SPENDING" }, (result) => {
 					this.spendingGroupSum = result.data;
-					VueUtil.get("/hab/settlement/groupKindOfMonth.json", { year: this.year }, (result) => {
+					VueUtil.get("/settlement/groupKindOfMonth.json", { year: this.year }, (result) => {
 						this.kindGroupSum = result.data;
 						this.$nextTick(() => {
 							this.destroyGrid();

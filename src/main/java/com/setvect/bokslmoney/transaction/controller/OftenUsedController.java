@@ -19,7 +19,7 @@ import com.setvect.bokslmoney.transaction.vo.KindType;
 import com.setvect.bokslmoney.transaction.vo.OftenUsedVo;
 
 @Controller
-@RequestMapping(value = "/hab/oftenUsed")
+@RequestMapping(value = "/oftenUsed")
 public class OftenUsedController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(OftenUsedController.class);

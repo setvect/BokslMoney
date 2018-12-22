@@ -132,7 +132,7 @@
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/account/add.do' : '/hab/account/edit.do'
+					let url = this.actionType == 'add' ? '/account/add.do' : '/account/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addItem").modal('hide');
 						EventBus.$emit('listEvent');

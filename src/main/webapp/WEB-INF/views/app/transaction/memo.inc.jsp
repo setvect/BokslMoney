@@ -71,7 +71,7 @@
 					if (!result) {
 						return;
 					}
-					let url = this.actionType == 'add' ? '/hab/memo/add.do' : '/hab/memo/edit.do'
+					let url = this.actionType == 'add' ? '/memo/add.do' : '/memo/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addMemo").modal('hide');
 						EventBus.$emit('reloadEvent');
@@ -83,7 +83,7 @@
 				if (!confirm("삭제?")) {
 					return;
 				}
-				VueUtil.post('/hab/memo/delete.do', { memoSeq: memoSeq }, (result) => {
+				VueUtil.post('/memo/delete.do', { memoSeq: memoSeq }, (result) => {
 					$("#addMemo").modal('hide');
 					EventBus.$emit('reloadEvent');
 				});

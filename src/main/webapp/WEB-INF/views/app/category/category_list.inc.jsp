@@ -46,7 +46,7 @@
 			// 리스트
 			list(){
 				let param = {kind: this.kind, parent: this.parentSeq};
-				VueUtil.get("/hab/category/list.json", param, (result) => {
+				VueUtil.get("/category/list.json", param, (result) => {
 					this.itemList = result.data;
 				});
 			},
@@ -63,7 +63,7 @@
 			// 정렬 순서 변경
 			changeOrder(downCategorySeq, upCategorySeq){
 				let param = {downCategorySeq: downCategorySeq, upCategorySeq: upCategorySeq};
-				VueUtil.post("/hab/category/changeOrder.do", param, (result) => {
+				VueUtil.post("/category/changeOrder.do", param, (result) => {
 					this.list();
 				});
 			},
@@ -73,7 +73,7 @@
 					return;
 				}
 				let param = {categorySeq: categorySeq};
-				VueUtil.post("/hab/category/delete.do", param, (result) => {
+				VueUtil.post("/category/delete.do", param, (result) => {
 					this.list();
 					this.$emit('@select-item', {categorySeq: -1});
 				});

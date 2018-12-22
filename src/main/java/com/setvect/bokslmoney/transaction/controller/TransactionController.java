@@ -28,7 +28,7 @@ import com.setvect.bokslmoney.util.DateUtil;
  * 달력 기반 가계부 입력
  */
 @Controller
-@RequestMapping(value = "/hab/transaction/")
+@RequestMapping(value = "/transaction/")
 public class TransactionController {
 
 	@Autowired

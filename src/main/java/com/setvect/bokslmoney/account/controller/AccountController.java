@@ -23,7 +23,7 @@ import com.setvect.bokslmoney.code.service.CodeKind;
 import com.setvect.bokslmoney.code.service.CodeService;
 
 @Controller
-@RequestMapping(value = "/hab/account")
+@RequestMapping(value = "/account")
 public class AccountController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(AccountController.class);

@@ -24,7 +24,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/")
 	public String index(final HttpServletRequest request) {
-		return "redirect:/hab/transaction/calendar.do";
+		return "redirect:/transaction/calendar.do";
 	}
 
 	/**

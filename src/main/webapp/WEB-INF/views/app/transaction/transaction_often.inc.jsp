@@ -163,7 +163,7 @@
 			// 등록 또는 수정
 			addAction() {
 				this.$validator.validateAll().then((result) => {
-					let url = this.actionType == 'add' ? '/hab/oftenUsed/add.do' : '/hab/oftenUsed/edit.do'
+					let url = this.actionType == 'add' ? '/oftenUsed/add.do' : '/oftenUsed/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						$("#addOftenItem").modal('hide');
 						EventBus.$emit('listOftenUsedEvent');
@@ -172,7 +172,7 @@
 			},
 			// 계좌 목록
 			loadAccount() {
-				VueUtil.get("/hab/account/list.json", {}, (result) => {
+				VueUtil.get("/account/list.json", {}, (result) => {
 					this.accountList = result.data;
 				});
 			},

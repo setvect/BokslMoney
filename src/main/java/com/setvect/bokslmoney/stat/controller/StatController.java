@@ -11,7 +11,7 @@ import com.setvect.bokslmoney.BokslMoneyConstant.AttributeName;
  * 통계
  */
 @Controller
-@RequestMapping(value = "/hab/stat")
+@RequestMapping(value = "/stat")
 public class StatController {
 
 	// ============== 뷰==============

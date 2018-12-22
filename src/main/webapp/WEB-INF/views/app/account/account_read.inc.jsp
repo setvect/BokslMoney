@@ -82,7 +82,7 @@
 				if(!confirm("삭제?")){
 					return;
 				}
-				VueUtil.post('/hab/account/delete.do', {accountSeq: itemSeq}, (result) => {
+				VueUtil.post('/account/delete.do', {accountSeq: itemSeq}, (result) => {
 					$("#readItem").modal('hide');
 					EventBus.$emit('listEvent');
 				});

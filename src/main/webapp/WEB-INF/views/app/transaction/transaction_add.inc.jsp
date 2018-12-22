@@ -256,7 +256,7 @@
 				$("._note").autocomplete({
 					source: (request, response) => {
 						let note = request.term;
-						VueUtil.get("/hab/category/listRecommend.json", { note: note, kind: this.item.kind }, (result) => {
+						VueUtil.get("/category/listRecommend.json", { note: note, kind: this.item.kind }, (result) => {
 							response(result.data);
 						}, { waitDialog: false });
 					},
@@ -295,7 +295,7 @@
 					delete this.item.category;
 					delete this.item.parentCategory;
 
-					let url = this.actionType == 'add' ? '/hab/transaction/add.do' : '/hab/transaction/edit.do'
+					let url = this.actionType == 'add' ? '/transaction/add.do' : '/transaction/edit.do'
 					VueUtil.post(url, this.item, (result) => {
 						this.closeReload = true;
 						if (cont && this.actionType == "add") {
@@ -320,7 +320,7 @@
 			},
 			// 계좌 목록
 			loadAccount() {
-				VueUtil.get("/hab/account/list.json", {}, (result) => {
+				VueUtil.get("/account/list.json", {}, (result) => {
 					this.accountList = result.data;
 				});
 			},
@@ -335,7 +335,7 @@
 			},
 			// 자주쓰는 거래 정보
 			loadOftenUsed() {
-				VueUtil.get("/hab/oftenUsed/list.json", { kind: this.item.kind }, (result) => {
+				VueUtil.get("/oftenUsed/list.json", { kind: this.item.kind }, (result) => {
 					this.oftenUsedList = result.data;
 				});
 			},
@@ -371,7 +371,7 @@
 			// 정렬 순서 변경
 			changeOrder(downOftenUsedSeq, upOftenUsedSeq) {
 				let param = { downOftenUsedSeq: downOftenUsedSeq, upOftenUsedSeq: upOftenUsedSeq };
-				VueUtil.post('/hab/oftenUsed/changeOrder.do', param, (result) => {
+				VueUtil.post('/oftenUsed/changeOrder.do', param, (result) => {
 					this.loadOftenUsed();
 				});
 			},
@@ -381,7 +381,7 @@
 					return;
 				}
 				let param = { oftenUsedSeq: oftenUsedSeq };
-				VueUtil.post('/hab/oftenUsed/delete.do', param, (result) => {
+				VueUtil.post('/oftenUsed/delete.do', param, (result) => {
 					this.loadOftenUsed();
 				});
 			},

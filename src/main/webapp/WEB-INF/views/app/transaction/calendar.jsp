@@ -213,7 +213,7 @@
 			// 해당 월에 거래 내역 및 메모 조회
 			loadMonthData(year, month) {
 				// 해당 월에 등록된 지출,수입,이체 항목 조회
-				VueUtil.get("/hab/transaction/listByMonth.json", { year: year, month: month }, (result) => {
+				VueUtil.get("/transaction/listByMonth.json", { year: year, month: month }, (result) => {
 					this.calendar.fullCalendar('removeEvents');
 					this.transactionList = result.data;
 
@@ -223,7 +223,7 @@
 					this.multiUpdate(transactionSet);
 
 					// 해당 월에 등록된 메모 조회
-					VueUtil.get("/hab/memo/listByMonth.json", { year: year, month: month }, (result) => {
+					VueUtil.get("/memo/listByMonth.json", { year: year, month: month }, (result) => {
 						this.memoList = result.data;
 						for (let idx in this.memoList) {
 							let memo = this.memoList[idx];

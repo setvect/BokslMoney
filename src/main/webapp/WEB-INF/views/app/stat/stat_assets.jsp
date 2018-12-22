@@ -49,7 +49,7 @@
 					month = 1;
 				}
 				let fromDate = moment([this.fromYear, 0, 1]);
-				VueUtil.get("/hab/settlement/statAssets.json", { from: fromDate.valueOf() }, (result) => {
+				VueUtil.get("/settlement/statAssets.json", { from: fromDate.valueOf() }, (result) => {
 					this.accumulateOfMonth = result.data;
 					this.$nextTick(() => {
 						this.drawChart();

@@ -25,7 +25,7 @@ import com.setvect.bokslmoney.util.TreeNode;
  * 항목관리 컨트롤러
  */
 @Controller
-@RequestMapping(value = "/hab/category")
+@RequestMapping(value = "/category")
 public class CategoryController {
 
 	@Autowired

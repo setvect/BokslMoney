@@ -23,7 +23,7 @@ import com.setvect.bokslmoney.util.PageResult;
  * 메모 관리
  */
 @Controller
-@RequestMapping(value = "/hab/memo/")
+@RequestMapping(value = "/memo/")
 public class MemoController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(MemoController.class);

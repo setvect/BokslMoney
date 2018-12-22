@@ -121,7 +121,7 @@
 			},
 			// 거래내역 조회
 			loadTransaction() {
-				VueUtil.get("/hab/transaction/listByRange.json", this.condition, (result) => {
+				VueUtil.get("/transaction/listByRange.json", this.condition, (result) => {
 					this.destroyGrid();
 					this.transactionList = result.data;
 					this.$nextTick(() => {

@@ -59,7 +59,7 @@ let TransactionMixin = {
 			if (!confirm("삭제하시겠습니까?")) {
 				return;
 			}
-			VueUtil.post('/hab/transaction/delete.do', { itemSeq: item.transactionSeq }, (result) => {
+			VueUtil.post('/transaction/delete.do', { itemSeq: item.transactionSeq }, (result) => {
 				this.reload();
 			});
 		},
@@ -83,7 +83,7 @@ AppUtil.getAccountName = function (accountSeq) {
 	if (AppUtil.accountMap == null) {
 		var v = $.ajax({
 			type: "GET",
-			url: CommonUtil.appendContextRoot("/hab/account/mapName.json"),
+			url: CommonUtil.appendContextRoot("/account/mapName.json"),
 			async: false
 		}).responseText;
 		AppUtil.accountMap = JSON.parse(v);

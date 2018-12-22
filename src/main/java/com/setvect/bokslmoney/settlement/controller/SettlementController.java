@@ -21,7 +21,7 @@ import com.setvect.bokslmoney.transaction.vo.KindType;
  * 결산
  */
 @Controller
-@RequestMapping(value = "/hab/settlement")
+@RequestMapping(value = "/settlement")
 public class SettlementController {
 	@Autowired
 	private TransactionService transactionService;

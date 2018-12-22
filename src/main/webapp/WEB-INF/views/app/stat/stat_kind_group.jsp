@@ -41,7 +41,7 @@
 			// 통계
 			runStat() {
 				this.year = this.yearChoice;
-				VueUtil.get("/hab/settlement/groupKindOfMonth.json", { year: this.year }, (result) => {
+				VueUtil.get("/settlement/groupKindOfMonth.json", { year: this.year }, (result) => {
 					this.kindGroupSum = result.data;
 					this.$nextTick(() => {
 						this.drawChart();
