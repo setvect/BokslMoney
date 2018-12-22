@@ -143,7 +143,7 @@
 	</div>
 </div>
 
-<jsp:include page="../record_add.inc.jsp"></jsp:include>
+<jsp:include page="transaction_add.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	Vue.use(VeeValidate, {

@@ -142,8 +142,8 @@
 	</div>
 </template>
 
-<jsp:include page="record_category.inc.jsp"></jsp:include>
-<jsp:include page="record_often.inc.jsp"></jsp:include>
+<jsp:include page="transaction_category.inc.jsp"></jsp:include>
+<jsp:include page="transaction_often.inc.jsp"></jsp:include>
 
 <script type="text/javascript">
 	const itemAddComponent = Vue.component("itemAdd", {
