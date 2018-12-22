@@ -19,7 +19,7 @@ import com.setvect.bokslmoney.code.repository.CodeMainRepository;
 import com.setvect.bokslmoney.code.vo.CodeItemKey;
 import com.setvect.bokslmoney.code.vo.CodeItemVo;
 import com.setvect.bokslmoney.code.vo.CodeMainVo;
-import com.setvect.bokslmoney.hab.repository.CategoryRepository;
+import com.setvect.bokslmoney.transaction.repository.CategoryRepository;
 
 @Controller
 @RequestMapping(value = "/code")

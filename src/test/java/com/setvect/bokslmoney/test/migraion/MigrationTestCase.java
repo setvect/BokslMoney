@@ -3,7 +3,6 @@ package com.setvect.bokslmoney.test.migraion;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.setvect.bokslmoney.migration.service.MigrationService;
 import com.setvect.bokslmoney.test.MainTestBase;
 
 /**

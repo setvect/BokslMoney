@@ -173,10 +173,6 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			userService.init();
 			CodeService codeService = BeanUtils.getBean(CodeService.class);
 			codeService.init();
-
-			// MigrationService migrationService =
-			// BeanUtils.getBean(MigrationService.class);
-			// migrationService.run();
 		};
 	}
 
