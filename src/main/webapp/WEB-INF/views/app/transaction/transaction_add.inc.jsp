@@ -57,8 +57,12 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">지출계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input class="form-control" id="payAccountList" v-model="item.payAccount" name="payAccount" v-validate="validatePay"
-									 data-vv-as="지출계좌 " :disabled="disablePay" />
+									<select class="form-control" v-model="item.payAccount" name="receiveAccount" v-validate="validatePay"
+									 data-vv-as="지출계좌 " :disabled="disablePay">
+										<option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option>
+									</select>
 									<span class="error" v-if="errors.has('payAccount')">{{errors.first('payAccount')}}</span>
 								</div>
 							</div>
@@ -66,8 +70,12 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">수입계좌: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input class="form-control" id="receiveAccountList" v-model="item.receiveAccount" name="receiveAccount"
-									 v-validate="validateReceive" data-vv-as="수입계좌 " :disabled="disableReceive" />
+									<select class="form-control" v-model="item.receiveAccount" name="receiveAccount" v-validate="validateReceive"
+									 data-vv-as="수입계좌 " :disabled="disableReceive">
+										<option v-for="account in accountList" v-bind:value="account.accountSeq">
+											{{account.name}}
+										</option>
+									</select>
 									<span class="error" v-if="errors.has('receiveAccount')">{{errors.first('receiveAccount')}}</span>
 								</div>
 							</div>
@@ -249,7 +257,6 @@
 
 				$('#addItem').on('shown.bs.modal', () => {
 					$("._note").focus();
-					this.initInputpicker();
 				});
 				$("#addItem").modal();
 				// 메모 입력시 관련 카테고리 추천
@@ -270,18 +277,6 @@
 						.append("<div>" + item.parentCategory.name + " > " + item.name + "</div>")
 						.appendTo(ul);
 				};
-			},
-			initInputpicker() {
-				$('#payAccountList,#receiveAccountList').inputpicker({
-					data: this.accountList,
-					fieldText: 'name',
-					fieldValue: 'accountSeq',
-					headShow: false,
-					filterOpen: true,
-					autoOpen: true,
-					width: "100%",
-					selectMode: 'empty'
-				});
 			},
 			// 등록 또는 수정
 			// cont. true: 연속입력, false: 입력후 모달 닫기
@@ -359,10 +354,6 @@
 				}
 				this.insertCategory(often.parentCategory, often.category);
 				// $('#payAccountList,#receiveAccountList').inputpicker('destroy');
-
-				this.$nextTick(() => {
-					this.initInputpicker();
-				})
 			},
 			// 자주쓰는 거래 팝업 열기
 			openOften(type, often) {

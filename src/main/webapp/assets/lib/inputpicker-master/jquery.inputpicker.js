@@ -72,8 +72,6 @@
                         .css('user-select', 'none')
                         .on('selectstart', false);
                     ;
-console.log('original :', original);
-                    console.log('ow :', ow);
                     // Set width, do not put into the top html in terms of using responsive later.
                     inputpicker_div.css('width', ow + 'px');
 
@@ -506,7 +504,7 @@ console.log('original :', original);
     function dd() {
         if(methods.debug) {
             var args = Array.prototype.slice.call(arguments);
-            console.log(args.length == 1 ? args[0] : args);
+//            console.log(args.length == 1 ? args[0] : args);
         }
     }
 
