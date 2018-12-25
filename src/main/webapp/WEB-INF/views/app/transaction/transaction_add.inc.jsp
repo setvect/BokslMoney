@@ -17,7 +17,7 @@
 								<div class="col-md-10 col-sm-10 col-xs-10">
 									<input type="text" class="form-control has-feedback-left _datepicker" placeholder="First Name" readonly="readonly"
 									 v-model="item.transactionDate" v-once>
-									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+									<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true" style="display: block;"></span>
 								</div>
 							</div>
 
