@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import com.setvect.bokslmoney.temp.MakerSampleDataService;
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.Wrapper;
@@ -64,7 +65,7 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	 *            사용 안함
 	 */
 	public static void main(final String[] args) {
-		// (new File("./db/BokslMoney_db.mv.db")).delete();
+		// (new File("./db/BokslMoney_db_bak.mv.db")).delete();
 		checkDuplicateExecute();
 		applyTray();
 
@@ -173,6 +174,9 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			userService.init();
 			CodeService codeService = BeanUtils.getBean(CodeService.class);
 			codeService.init();
+
+			MakerSampleDataService sampleMaker = BeanUtils.getBean(MakerSampleDataService.class);
+			sampleMaker.makeSampleData();
 		};
 	}
 
