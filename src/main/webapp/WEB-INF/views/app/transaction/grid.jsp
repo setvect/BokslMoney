@@ -36,7 +36,6 @@
 							<button type="button" class="btn btn-success" style="margin: 0;float: right" @click="exportExcel();">내보내기(엑셀)</button>
 						</div>
 
-
 						<table class="table table-striped jambo_table bulk_action table-bordered" id="grid">
 							<thead>
 								<tr class="headings">
@@ -94,6 +93,17 @@
 									<label class="control-label col-sm-3" for="end_date">종료일:</label>
 									<div class="col-sm-9">
 										<input type="input" class="form-control _datepicker_to" readonly="readonly" placeholder="Enter end_date" name="end_date">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-3" for="end_date">계좌:</label>
+									<div class="col-sm-9">
+										<select class="form-control" v-model="condition.accountSeq" name="account">
+											<option v-bind:value="0">== 전체 ==</option>
+											<option v-for="account in accountList" v-bind:value="account.accountSeq">
+												{{account.name}} : {{account.balance | numberFormat}}원 ({{account.accountNumber}})
+											</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
@@ -165,7 +175,9 @@
 					from: moment([NOW_DATE.getFullYear(), NOW_DATE.getMonth()]).format("YYYY-MM-DD"),
 					to: moment().format("YYYY-MM-DD"),
 					note: "",
+					accountSeq: 0,
 				},
+				accountList: [],
 				gridTable: null,
 			};
 		},
@@ -272,6 +284,12 @@
 				this.initDatepicker();
 				this.search();
 			},
+			// 계좌 목록
+			loadAccount() {
+				VueUtil.get("/account/list.json", {}, (result) => {
+					this.accountList = result.data;
+				});
+			},
 			// 엑셀 다운로드
 			exportExcel() {
 				// datatables에 있는 버튼 클릭
@@ -281,6 +299,7 @@
 		mounted() {
 			this.initUi();
 			this.loadTransaction();
+			this.loadAccount();
 			// 지출, 이체, 수입 버튼 클릭
 			$("._input").click((event) => {
 				let type = $(event.target).attr("data-type");

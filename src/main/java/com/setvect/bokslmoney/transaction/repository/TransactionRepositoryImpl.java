@@ -19,7 +19,9 @@ import com.setvect.bokslmoney.util.jpa.PageUtil;
  * 사용자 검색 조건 <br>
  */
 public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
-	/** JPA DB 세션 */
+	/**
+	 * JPA DB 세션
+	 */
 	@PersistenceContext
 	private EntityManager em;
 
@@ -40,6 +42,11 @@ public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
 		if (searchCondition.getCategorySeq() != 0) {
 			where += " AND m.category.parentSeq = :categorySeq ";
 			bindParameter.put("categorySeq", searchCondition.getCategorySeq());
+		}
+
+		if (searchCondition.getAccountSeq() != 0) {
+			where += " AND (m.payAccount= :accountSeq or m.receiveAccount = :accountSeq)";
+			bindParameter.put("accountSeq", searchCondition.getAccountSeq());
 		}
 
 		if (searchCondition.getKindTypeSet() != null && !searchCondition.getKindTypeSet().isEmpty()) {

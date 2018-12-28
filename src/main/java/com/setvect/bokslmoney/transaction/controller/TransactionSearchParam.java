@@ -32,6 +32,9 @@ public class TransactionSearchParam extends SearchListParam {
 	/** 대분류 코드 */
 	private int categorySeq;
 
+	/** 계좌 번호*/
+	private int accountSeq;
+
 	/**
 	 */
 	public TransactionSearchParam() {
