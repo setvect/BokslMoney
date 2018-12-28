@@ -9,6 +9,6 @@ import com.setvect.bokslmoney.account.vo.AccountVo;
 
 public interface AccountRepository extends JpaRepository<AccountVo, Integer> {
 
-	@Query("select a from AccountVo a where deleteFlag = false order by accountSeq")
+	@Query("select a from AccountVo a where deleteFlag = false order by name")
 	public List<AccountVo> list();
 }
