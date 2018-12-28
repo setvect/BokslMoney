@@ -39,30 +39,39 @@ import lombok.extern.log4j.Log4j2;
  * Spring boot application 시작점.
  */
 @SpringBootApplication
-@ImportResource({ "classpath:/spring/context-transaction.xml" })
+@ImportResource({"classpath:/spring/context-transaction.xml"})
 @EnableScheduling
 @EnableAspectJAutoProxy
 @Log4j2
 public class BokslMoneyApplication extends SpringBootServletInitializer {
-	/** 중복 방지를 위해 임의로 bind할 포드 */
+	/**
+	 * 중복 방지를 위해 임의로 bind할 포드
+	 */
 	private static final int PREVENT_DUPLICATION = 11228;
-	/** 설정 파일 경로. */
+	/**
+	 * 설정 파일 경로.
+	 */
 	private static final String CONFIG_PROPERTIES = "/application.properties";
-	/** 테스트 설정 파일 경로 */
+	/**
+	 * 테스트 설정 파일 경로
+	 */
 	private static final String CONFIG_PROPERTIES_TEST = "/test.properties";
 
-	/** 초기화 완료 여부 */
+	/**
+	 * 초기화 완료 여부
+	 */
 	private static boolean initComplete = false;
 
-	/** 프로그램 실행 여부 체크 용도(중복 실행 방지) */
+	/**
+	 * 프로그램 실행 여부 체크 용도(중복 실행 방지)
+	 */
 	@SuppressWarnings("unused")
 	private static DatagramSocket runCheck;
 
 	/**
 	 * Application 시작점.
 	 *
-	 * @param args
-	 *            사용 안함
+	 * @param args 사용 안함
 	 */
 	public static void main(final String[] args) {
 		// (new File("./db/BokslMoney_db_bak.mv.db")).delete();
@@ -146,7 +155,6 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 	/**
 	 * Spring scope가 아닌 곳에서 Spring Bean 객체를 접근하기 위해 사용.
 	 *
-	 *
 	 * @return ApplicationContextProvider
 	 */
 	@Bean
@@ -176,7 +184,7 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			codeService.init();
 
 			MakerSampleDataService sampleMaker = BeanUtils.getBean(MakerSampleDataService.class);
-			sampleMaker.makeSampleData();
+//			sampleMaker.makeSampleData();
 		};
 	}
 

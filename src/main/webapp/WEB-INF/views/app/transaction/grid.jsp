@@ -179,6 +179,8 @@
 				},
 				accountList: [],
 				gridTable: null,
+				// 정렬 조건 유지하기 위함
+				order: [0, 'asc'],
 			};
 		},
 		components: {
@@ -241,6 +243,14 @@
 						}
 					}]
 				});
+				this.gridTable.order(this.order).draw();
+				$('#grid').on('order.dt', () => {
+					if (this.gridTable.order().length == 0) {
+						return;
+					}
+					this.order = this.gridTable.order()[0];
+				});
+
 				// 엑셀 다운로드 button 감추기
 				$(".buttons-excel").hide();
 			},

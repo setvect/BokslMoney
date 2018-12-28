@@ -48,7 +48,9 @@
 		data() {
 			return {
 				itemList: [],
-				grid: null
+				gridTable: null,
+				// 정렬 조건 유지하기 위함
+				order: [0, 'asc'],
 			};
 		},
 		props: {
@@ -82,10 +84,10 @@
 				VueUtil.get("/account/list.json", {}, (result) => {
 					this.itemList = result.data;
 					this.$nextTick(() => {
-						if (this.grid != null) {
-							this.grid.destroy();
+						if (this.gridTable != null) {
+							this.gridTable.destroy();
 						}
-						this.grid = $('#grid').DataTable({
+						this.gridTable = $('#grid').DataTable({
 							paging: false, bInfo: false, searching: false,
 							dom: 'Bfrtip',
 							buttons: [{
@@ -96,6 +98,14 @@
 									$('row c', sheet).attr('s', '25');
 								}
 							}]
+						});
+
+						this.gridTable.order(this.order).draw();
+						$('#grid').on('order.dt', () => {
+							if (this.gridTable.order().length == 0) {
+								return;
+							}
+							this.order = this.gridTable.order()[0];
 						});
 
 						// 엑셀 다운로드 button 감추기
