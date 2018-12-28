@@ -69,7 +69,7 @@ public class AccountController {
 	@RequestMapping(value = "/mapName.json")
 	@ResponseBody
 	public ResponseEntity<Map<Integer, String>> mapName() {
-		List<AccountVo> list = accountRepository.list();
+		List<AccountVo> list = accountRepository.findAll();
 		Map<Integer, String> accMap = list.stream().collect(Collectors.toMap(a -> a.getAccountSeq(), a -> a.getName()));
 		return new ResponseEntity<>(accMap, HttpStatus.OK);
 	}
