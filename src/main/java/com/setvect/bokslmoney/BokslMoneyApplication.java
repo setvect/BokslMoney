@@ -44,7 +44,7 @@ import lombok.extern.log4j.Log4j2;
 @EnableAspectJAutoProxy
 @Log4j2
 public class BokslMoneyApplication extends SpringBootServletInitializer {
-	/**
+	/**tomcat-embed-core-8.5.34.jar
 	 * 중복 방지를 위해 임의로 bind할 포드
 	 */
 	private static final int PREVENT_DUPLICATION = 11228;
@@ -184,7 +184,7 @@ public class BokslMoneyApplication extends SpringBootServletInitializer {
 			codeService.init();
 
 			MakerSampleDataService sampleMaker = BeanUtils.getBean(MakerSampleDataService.class);
-//			sampleMaker.makeSampleData();
+			sampleMaker.makeSampleData();
 		};
 	}
 
