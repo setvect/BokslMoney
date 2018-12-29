@@ -49,6 +49,14 @@ public class MakerSampleDataService {
 	private TransactionRepository transactionRepository;
 
 	/**
+	 * 등록 판단
+	 */
+	@FunctionalInterface
+	public interface TransactionInsert {
+		public void add(LocalDate date);
+	}
+
+	/**
 	 * 임시로 사용할 데이터 생성
 	 */
 	public void makeSampleData() {
@@ -67,22 +75,58 @@ public class MakerSampleDataService {
 	 * 거래 정보 등록
 	 */
 	private void makeTransaction() {
-		LocalDate currentDate = LocalDate.of(2017, 1, 1);
+
+		List<TransactionInsert> inserter = new ArrayList<>();
+
+		// 월세 입력. 매달 10일에 등록
+		inserter.add(date -> {
+			int day = date.getDayOfMonth();
+			if (day != 10) {
+				return;
+			}
+			TransactionVo t = new TransactionVo();
+			t.setCategory(findCategory("월세"));
+			t.setKind(KindType.SPENDING);
+			t.setPayAccount(findAccount("복슬은행 월급통장"));
+			t.setAttribute(findKind("고정 지출"));
+			t.setMoney(500_000);
+			Date tranDate = DateUtil.toDate(date);
+			t.setTransactionDate(tranDate);
+			t.setNote("월세");
+			transactionRepository.save(t);
+		});
+
+		// 매달 5일 월급
+		inserter.add(date->{
+			int day = date.getDayOfMonth();
+			if (day != 5) {
+				return;
+			}
+
+			TransactionVo t = new TransactionVo();
+			t.setCategory(findCategory("급여"));
+			t.setKind(KindType.INCOME);
+			t.setPayAccount(findAccount("복슬은행 월급통장"));
+			t.setAttribute(findKind("단순 수입"));
+			t.setMoney(3_185_950);
+			Date tranDate = DateUtil.toDate(date);
+			t.setTransactionDate(tranDate);
+			t.setNote("월급");
+			transactionRepository.save(t);
+		});
+
+
+		LocalDate currentDate = LocalDate.of(2016, 1, 1);
 		LocalDate endDate = LocalDate.of(2018, 12, 10);
 		long endStamp = DateUtil.toDate(endDate).getTime();
 
 		while (true) {
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("월세"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("월급통장"));
-			t.setAttribute(findKind("고정 지출"));
-			t.setMoney(500_000);
+			for (TransactionInsert insert : inserter) {
+				insert.add(currentDate);
+			}
+
+			currentDate = currentDate.plusDays(1);
 			Date tranDate = DateUtil.toDate(currentDate);
-			t.setTransactionDate(tranDate);
-			t.setNote("월세");
-			transactionRepository.save(t);
-			currentDate = currentDate.plusMonths(1);
 			long cur = tranDate.getTime();
 			if (cur > endStamp) {
 				break;
@@ -95,8 +139,6 @@ public class MakerSampleDataService {
 	 * 분류 정보 등록
 	 */
 	private void makeCategory() {
-
-
 		String result;
 		try {
 			URL categoryUrl = MakerSampleDataService.class.getResource("/sample/category.txt");
@@ -130,8 +172,6 @@ public class MakerSampleDataService {
 	 * 계좌 만들기
 	 */
 	private void makeAccount() {
-
-
 		AccountVo account = new AccountVo();
 		account.setName("월세보증금");
 		account.setKindCode(findKind("월세보증금"));
@@ -149,12 +189,21 @@ public class MakerSampleDataService {
 		acccuntRepository.saveAndFlush(account);
 
 		account = new AccountVo();
-		account.setName("월급통장");
+		account.setName("복슬은행 월급통장");
 		account.setKindCode(findKind("은행통장"));
 		account.setAccountNumber("112-1112-555-7777");
 		account.setBalance(2_501_251);
 		account.setInterestRate("0.1%");
 		acccuntRepository.saveAndFlush(account);
+
+		account = new AccountVo();
+		account.setName("복슬증권 주식계좌");
+		account.setKindCode(findKind("은행통장"));
+		account.setAccountNumber("555-2222-5588");
+		account.setBalance(3_580_500);
+		account.setInterestRate("0%");
+		acccuntRepository.saveAndFlush(account);
+
 
 		account = new AccountVo();
 		account.setName("복슬은행 적금");
@@ -169,7 +218,7 @@ public class MakerSampleDataService {
 
 
 		account = new AccountVo();
-		account.setName("복슬은행 예금");
+		account.setName("복슬은행 정기예금");
 		account.setKindCode(findKind("정기예금"));
 		account.setAccountNumber("111-222333-87877");
 		account.setBalance(25_000_000);
