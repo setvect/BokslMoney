@@ -32,7 +32,7 @@ public class UserService {
 		user.setName("복슬이");
 		user.setDeleteFlag(false);
 		user.setUserId(BokslMoneyConstant.Login.ID);
-		user.setPassword(passwordEncoder.encode("1234"));
+		user.setPassword(passwordEncoder.encode("boksl"));
 
 		UserRoleVo role = new UserRoleVo();
 		role.setRoleName(RoleName.ROLE_ADMIN);

@@ -8,15 +8,19 @@ import com.setvect.bokslmoney.code.service.CodeKind;
 import com.setvect.bokslmoney.code.vo.CodeItemKey;
 import com.setvect.bokslmoney.code.vo.CodeItemVo;
 import com.setvect.bokslmoney.code.vo.CodeMainVo;
+import com.setvect.bokslmoney.transaction.repository.CategoryRepository;
+import com.setvect.bokslmoney.transaction.vo.CategoryVo;
+import com.setvect.bokslmoney.transaction.vo.KindType;
 import lombok.AllArgsConstructor;
-import org.apache.commons.configuration.FileConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * 샘플 데이터를 만드는 모듈<br>
@@ -33,12 +37,51 @@ public class MakerSampleDataService {
 	@Autowired
 	private AccountRepository acccuntRepository;
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+
 	/**
 	 * 임시로 사용할 데이터 생성
 	 */
 	public void makeSampleData() {
 		makeCode();
+		makeCategory();
 		makeAccount();
+	}
+
+	/**
+	 * 분류 정보 등록
+	 */
+	private void makeCategory() {
+		categoryRepository.deleteAll();
+
+		String result;
+		try {
+			URL categoryUrl = MakerSampleDataService.class.getResource("/sample/category.txt");
+			result = IOUtils.toString(categoryUrl.openStream());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		Map<Integer, CategoryVo> categoryMapping = new HashMap<>();
+
+		String[] lines = result.split("\n");
+		Stream.of(lines).forEach((line) -> {
+			String[] token = line.trim().split("\t");
+			CategoryVo category = new CategoryVo();
+			category.setKind(KindType.valueOf(token[1]));
+			category.setName(token[2]);
+			category.setOrderNo(Integer.parseInt(token[3]));
+			int parentSeq = Integer.parseInt(token[4]);
+			CategoryVo parent = categoryMapping.get(parentSeq);
+			if(parent != null) {
+				category.setParentSeq(parent.getCategorySeq());
+			}
+			categoryRepository.saveAndFlush(category);
+
+			int categorySeq = Integer.parseInt(token[0]);
+			categoryMapping.put(categorySeq, category);
+		});
 	}
 
 	/**
@@ -81,6 +124,7 @@ public class MakerSampleDataService {
 		account.setTransferDate("매월 10일");
 		account.setInterestRate("8%");
 		acccuntRepository.saveAndFlush(account);
+
 
 		account = new AccountVo();
 		account.setName("복슬은행 예금");
