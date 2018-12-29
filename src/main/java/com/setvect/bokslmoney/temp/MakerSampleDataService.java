@@ -9,8 +9,11 @@ import com.setvect.bokslmoney.code.vo.CodeItemKey;
 import com.setvect.bokslmoney.code.vo.CodeItemVo;
 import com.setvect.bokslmoney.code.vo.CodeMainVo;
 import com.setvect.bokslmoney.transaction.repository.CategoryRepository;
+import com.setvect.bokslmoney.transaction.repository.TransactionRepository;
 import com.setvect.bokslmoney.transaction.vo.CategoryVo;
 import com.setvect.bokslmoney.transaction.vo.KindType;
+import com.setvect.bokslmoney.transaction.vo.TransactionVo;
+import com.setvect.bokslmoney.util.DateUtil;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -40,20 +45,57 @@ public class MakerSampleDataService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	@Autowired
+	private TransactionRepository transactionRepository;
+
 	/**
 	 * 임시로 사용할 데이터 생성
 	 */
 	public void makeSampleData() {
+		transactionRepository.deleteAll();
+		acccuntRepository.deleteAll();
+		categoryRepository.deleteAll();
+		codeItemRepository.deleteAll();
+
 		makeCode();
 		makeCategory();
 		makeAccount();
+		makeTransaction();
 	}
+
+	/**
+	 * 거래 정보 등록
+	 */
+	private void makeTransaction() {
+		LocalDate currentDate = LocalDate.of(2017, 1, 1);
+		LocalDate endDate = LocalDate.of(2018, 12, 10);
+		long endStamp = DateUtil.toDate(endDate).getTime();
+
+		while (true) {
+			TransactionVo t = new TransactionVo();
+			t.setCategory(findCategory("월세"));
+			t.setKind(KindType.SPENDING);
+			t.setPayAccount(findAccount("월급통장"));
+			t.setAttribute(findKind("고정 지출"));
+			t.setMoney(500_000);
+			Date tranDate = DateUtil.toDate(currentDate);
+			t.setTransactionDate(tranDate);
+			t.setNote("월세");
+			transactionRepository.save(t);
+			currentDate = currentDate.plusMonths(1);
+			long cur = tranDate.getTime();
+			if (cur > endStamp) {
+				break;
+			}
+		}
+	}
+
 
 	/**
 	 * 분류 정보 등록
 	 */
 	private void makeCategory() {
-		categoryRepository.deleteAll();
+
 
 		String result;
 		try {
@@ -74,7 +116,7 @@ public class MakerSampleDataService {
 			category.setOrderNo(Integer.parseInt(token[3]));
 			int parentSeq = Integer.parseInt(token[4]);
 			CategoryVo parent = categoryMapping.get(parentSeq);
-			if(parent != null) {
+			if (parent != null) {
 				category.setParentSeq(parent.getCategorySeq());
 			}
 			categoryRepository.saveAndFlush(category);
@@ -88,7 +130,7 @@ public class MakerSampleDataService {
 	 * 계좌 만들기
 	 */
 	private void makeAccount() {
-		acccuntRepository.deleteAll();
+
 
 		AccountVo account = new AccountVo();
 		account.setName("월세보증금");
@@ -197,10 +239,34 @@ public class MakerSampleDataService {
 	}
 
 	/**
+	 * @param name
+	 * @return 카테고리 정보 반환
+	 */
+	private CategoryVo findCategory(String name) {
+		List<CategoryVo> categoryList = categoryRepository.findAll();
+		List<CategoryVo> childCategoryList = categoryList.stream().filter(c -> c.getParentSeq() != 0).collect(Collectors.toList());
+		Optional<CategoryVo> category = childCategoryList.stream().filter(c -> c.getName().equals(name)).findFirst();
+		return category.get();
+	}
+
+	/**
+	 * 계좌 찾기
+	 *
+	 * @param name
+	 * @return
+	 */
+	private int findAccount(String name) {
+		List<AccountVo> accountList = acccuntRepository.findAll();
+		Optional<AccountVo> account = accountList.stream().filter(c -> c.getName().equals(name)).findFirst();
+		return account.get().getAccountSeq();
+	}
+
+
+	/**
 	 * 코드 생성
 	 */
 	private void makeCode() {
-		codeItemRepository.deleteAll();
+
 		List<CodeValue> datas = new ArrayList<>();
 		datas.add(new CodeValue("현금", CodeKind.KIND_CODE));
 		datas.add(new CodeValue("신용카드", CodeKind.KIND_CODE));
