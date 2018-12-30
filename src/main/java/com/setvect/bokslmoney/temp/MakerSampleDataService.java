@@ -14,7 +14,6 @@ import com.setvect.bokslmoney.transaction.vo.CategoryVo;
 import com.setvect.bokslmoney.transaction.vo.KindType;
 import com.setvect.bokslmoney.transaction.vo.TransactionVo;
 import com.setvect.bokslmoney.util.DateUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -28,7 +27,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -107,398 +105,264 @@ public class MakerSampleDataService {
 
 		// 매달 5일 월급
 		inserter.add(date -> {
-			doTransction(() -> date.getDayOfMonth() == 5, () -> 3_185_950, date, KindType.INCOME, "급여", "복슬은행 월급통장", "단순 수입", "월급");
+			doTransction(() -> date.getDayOfMonth() == 5, () -> 3_185_950,
+					date, KindType.INCOME, "급여", null, "복슬은행 월급통장", "단순 수입", "월급");
 		});
 
-		// 매년 12월 30일
-		inserter.add(date -> {
-			if (date.getMonthValue() != 12 || date.getDayOfMonth() != 30) {
-				return;
-			}
 
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("성과급"));
-			t.setKind(KindType.INCOME);
-			t.setPayAccount(findAccount("복슬은행 월급통장"));
-			t.setAttribute(findCode("단순 수입"));
-			t.setMoney(1_500_000);
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("연말 성과급");
-			transactionRepository.save(t);
+		// 성과급
+		inserter.add(date -> {
+			doTransction(() -> date.getMonthValue() == 12 && date.getDayOfMonth() == 30, () -> 1_500_000,
+					date, KindType.INCOME, "성과급", null, "복슬은행 월급통장", "단순 수입", "연말 성과급");
 		});
 
 		// 이자, 확률:1%, 1000 ~ 2000원
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.01) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("이자소득"));
-			t.setKind(KindType.INCOME);
-			t.setPayAccount(findAccount("복슬은행 월급통장"));
-			t.setAttribute(findCode("투자 수입"));
-			int money = RandomUtils.nextInt(1000, 2000);
-			t.setMoney(money);
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("이자");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.01, () -> RandomUtils.nextInt(1000, 2000),
+					date, KindType.INCOME, "이자소득", null, "복슬은행 월급통장", "투자 수입", "예금 이자");
 		});
+
 
 		// 배당금, 매년 12월 10일, 10만 ~ 30만
 		inserter.add(date -> {
-			if (date.getMonthValue() != 12 || date.getDayOfMonth() != 10) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("배당금"));
-			t.setKind(KindType.INCOME);
-			t.setPayAccount(findAccount("복슬증권 주식계좌"));
-			t.setAttribute(findCode("투자 수입"));
-			int money = RandomUtils.nextInt(100_000, 300_000);
-			t.setMoney(money);
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("주식 배당금");
-			transactionRepository.save(t);
+			doTransction(() -> date.getMonthValue() == 12 && date.getDayOfMonth() == 10, () -> RandomUtils.nextInt(100_000, 300_000),
+					date, KindType.INCOME, "배당금", null, "복슬증권 주식계좌", "투자 수입", "주식 배당금");
 		});
+
+		// 용돈 받음
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.01, () -> RandomUtils.nextInt(5, 11) * 10_000,
+					date, KindType.INCOME, "기타소득", null, "지갑", "단순 수입", "용돈 받음");
+		});
+
 
 		// ======================================
 		// 지출
 		// ======================================
-
-		// 월세 입력. 매달 10일에 등록
+		// 월세
 		inserter.add(date -> {
-			int day = date.getDayOfMonth();
-			if (day != 10) {
-				return;
-			}
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("월세"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬은행 월급통장"));
-			t.setAttribute(findCode("고정 지출"));
-			t.setMoney(500_000);
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("월세");
-			transactionRepository.save(t);
+			doTransction(() -> date.getDayOfMonth() == 20, () -> 500_000,
+					date, KindType.SPENDING, "월세", "복슬은행 월급통장", null, "단순 지출", "월세");
 		});
 
 		// 전철비
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.9) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			CategoryVo category = findCategory("대중교통비");
-			t.setCategory(category);
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(29, 100) * 50;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("전철요금");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.9, () -> RandomUtils.nextInt(29, 100) * 50,
+					date, KindType.SPENDING, "대중교통비", "복슬 카드", null, "단순 지출", "전철요금");
 		});
 
 		// 버스요금
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.4) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("대중교통비"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(28, 60) * 50;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("버스용금");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.4, () -> RandomUtils.nextInt(28, 60) * 50,
+					date, KindType.SPENDING, "대중교통비", "복슬 카드", null, "단순 지출", "버스요금");
 		});
 
 		// 택시
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.05) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("대중교통비"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(30, 200) * 1000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("택시비");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.05, () -> RandomUtils.nextInt(30, 200) * 1000,
+					date, KindType.SPENDING, "대중교통비", "복슬 카드", null, "단순 지출", "택시비");
 		});
 
 		// 기차
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.03) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("대중교통비"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(5, 100) * 1000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("기차요금");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.03, () -> RandomUtils.nextInt(5, 100) * 1000,
+					date, KindType.SPENDING, "대중교통비", "복슬 카드", null, "단순 지출", "기차요금");
 		});
 
 
 		// 주유
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.03) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("주유비"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(2, 10) * 10_000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("기름값");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.03, () -> RandomUtils.nextInt(2, 10) * 10_000,
+					date, KindType.SPENDING, "주유비", "복슬 카드", null, "단순 지출", "기름값");
 		});
+
 		// 아침
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.01) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("아침"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(4, 10) * 1000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("술");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.01, () -> RandomUtils.nextInt(4, 10) * 1000,
+					date, KindType.SPENDING, "아침", "복슬 카드", null, "단순 지출", "술");
 		});
+
 
 		// 점심
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.8) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("주식/부식"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(10, 24) * 500;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("점심");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.8, () -> RandomUtils.nextInt(10, 24) * 500,
+					date, KindType.SPENDING, "주식/부식", "복슬 카드", null, "단순 지출", "점심");
 		});
 
 		// 술
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.1) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("담배/술"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(20, 100) * 1000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("술");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.1, () -> RandomUtils.nextInt(20, 100) * 1000,
+					date, KindType.SPENDING, "담배/술", "복슬 카드", null, "단순 지출", "술");
 		});
 
 		// 영화
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.15) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("영화공연관람"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(6, 24) * 1000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("영화관람");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.15, () -> RandomUtils.nextInt(6, 24) * 1000,
+					date, KindType.SPENDING, "영화공연관람", "복슬 카드", null, "단순 지출", "영화관람");
 		});
-
 
 		// 당구
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.03) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("기타문화생활비"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("지갑"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(10, 45) * 500;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("술");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.03, () -> RandomUtils.nextInt(10, 45) * 500,
+					date, KindType.SPENDING, "기타문화생활비", "지갑", null, "단순 지출", "당구");
 		});
 
 		// 입장료
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.15) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("여행"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(6, 20) * 500;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("입장료");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.02, () -> RandomUtils.nextInt(6, 20) * 500,
+					date, KindType.SPENDING, "여행", "복슬 카드", null, "단순 지출", "입장료");
 		});
 
 		// 콘서트
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.005) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("기타문화생활비"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(3, 10) * 10_000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("복슬걸즈 콘서트 관람");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.005, () -> RandomUtils.nextInt(3, 10) * 10_000,
+					date, KindType.SPENDING, "영화공연관람", "복슬 카드", null, "단순 지출", "복슬걸즈 콘서트 관람");
 		});
-
 
 		// 노트북 구매
 		inserter.add(date -> {
-			double r = Math.random();
-			if (r > 0.002) {
-				return;
-			}
-
-			TransactionVo t = new TransactionVo();
-			t.setCategory(findCategory("여행"));
-			t.setKind(KindType.SPENDING);
-			t.setPayAccount(findAccount("복슬 카드"));
-			t.setAttribute(findCode("단순 지출"));
-
-			int money = RandomUtils.nextInt(20, 50) * 50_000;
-			t.setMoney(money);
-
-			Date tranDate = DateUtil.toDate(date);
-			t.setTransactionDate(tranDate);
-			t.setNote("노트북");
-			transactionRepository.save(t);
+			doTransction(() -> Math.random() < 0.002, () -> RandomUtils.nextInt(20, 50) * 50_000,
+					date, KindType.SPENDING, "컴퓨터 용품", "복슬 카드", null, "단순 지출", "노트북");
 		});
 
+		// 병원비
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.003, () -> RandomUtils.nextInt(50, 1_000) * 500,
+					date, KindType.SPENDING, "병원비", "복슬 카드", null, "단순 지출", "병원비");
+		});
+
+		// 약값
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.008, () -> RandomUtils.nextInt(5, 50) * 500,
+					date, KindType.SPENDING, "약값", "복슬 카드", null, "단순 지출", "약값");
+		});
+
+		// 학원비
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 15, () -> 180_000,
+					date, KindType.SPENDING, "학원비", "복슬은행 월급통장", null, "단순 지출", "피아노 학원비");
+		});
+
+		// 보혐료
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 20, () -> 48_000,
+					date, KindType.SPENDING, "생명보험료", "복슬은행 월급통장", null, "고정 지출", "보험료");
+		});
+
+		// 핸드폰
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 15, () -> 59_500,
+					date, KindType.SPENDING, "이동전화", "복슬 카드", null, "고정 지출", "핸드폰 요금");
+		});
+
+		// 전기요금
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 10, () -> RandomUtils.nextInt(5, 50) * 500,
+					date, KindType.SPENDING, "전기료", "복슬 카드", null, "고정 지출", "전기료");
+		});
+
+		// 가스요금
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 10, () -> RandomUtils.nextInt(5, 200) * 1000,
+					date, KindType.SPENDING, "전기료", "복슬 카드", null, "고정 지출", "가스요금");
+		});
+
+		// 수도요금
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 10, () -> RandomUtils.nextInt(5, 20) * 1000,
+					date, KindType.SPENDING, "수도료", "복슬은행 월급통장", null, "고정 지출", "수도요금");
+		});
+
+		// 관리비
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 10, () -> RandomUtils.nextInt(400, 520) * 100,
+					date, KindType.SPENDING, "관리비", "복슬은행 월급통장", null, "고정 지출", "아파트 관리비");
+		});
+
+
+		// 옷
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.02, () -> RandomUtils.nextInt(50, 500) * 1_000,
+					date, KindType.SPENDING, "의류", "복슬 카드", null, "단순 지출", "옷");
+		});
+
+
+		// 축의금
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.008, () -> RandomUtils.nextInt(5, 20) * 10_000,
+					date, KindType.SPENDING, "축의금", "복슬은행 월급통장", null, "단순 지출", "축의금");
+		});
+
+		// 부의금
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.007, () -> RandomUtils.nextInt(5, 10) * 10_000,
+					date, KindType.SPENDING, "부의금", "지갑", null, "단순 지출", "조의금");
+		});
+
+
+		// 세금
+		inserter.add(date -> {
+			doTransction(() -> date.getMonthValue() == 10 && date.getDayOfMonth() == 30, () -> 12_000,
+					date, KindType.SPENDING, "기타세금", "복슬은행 월급통장", null, "단순 지출", "주민세");
+		});
+
+		// 그릇
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.007, () -> RandomUtils.nextInt(5, 10) * 1_000,
+					date, KindType.SPENDING, "주방용품", "복슬 카드", null, "단순 지출", "그릇");
+		});
+
+		// 건전지
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.007, () -> RandomUtils.nextInt(2, 5) * 1_000,
+					date, KindType.SPENDING, "잡화/소모품", "복슬 카드", null, "단순 지출", "건전지");
+		});
 
 		// ======================================
 		// 이체
 		// ======================================
+		// 카드 값 결제
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 10, () -> RandomUtils.nextInt(40_000, 250_000) * 10,
+					date, KindType.TRANSFER, "카드결제", "복슬은행 월급통장", "복슬 카드", "부채 이체", "카드값 결제");
+		});
 
+		// 펀드 불입
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 15, () -> 200_000,
+					date, KindType.TRANSFER, "펀드불입", "복슬은행 월급통장", "복슬 인덱스 펀드(적립형)", "투자 이체", "복슬 펀드");
+		});
+
+
+		// 적금 불입
+		inserter.add(date -> {
+			doTransction(() -> date.getDayOfMonth() == 15, () -> 1_000_000,
+					date, KindType.TRANSFER, "적금불입", "복슬은행 월급통장", "복슬은행 적금", "투자 이체", "복슬 적금");
+		});
+
+
+		// 돈 찾기
+		inserter.add(date -> {
+			doTransction(() -> Math.random() < 0.02, () -> RandomUtils.nextInt(5, 16) * 10_000,
+					date, KindType.TRANSFER, "카드결제", "복슬은행 월급통장", "지갑", "단순 이체", "돈 찾기");
+		});
 
 		return inserter;
 	}
 
 	/**
-	 * @param decision      입력 여부
-	 * @param money         금액
-	 * @param date          날짜
-	 * @param kind          거래 유형
-	 * @param categoryName  카테고리
-	 * @param accountName   계좌 이름
-	 * @param attributeName 거래 속성
-	 * @param note          메모
+	 * @param decision           입력 여부
+	 * @param money              금액
+	 * @param date               날짜
+	 * @param kind               거래 유형
+	 * @param categoryName       카테고리
+	 * @param payAccountName     지출 계좌 이름
+	 * @param receiveAccountName 수입 계좌 이름
+	 * @param attributeName      거래 속성
+	 * @param note               메모
 	 */
 	private void doTransction(BooleanSupplier decision, Supplier<Integer> money,
-							  LocalDate date, KindType kind, String categoryName, String accountName, String attributeName, String note) {
+							  LocalDate date, KindType kind, String categoryName, String payAccountName, String receiveAccountName, String attributeName, String note) {
 		if (!decision.getAsBoolean()) {
 			return;
 		}
@@ -506,7 +370,13 @@ public class MakerSampleDataService {
 		TransactionVo t = new TransactionVo();
 		t.setCategory(findCategory(categoryName));
 		t.setKind(kind);
-		t.setPayAccount(findAccount(accountName));
+		if (payAccountName != null) {
+			t.setPayAccount(findAccount(payAccountName));
+		}
+		if (receiveAccountName != null) {
+			t.setReceiveAccount(findAccount(receiveAccountName));
+		}
+
 		t.setAttribute(findCode(attributeName));
 		t.setMoney(money.get());
 		Date tranDate = DateUtil.toDate(date);
