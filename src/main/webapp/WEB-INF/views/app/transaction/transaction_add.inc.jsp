@@ -258,7 +258,14 @@
 				$('#addItem').on('shown.bs.modal', () => {
 					$("._note").focus();
 				});
+				$('#addItem').on('hidden.bs.modal', () => {
+					if (this.closeReload) {
+						EventBus.$emit('reloadEvent');
+					}
+				});
+
 				$("#addItem").modal();
+
 				// 메모 입력시 관련 카테고리 추천
 				$("._note").autocomplete({
 					source: (request, response) => {
@@ -302,16 +309,12 @@
 							}, 100);
 						} else {
 							$("#addItem").modal('hide');
-							EventBus.$emit('reloadEvent');
 						}
 					});
 				});
 			},
 			close() {
 				$("#addItem").modal('hide');
-				if (this.closeReload) {
-					EventBus.$emit('reloadEvent');
-				}
 			},
 			// 계좌 목록
 			loadAccount() {
