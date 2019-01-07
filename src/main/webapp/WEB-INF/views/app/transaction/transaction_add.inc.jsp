@@ -128,7 +128,7 @@
 								</table>
 							</div>
 							<div class="x_content">
-								<button type="button" class="btn btn-primary btn-xs" @click="openOften('add', {kind: item.kind, money: 0})">자주쓰는
+								<button type="button" class="btn btn-primary btn-xs" @click="openOftenAdd()">자주쓰는
 									거래 저장</button>
 							</div>
 						</div>
@@ -359,8 +359,27 @@
 				// $('#payAccountList,#receiveAccountList').inputpicker('destroy');
 			},
 			// 자주쓰는 거래 팝업 열기
-			openOften(type, often) {
-				EventBus.$emit('openOftenEvent', type, $.extend(true, {}, often));
+			// actionType: add, edit
+			// often: 거래 내역항목
+			openOften(actionType, often) {
+				EventBus.$emit('openOftenEvent', actionType, $.extend(true, {}, often));
+			},
+			// 자주 쓰는 거래 신규 등록
+			// 현재 입력한 값을 전달
+			openOftenAdd() {
+				let copyItem = $.extend(true, {}, this.item)
+				if (!copyItem.categorySeq) {
+					this.openOften('add', copyItem);
+					return;
+				}
+				VueUtil.get("/category/getCategory.json", { categorySeq: this.item.categorySeq }, (result) => {
+					if (result.data) {
+						copyItem.category = result.data;
+						copyItem.parentCategory = result.data.parentCategory;
+					}
+					delete copyItem.oftenUsedSeq;
+					this.openOften('add', copyItem);
+				});
 			},
 			// 정렬 순서 변경
 			changeOrder(downOftenUsedSeq, upOftenUsedSeq) {

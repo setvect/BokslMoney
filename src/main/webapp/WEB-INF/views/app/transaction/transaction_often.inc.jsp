@@ -14,7 +14,8 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">거래 제목: </label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<input type="text" class="form-control" name="title" v-model="item.title" v-validate="'required'" data-vv-as="거래 제목 ">
+									<input type="text" class="form-control _title" name="title" v-model="item.title" v-validate="'required'"
+									 data-vv-as="거래 제목 ">
 									<div v-if="errors.has('title')">
 										<span class="error">{{errors.first('title')}}</span>
 									</div>
@@ -91,7 +92,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info" @click="addAction()">저장</button>
-					<button type="button" class="btn btn-default"@click="close()">닫기</button>
+					<button type="button" class="btn btn-default" @click="close()">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -103,14 +104,14 @@
 		template: '#item-often-add',
 		data() {
 			return {
-				item: {money: 0,kind:null},
+				item: { money: 0, kind: null },
 				accountList: [],
 				itemPath: null,
 				attributeList: [],
 				actionType: null,
 			};
 		},
-		computed:{
+		computed: {
 			// 출금계좌 선택 박스 비활성
 			disablePay() {
 				return this.item.kind == "INCOME";
@@ -138,14 +139,23 @@
 			openForm(actionType, item) {
 				this.actionType = actionType;
 				this.item = item;
+				if (actionType == "add") {
+					this.item.title = "";
+				}
 				const ITEM_TYPE_ATTR = { INCOME: 'ATTR_INCOME', SPENDING: 'ATTR_SPENDING', TRANSFER: 'ATTR_TRANSFER' }
 				this.loadAttribute(ITEM_TYPE_ATTR[this.item.kind]);
 
-				if(actionType == "edit"){
+				if (item.parentCategory && item.category) {
 					this.insertCategory(item.parentCategory, item.category);
 					delete item.category;
 					delete item.parentCategory;
 				}
+				$('#addOftenItem').on('shown.bs.modal', () => {
+					// timeout를 줘야 포커싱이 된다.
+					setTimeout(() => {
+						$("._title").focus();
+					}, 100);
+				});
 				$("#addOftenItem").modal();
 			},
 			close() {
@@ -180,9 +190,6 @@
 			loadAttribute(codeMainId) {
 				VueUtil.get("/code/list.json", { codeMainId: codeMainId }, (result) => {
 					this.attributeList = result.data;
-					if (this.actionType == "add") {
-						this.item.attribute = this.attributeList[0].codeItemKey.codeItemSeq;
-					}
 				});
 			},
 		},

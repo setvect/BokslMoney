@@ -39,8 +39,7 @@ public class CategoryController {
 	// ============== 뷰==============
 
 	/**
-	 * @param request
-	 *            servlet
+	 * @param request servlet
 	 * @return view 페이지
 	 */
 	@RequestMapping(value = "/page.do")
@@ -50,24 +49,21 @@ public class CategoryController {
 	}
 
 	// ============== 조회 ==============
+
 	/**
-	 * @param kindType
-	 *            유형
-	 * @param parent
-	 *            부모 코드 번호
+	 * @param kindType 유형
+	 * @param parent   부모 코드 번호
 	 * @return 항목 목록
 	 */
 	@RequestMapping(value = "/list.json")
 	@ResponseBody
 	public ResponseEntity<List<CategoryVo>> list(@RequestParam("kind") final KindType kindType,
-			@RequestParam("parent") final int parent) {
+												 @RequestParam("parent") final int parent) {
 		List<CategoryVo> list = categoryRepository.list(kindType, parent);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	/**
-	 * @param kindType
-	 *            유형
 	 * @return 항목 목록
 	 */
 	@RequestMapping(value = "/listAll.json")
@@ -77,19 +73,29 @@ public class CategoryController {
 		return new ResponseEntity<>(listHierarchyAll, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/getCategory.json")
+	@ResponseBody
+	public ResponseEntity<CategoryVo> getCategory(@RequestParam("categorySeq") final int categorySeq) {
+		CategoryVo category = categoryRepository.findById(categorySeq).get();
+		int parentSeq = category.getParentSeq();
+		if (parentSeq != 0) {
+			category.setParentCategory(categoryRepository.findById(parentSeq).get());
+		}
+
+		return new ResponseEntity<>(category, HttpStatus.OK);
+	}
+
 	/**
 	 * 지난 거래 내역을 바탕으로 관련 있는 카테고리 추천
 	 *
-	 * @param note
-	 *            거래 내역 메모
-	 * @param kind
-	 *            유형
+	 * @param note 거래 내역 메모
+	 * @param kind 유형
 	 * @return 카테고리 목록
 	 */
 	@RequestMapping(value = "/listRecommend.json")
 	@ResponseBody
 	public ResponseEntity<List<CategoryVo>> listRecommend(@RequestParam("note") final String note,
-			@RequestParam("kind") final KindType kind) {
+														  @RequestParam("kind") final KindType kind) {
 		List<CategoryVo> sorted = categoryService.listRecommend(note, kind);
 
 		return new ResponseEntity<>(sorted, HttpStatus.OK);
@@ -114,15 +120,13 @@ public class CategoryController {
 	/**
 	 * 정렬 순서 변경
 	 *
-	 * @param downCategorySeq
-	 *            내려갈 항목
-	 * @param upCategorySeq
-	 *            올라갈 항목
+	 * @param downCategorySeq 내려갈 항목
+	 * @param upCategorySeq   올라갈 항목
 	 */
 	@RequestMapping(value = "/changeOrder.do")
 	@ResponseBody
 	public void changeOrder(@RequestParam("downCategorySeq") final int downCategorySeq,
-			@RequestParam("upCategorySeq") final int upCategorySeq) {
+							@RequestParam("upCategorySeq") final int upCategorySeq) {
 		CategoryVo downCategory = categoryRepository.findById(downCategorySeq).get();
 		CategoryVo upCategory = categoryRepository.findById(upCategorySeq).get();
 		int downOrder = downCategory.getOrderNo();
