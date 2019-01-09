@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BokslMoney.iml" filepath="$PROJECT_DIR$/BokslMoney.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.setvect.bokslmoney.bokslmoney.iml" filepath="$PROJECT_DIR$/.idea/modules/com.setvect.bokslmoney.bokslmoney.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.setvect.bokslmoney.bokslmoney.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.setvect.bokslmoney.bokslmoney.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.setvect.bokslmoney.bokslmoney.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.setvect.bokslmoney.bokslmoney.test.iml" />
     </modules>
   </component>
 </project>
