@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.setvect.bokslmoney.bokslmoney.main" target="1.8" />
+      <module name="com.setvect.bokslmoney.bokslmoney.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

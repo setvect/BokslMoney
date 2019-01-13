@@ -1,0 +1,50 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile ('org.springframework.boot:spring-boot-starter-data-jpa') {
+        exclude group: 'org.springframework.boot:spring-boot-starter'
+    }
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-log4j2'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-devtools'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-aop'
+    compile 'javax.servlet:jstl'
+    compile 'org.springframework.security:spring-security-taglibs'
+    compile 'org.apache.commons:commons-lang3:3.7'
+    compile 'commons-configuration:commons-configuration:1.10'
+    compile 'commons-io:commons-io:2.3'
+    compile 'com.github.bohnman:squiggly-filter-jackson:1.3.8'
+    compile 'com.h2database:h2'
+    compile 'org.projectlombok:lombok'
+    compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+group = 'com.setvect.bokslmoney'
+version = '0.0.1'
+sourceCompatibility = '1.8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
