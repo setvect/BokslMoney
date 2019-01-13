@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.setvect.bokslmoney.transaction.vo.CategoryVo;
 import com.setvect.bokslmoney.transaction.vo.KindType;
+import org.springframework.stereotype.Repository;
 
 /**
  * 수입, 지출, 이체 분류
