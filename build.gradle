@@ -9,8 +9,12 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
+plugins {
+    id 'net.ltgt.apt' version '0.10'
+    id 'java'
+    id 'war'
+}
 
-apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -21,8 +25,11 @@ repositories {
 configurations {
     // 안 빼면 stackover flow 발생
     compile.exclude module: 'log4j-slf4j-impl'
- }
-
+}
+// 테스트 skip
+test {
+    exclude '**/*'
+}
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile 'org.springframework.boot:spring-boot-starter-security'
@@ -38,9 +45,14 @@ dependencies {
     compile 'commons-io:commons-io:2.3'
     compile 'com.github.bohnman:squiggly-filter-jackson:1.3.8'
     compile 'com.h2database:h2'
-    compile 'org.projectlombok:lombok'
     compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
     compile 'org.springframework.boot:spring-boot-starter-tomcat'
+//    compile 'org.projectlombok:lombok'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+
+    apt 'org.projectlombok:lombok:1.18.4'
+
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
