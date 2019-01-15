@@ -6,3 +6,6 @@
 /.idea/dataSources.xml
 /.idea/dataSources/
 
+/out/
+/build/
+/.gradle/
