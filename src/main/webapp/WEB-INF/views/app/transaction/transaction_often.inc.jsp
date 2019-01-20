@@ -57,7 +57,7 @@
 									<select class="form-control" v-model="item.payAccount" name="payAccount" v-validate="validatePay" data-vv-as="지출계좌 "
 									 :disabled="disablePay">
 										<option v-for="account in accountList" v-bind:value="account.accountSeq">
-											{{account.name}}
+											{{account.name}} : {{account.balance | numberFormat}}원 ({{account.accountNumber}})
 										</option>
 									</select>
 									<span class="error" v-if="errors.has('payAccount')">{{errors.first('payAccount')}}</span>
@@ -69,7 +69,7 @@
 									<select class="form-control" v-model="item.receiveAccount" name="receiveAccount" v-validate="validateReceive"
 									 data-vv-as="수입계좌 " :disabled="disableReceive">
 										<option v-for="account in accountList" v-bind:value="account.accountSeq">
-											{{account.name}}
+											{{account.name}} : {{account.balance | numberFormat}}원 ({{account.accountNumber}})
 										</option>
 									</select>
 									<span class="error" v-if="errors.has('receiveAccount')">{{errors.first('receiveAccount')}}</span>
