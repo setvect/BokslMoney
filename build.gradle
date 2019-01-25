@@ -1,25 +1,36 @@
 buildscript {
     ext {
+        springBootPlugin = 'org.springframework.boot:spring-boot-gradle-plugin'
         springBootVersion = '2.0.5.RELEASE'
+        thinPlugin = 'org.springframework.boot.experimental:spring-boot-thin-gradle-plugin'
+        thinVersion = '1.0.11.RELEASE'        
     }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("${springBootPlugin}:${springBootVersion}")
+        classpath("${thinPlugin}:${thinVersion}")
     }
 }
+
 plugins {
     id 'net.ltgt.apt' version '0.10'
     id 'java'
     id 'war'
 }
 
+repositories {
+    mavenCentral()
+}
+
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-repositories {
-    mavenCentral()
+war {
+    baseName = 'bokslmoney'
+    version = '0.0.1'
+    enabled = true
 }
 
 configurations {
@@ -47,12 +58,8 @@ dependencies {
     compile 'com.h2database:h2'
     compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
     compile 'org.springframework.boot:spring-boot-starter-tomcat'
-//    compile 'org.projectlombok:lombok'
-
     compileOnly 'org.projectlombok:lombok:1.18.4'
-
     apt 'org.projectlombok:lombok:1.18.4'
-
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -62,4 +69,20 @@ sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+springBoot {
+    mainClassName = 'com.setvect.bokslmoney.BokslMoneyApplication'
+}
+bootJar {
+    mainClassName = 'com.setvect.bokslmoney.BokslMoneyApplication'
+    manifest {
+        attributes 'Start-Class': 'com.setvect.bokslmoney.BokslMoneyApplication'
+    }
 }

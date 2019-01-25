@@ -11,7 +11,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import com.setvect.bokslmoney.temp.MakerSampleDataService;
+import com.setvect.bokslmoney.code.service.CodeService;
+import com.setvect.bokslmoney.user.service.UserService;
+import com.setvect.bokslmoney.util.BeanUtils;
+import com.setvect.bokslmoney.util.TrayIconHandler;
+import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.Wrapper;
@@ -27,13 +31,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import com.setvect.bokslmoney.code.service.CodeService;
-import com.setvect.bokslmoney.user.service.UserService;
-import com.setvect.bokslmoney.util.BeanUtils;
-import com.setvect.bokslmoney.util.TrayIconHandler;
-
-import lombok.extern.log4j.Log4j2;
 
 /**
  * Spring boot application 시작점.
