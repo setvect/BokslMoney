@@ -1,12 +1,31 @@
-/target/
-/logs/
-/db/
-/docs/
-/temp/
-/.idea/dataSources.xml
-/.idea/dataSources/
+!.mvn/wrapper/maven-wrapper.jar
 
 /out/
 /build/
 /.gradle/
 /gradle/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### ETC ###
+/node_modules/
+/.vscode/
+/src/main/webapp/static/
+/target/
+/logs/
+/db/
+/docs/
+/temp/
