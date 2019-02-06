@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.setvect.bokslmoney.transaction.vo.TransactionVo;
+import org.springframework.stereotype.Repository;
 
 /**
  * 거래 내역
  */
+@Repository
 public interface TransactionRepository extends JpaRepository<TransactionVo, Integer>, TransactionRepositoryCustom {
 	/**
 	 * 날짜별로, 유형별로 금액 합산

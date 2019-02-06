@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.setvect.bokslmoney.code.vo.CodeItemKey;
 import com.setvect.bokslmoney.code.vo.CodeItemVo;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CodeItemRepository extends JpaRepository<CodeItemVo, CodeItemKey> {
 
 	@Query("select c from CodeItemVo c where deleteFlag = false and c.codeItemKey.codeMain.codeMainId = :codeMainId order by c.orderNo")

@@ -18,6 +18,7 @@ import com.setvect.bokslmoney.user.vo.UserVo;
 
 @Controller
 @RequestMapping(value = "/user")
+@SuppressWarnings("SpringJavaInjectionPoiantsAutowiringInspection")
 public class UserController {
 	/** 로깅 */
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
