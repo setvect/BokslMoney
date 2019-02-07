@@ -61,6 +61,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.4'
     apt 'org.projectlombok:lombok:1.18.4'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile group: 'org.assertj', name: 'assertj-core'
 }
 
 group = 'com.setvect.bokslmoney'

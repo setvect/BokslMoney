@@ -1,0 +1,52 @@
+{
+  "name": "bokslmoney",
+  "version": "0.0.1",
+  "description": "복슬머니",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "scripts": {
+    "prod": "webpack --env=production",
+    "dev": "webpack-dev-server --env=development",
+    "start": "npm run dev",
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setvect/BokslMoney.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/setvect/BokslMoney/issues"
+  },
+  "homepage": "https://github.com/setvect/BokslMoney#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^1.1.11",
+    "popper.js": "^1.14.6",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "vue-jest": "^3.0.2",
+    "vue-loader": "^15.6.0",
+    "vue-template-compiler": "^2.6.3",
+    "vue-test-utils": "^1.0.0-beta.11",
+    "webpack": "^4.29.2",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-standalone": "^6.26.0",
+    "bootstrap": "^4.2.1",
+    "es6-promise": "^4.2.5",
+    "jquery": "^3.3.1",
+    "vue": "^2.6.3",
+    "vue-axios": "^2.1.4"
+  }
+}

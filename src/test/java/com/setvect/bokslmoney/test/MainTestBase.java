@@ -23,9 +23,9 @@ import com.setvect.bokslmoney.BokslMoneyConstant;
  */
 @RunWith(SpringRunner.class)
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(classes = { BokslMoneyApplication.class })
 @TestPropertySource(locations = "classpath:application.properties")
-@Rollback(true)
+@Rollback(false)
 public class MainTestBase {
 	static {
 		System.setProperty(BokslMoneyConstant.TEST_CHECK_PROPERTY_NAME, "true");

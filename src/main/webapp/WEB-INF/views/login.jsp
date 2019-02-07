@@ -23,7 +23,7 @@
 		<a class="hiddenanchor" id="signup"></a> <a class="hiddenanchor"
 			id="signin"></a>
 
-		<div class="login_wrapper">
+		<div class="login_wrapper" id="app">
 			<div class="animate form login_form">
 				<div>
 					<c:if test="${param.error != null}">
@@ -34,17 +34,17 @@
 					</c:if>
 				</div>
 				<section class="login_content">
-					<form action="${pageContext.request.contextPath}/login.do" method="post">
+					<form action="${pageContext.request.contextPath}/login.do" method="post" class="_login">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<h1>복슬머니 로그인</h1>
 						<div>
-							<input name="password" type="password" class="form-control" placeholder="Password" autofocus="autofocus"/>
+							<input name="password" type="password" class="form-control" placeholder="Password" @keypress.13="login"/>
 						</div>
 						<div>
 							<label><input type="checkbox" name="remember-me"><i></i><em>로그인 정보 유지</em></label>
 						</div>
 						<div>
-							<button class="btn btn-default submit" type="submit">
+							<button class="btn btn-default submit" @click="login">
 								<em>로그인</em>
 							</button>
 						</div>
@@ -53,6 +53,8 @@
 			</div>
 		</div>
 	</div>
+
+	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/login.js"></script>
 </body>
 </html>
 

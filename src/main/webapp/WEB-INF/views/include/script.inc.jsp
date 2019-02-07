@@ -62,6 +62,9 @@
 <!-- inputpicker -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/inputpicker-master/jquery.inputpicker.js"></script>
 
+<!-- webpack bundle -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/vendors.js"></script>
+
 <script type="text/javascript">
 	moment.locale('ko');
 
