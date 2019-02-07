@@ -8,8 +8,8 @@ module.exports = (env) => {
 	return {
 		mode: !env ? 'development' : env,
 		entry: {
-			"assets/js/vendors": ['jquery', 'vue', 'axios', 'vue-axios', 'bootstrap'],
-			"assets/js/login": clientPath + '/js/login.js',
+			"assets/bundle/js/vendors": ['jquery', 'vue', 'axios', 'vue-axios', 'bootstrap'],
+			"assets/bundle/js/login": clientPath + '/js/login.js',
 		},
 		devtool: 'source-map',
 		output: {
@@ -24,7 +24,7 @@ module.exports = (env) => {
 				cacheGroups: {
 					vendors: {
 						test: /[\\/]node_modules[\\/]/,
-						name: 'assets/js/vendors'
+						name: 'assets/bundle/js/vendors'
 					}
 				}
 			},

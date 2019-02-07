@@ -10,7 +10,6 @@ $(() => {
 			login(event){
 				event.preventDefault();
 				let passinput = $("._login input[name='password']");
-				console.log("################111", passinput.val());
 				if(!passinput.val()){
 					alert("비밀번호를 입력하세요.");
 					passinput.focus();

@@ -54,7 +54,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/login.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/login.js"></script>
 </body>
 </html>
 
