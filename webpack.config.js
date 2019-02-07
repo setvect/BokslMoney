@@ -1,6 +1,7 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const webpack = require('webpack');
 
 module.exports = (env) => {
 	let clientPath = path.resolve(__dirname, 'src/main/client');
@@ -11,11 +12,11 @@ module.exports = (env) => {
 			"assets/bundle/js/vendors": ['jquery', 'vue', 'axios', 'vue-axios', 'bootstrap'],
 			"assets/bundle/js/login": clientPath + '/js/login.js',
 		},
-		devtool: 'source-map',
+		devtool: false,
 		output: {
 			path: outputPath,
 			filename: '[name].js',
-			sourceMapFilename: "[name].js.map",
+			// sourceMapFilename: "[name].js.map",
 			pathinfo: true
 		},
 		optimization: {
@@ -24,13 +25,11 @@ module.exports = (env) => {
 				cacheGroups: {
 					vendors: {
 						test: /[\\/]node_modules[\\/]/,
-						name: 'assets/bundle/js/vendors'
+						name: 'assets/bundle/js/vendors',
+						// sourceMap: true,
 					}
 				}
 			},
-			minimizer: (env == 'production') ? [
-				new UglifyJsPlugin(),
-			] : []
 		},
 		devServer: {
 			contentBase: outputPath,
@@ -67,6 +66,10 @@ module.exports = (env) => {
 		},
 		plugins: [
 			new VueLoaderPlugin(),
+			new webpack.SourceMapDevToolPlugin({
+				filename: '[name].js.map',
+				// exclude: ['assets/bundle/js/vendors']
+			})
 		]
 	}
 }

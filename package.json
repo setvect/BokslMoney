@@ -30,6 +30,7 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "popper.js": "^1.14.6",
+    "terser-webpack-plugin": "^1.2.2",
     "uglifyjs-webpack-plugin": "^2.1.1",
     "vue-jest": "^3.0.2",
     "vue-loader": "^15.6.0",
