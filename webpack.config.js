@@ -30,6 +30,10 @@ module.exports = (env) => {
 					}
 				}
 			},
+			// 아래 주석 해제 시 sourcemap 파일 만들어지지 않음.
+			// minimizer: (env == 'production') ? [
+			// 	new UglifyJsPlugin(),
+			// ] : []
 		},
 		devServer: {
 			contentBase: outputPath,
