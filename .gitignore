@@ -1,5 +1,5 @@
 !.mvn/wrapper/maven-wrapper.jar
-
+/bin/
 /out/
 /build/
 /.gradle/
@@ -20,13 +20,16 @@
 *.iml
 *.ipr
 
-### ETC ###
+### Webpack ##
 /node_modules/
+/src/main/webapp/assets/bundle/
+
+### ETC ###
 /.vscode/
-/src/main/webapp/static/
 /target/
 /logs/
 /db/
 /docs/
 /temp/
-/src/main/webapp/assets/bundle/
+
+

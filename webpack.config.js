@@ -16,7 +16,6 @@ module.exports = (env) => {
 		output: {
 			path: outputPath,
 			filename: '[name].js',
-			// sourceMapFilename: "[name].js.map",
 			pathinfo: true
 		},
 		optimization: {
@@ -26,14 +25,9 @@ module.exports = (env) => {
 					vendors: {
 						test: /[\\/]node_modules[\\/]/,
 						name: 'assets/bundle/js/vendors',
-						// sourceMap: true,
 					}
 				}
 			},
-			// 아래 주석 해제 시 sourcemap 파일 만들어지지 않음.
-			// minimizer: (env == 'production') ? [
-			// 	new UglifyJsPlugin(),
-			// ] : []
 		},
 		devServer: {
 			contentBase: outputPath,
@@ -66,13 +60,12 @@ module.exports = (env) => {
 			alias: {
 				vue$: 'vue/dist/vue.esm.js'
 			},
-			extensions: ['.js', '.sass', '.scss', '.css', '.vue']
+			extensions: ['.js', '.css', '.vue']
 		},
 		plugins: [
 			new VueLoaderPlugin(),
 			new webpack.SourceMapDevToolPlugin({
 				filename: '[name].js.map',
-				// exclude: ['assets/bundle/js/vendors']
 			})
 		]
 	}
