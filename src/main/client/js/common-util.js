@@ -1,12 +1,10 @@
-import $ from 'jquery'
+import $ from "jquery";
 
-module.exports = {
-	getContextRoot: function () {
+export default {
+	getContextRoot() {
 		return $("meta[name='contextRoot']").attr("content");
 	},
-	appendContextRoot: function (url) {
-		console.log("url", url)
+	appendContextRoot(url) {
 		return this.getContextRoot() + url;
 	}
-}
-
+};

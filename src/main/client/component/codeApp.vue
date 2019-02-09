@@ -19,7 +19,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(item, index) in itemList">
+								<tr v-for="(item, index) in itemList" :key="item.codeItemKey.codeItemSeq">
 									<td>{{item.name}}</td>
 									<td>
 										<a
@@ -91,6 +91,9 @@
 	</div>
 </template>
 <script type="text/javascript">
+import $ from "jquery";
+import vueUtil from "../js/vue-util.js";
+
 // vue 객체 생성
 export default {
 	data: function() {
@@ -107,7 +110,7 @@ export default {
 		// 리스트
 		list() {
 			let param = { codeMainId: this.codeMainId };
-			VueUtil.get("/code/list.json", param, result => {
+			vueUtil.get("/code/list.json", param, result => {
 				this.itemList = result.data;
 			});
 		},
@@ -142,7 +145,7 @@ export default {
 				}
 				delete this.formItem.codeItemKey;
 				let url = this.actionType == "add" ? "/code/add.do" : "/code/edit.do";
-				VueUtil.post(url, this.formItem, result => {
+				vueUtil.post(url, this.formItem, result => {
 					$("#addItem").modal("hide");
 					this.list();
 				});
@@ -155,7 +158,7 @@ export default {
 				downCodeItemSeq: downCodeItemSeq,
 				upCodeItemSeq: upCodeItemSeq
 			};
-			VueUtil.post("/code/changeOrder.do", param, result => {
+			vueUtil.post("/code/changeOrder.do", param, result => {
 				this.list();
 			});
 		},
@@ -165,7 +168,7 @@ export default {
 				return;
 			}
 			let param = { codeMainId: this.codeMainId, codeItemSeq: codeItemSeq };
-			VueUtil.post("/code/delete.do", param, result => {
+			vueUtil.post("/code/delete.do", param, result => {
 				this.list();
 			});
 		},
@@ -183,7 +186,7 @@ export default {
 		},
 		// 메인코드
 		loadCodeMain() {
-			VueUtil.get(
+			vueUtil.get(
 				"/code/getCodeMain.json",
 				{ codeMainId: this.codeMainId },
 				result => {
