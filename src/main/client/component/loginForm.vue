@@ -1,6 +1,6 @@
 <template>
 	<form method="post" class="_login">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		<input type="hidden" :name="name" :value="value">
 		<h1>복슬머니 로그인</h1>
 		<div>
 			<input
@@ -28,12 +28,13 @@
 
 <script>
 import $ from "jquery";
-import CommonUtil from "../js/common-util.js"
+import CommonUtil from "../js/common-util.js";
 export default {
 	name: "layout",
 	data: function() {
 		return {};
 	},
+	props: ["name", "value"],
 	methods: {
 		login(event) {
 			event.preventDefault();

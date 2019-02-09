@@ -34,7 +34,7 @@
 					</c:if>
 				</div>
 				<section class="login_content" id="app">
-					<login/>
+					<login-form :name="'${_csrf.parameterName}'" :value="'${_csrf.token}'"/>
 				</section>
 			</div>
 		</div>

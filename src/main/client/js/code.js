@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import loginForm from '../component/loginForm.vue'
+import codeApp from '../component/codeApp.vue'
 
 $(() => {
 	new Vue({
@@ -7,7 +7,7 @@ $(() => {
 		data: {
 		},
 		components: {
-			loginForm: loginForm
+			codeApp: codeApp
 		},
 	});
 });
