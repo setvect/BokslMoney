@@ -22,27 +22,4 @@
 		</div>
 	</div>
 </div>
-<jsp:include page="account_list.inc.jsp"></jsp:include>
-<jsp:include page="account_add.inc.jsp"></jsp:include>
-<jsp:include page="account_read.inc.jsp"></jsp:include>
-
-<script type="text/javascript">
-	Vue.use(VeeValidate,{
-		locale: 'ko',
-		events: 'blur',
-	});
-	let EventBus = new Vue();
-
-	// vue 객체 생성
-	const app = new Vue({
-		data: function(){
-			return {
-			};
-		},
-		components: {
-			'list': itemListComponent,
-			'add': itemAddComponent,
-			'read': itemReadComponent,
-		},
-	}).$mount('#app');
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/app/account.js"></script>
