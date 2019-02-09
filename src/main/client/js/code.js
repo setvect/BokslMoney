@@ -1,13 +1,12 @@
-import Vue from 'vue'
-import codeApp from '../component/codeApp.vue'
+import Vue from "vue";
+import codeApp from "../component/codeApp.vue";
 
-$(() => {
-	new Vue({
-		el: "#app",
-		data: {
-		},
-		components: {
-			codeApp: codeApp
-		},
-	});
+Vue.use(VeeValidate, {
+	locale: "ko",
+	events: "blur"
+});
+let EventBus = new Vue();
+new Vue({
+	el: "#app",
+	render: h => h(codeApp)
 });
