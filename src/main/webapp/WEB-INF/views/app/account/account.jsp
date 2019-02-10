@@ -13,7 +13,7 @@
 					<list/>
 				</div>
 				<div>
-					<add/>
+					<add ref="addLayer"/>
 				</div>
 				<div>
 					<read/>
