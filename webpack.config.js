@@ -13,7 +13,8 @@ module.exports = env => {
 			"assets/bundle/js/app/login": clientPath + "/js/app/login.js",
 			"assets/bundle/js/app/code": clientPath + "/js/app/code.js",
 			"assets/bundle/js/app/account": clientPath + "/js/app/account.js",
-			"assets/bundle/js/app/category": clientPath + "/js/app/category.js"
+			"assets/bundle/js/app/category": clientPath + "/js/app/category.js",
+			"assets/bundle/js/app/stat": clientPath + "/js/app/stat.js"
 		},
 		devtool: false,
 		output: {

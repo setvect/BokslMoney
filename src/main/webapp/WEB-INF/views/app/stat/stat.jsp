@@ -28,22 +28,4 @@
 	</div>
 </div>
 
-<jsp:include page="stat_assets.jsp"></jsp:include>
-<jsp:include page="stat_kind_group.jsp"></jsp:include>
-
-<script type="text/javascript">
-	const currentYear = (new Date()).getFullYear();
-	// vue 객체 생성
-	const app = new Vue({
-		data: function () {
-			return {
-			};
-		},
-		computed: {
-		},
-		methods: {
-		},
-		mounted() {
-		}
-	}).$mount('#app');
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/app/stat.js"></script>
