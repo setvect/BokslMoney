@@ -27,28 +27,30 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
+    "bootstrap-loader": "^3.0.2",
+    "css-loader": "^2.1.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "popper.js": "^1.14.6",
+    "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.2.2",
     "uglifyjs-webpack-plugin": "^2.1.1",
-    "vue-jest": "^3.0.2",
+    "vue-jest": "^3.0.3",
     "vue-loader": "^15.6.0",
-    "vue-template-compiler": "^2.6.3",
+    "vue-template-compiler": "^2.6.6",
     "vue-test-utils": "^1.0.0-beta.11",
-    "webpack": "^4.29.2",
+    "webpack": "^4.29.3",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14",
-    "bootstrap-loader": "^3.0.2"
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "babel-standalone": "^6.26.0",
-    "bootstrap": "^4.2.1",
+    "bootstrap": "^4.3.1",
     "es6-promise": "^4.2.5",
     "jquery": "^3.3.1",
-    "vue": "^2.6.3",
+    "vue": "^2.6.6",
     "vue-axios": "^2.1.4"
   }
 }

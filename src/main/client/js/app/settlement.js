@@ -1,5 +1,5 @@
 import Vue from "vue";
-import codeApp from "../../component/code/codeApp.vue";
+import settlementApp from "../../component/settlement/settlement.vue";
 
 Vue.use(VeeValidate, {
 	locale: "ko",
@@ -7,5 +7,5 @@ Vue.use(VeeValidate, {
 });
 new Vue({
 	el: "#app",
-	render: h => h(codeApp)
+	render: h => h(settlementApp)
 });
