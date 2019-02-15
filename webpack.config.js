@@ -12,7 +12,8 @@ module.exports = env => {
 			"assets/bundle/js/vendors": ["jquery", "vue", "axios", "vue-axios", "bootstrap"],
 			"assets/bundle/js/app/login": clientPath + "/js/app/login.js",
 			"assets/bundle/js/app/code": clientPath + "/js/app/code.js",
-			"assets/bundle/js/app/account": clientPath + "/js/app/account.js"
+			"assets/bundle/js/app/account": clientPath + "/js/app/account.js",
+			"assets/bundle/js/app/category": clientPath + "/js/app/category.js"
 		},
 		devtool: false,
 		output: {

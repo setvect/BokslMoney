@@ -36,30 +36,4 @@
 	</div>
 </div>
 
-<jsp:include page="category_list.inc.jsp"></jsp:include>
-<jsp:include page="category_panel.inc.jsp"></jsp:include>
-<jsp:include page="category_add.inc.jsp"></jsp:include>
-
-<script type="text/javascript">
-	Vue.use(VeeValidate,{
-		locale: 'ko',
-		events: 'blur',
-	});
-	let EventBus = new Vue();
-
-	// vue 객체 생성
-	const app = new Vue({
-		data: function(){
-			return {
-				addType: 'main',
-				item: {name:""},
-				kind: '',
-				addAfterCallback: null,
-			};
-		},
-		components: {
-			'panel': itemPanelComponent,
-			'add': itemAddComponent
-		},
-	}).$mount('#app');
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/app/category.js"></script>
