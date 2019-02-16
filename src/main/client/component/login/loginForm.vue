@@ -2,13 +2,7 @@
 	<form method="post" class="_login">
 		<h1>복슬머니 로그인</h1>
 		<div>
-			<input
-				name="password"
-				type="password"
-				class="form-control"
-				placeholder="Password"
-				@keypress.13="login"
-			>
+			<input name="password" type="password" class="form-control" placeholder="Password" @keypress.13="login">
 		</div>
 		<div>
 			<label>
@@ -28,6 +22,7 @@
 <script>
 import $ from "jquery";
 import CommonUtil from "../../js/common-util.js";
+
 export default {
 	name: "layout",
 	data: function() {

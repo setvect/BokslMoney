@@ -52,12 +52,6 @@
 </template>
 
 <script type="text/javascript">
-Vue.use(VeeValidate, {
-	locale: "ko",
-	events: "blur"
-});
-
-const NOW_DATE = new Date();
 // vue 객체 생성
 export default {
 	mixins: [TransactionMixin],

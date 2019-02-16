@@ -50,6 +50,7 @@
     "bootstrap": "^4.3.1",
     "es6-promise": "^4.2.5",
     "jquery": "^3.3.1",
+    "vee-validate": "^2.1.7",
     "vue": "^2.6.6",
     "vue-axios": "^2.1.4"
   }

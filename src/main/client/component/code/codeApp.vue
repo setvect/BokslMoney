@@ -130,7 +130,6 @@ export default {
 		},
 		openForm(item) {
 			this.formItem = $.extend(true, {}, item);
-			console.log('$("#addItem")111111111111 :', $("#addItem"));
 			$("#addItem").modal();
 		},
 		// 등록 또는 수정

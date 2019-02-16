@@ -9,13 +9,14 @@ module.exports = env => {
 	return {
 		mode: !env ? "development" : env,
 		entry: {
-			"assets/bundle/js/vendors": ["jquery", "vue", "axios", "vue-axios", "bootstrap"],
+			"assets/bundle/js/vendors": ["jquery", "vue", "axios", "vue-axios", "bootstrap", "vee-validate"],
 			"assets/bundle/js/app/login": clientPath + "/js/app/login.js",
 			"assets/bundle/js/app/code": clientPath + "/js/app/code.js",
 			"assets/bundle/js/app/account": clientPath + "/js/app/account.js",
 			"assets/bundle/js/app/category": clientPath + "/js/app/category.js",
 			"assets/bundle/js/app/stat": clientPath + "/js/app/stat.js",
-			"assets/bundle/js/app/settlement": clientPath + "/js/app/settlement.js"
+			"assets/bundle/js/app/settlement": clientPath + "/js/app/settlement.js",
+			"assets/bundle/js/app/loginUserEdit": clientPath + "/js/app/loginUserEdit.js"
 		},
 		devtool: false,
 		output: {
