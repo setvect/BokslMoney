@@ -25,13 +25,13 @@
 							<thead>
 								<tr class="headings">
 									<th class="text-center">항목</th>
-									<th class="text-center" v-for="month in monthList" :key="month">{{month | dateFormat("YYYY년 MM월")}}</th>
+									<th class="text-center" v-for="month in monthList" :key="month.valueOf()">{{month | dateFormat("YYYY년 MM월")}}</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="spending in spendingList" :key="spending.categorySeq">
 									<td>{{spending.name}}</td>
-									<td class="text-right" v-for="month in monthList" :key="month" @click="viewList(month, spending.kind, spending.categorySeq)">
+									<td class="text-right" v-for="month in monthList" :key="month.valueOf()" @click="viewList(month, spending.kind, spending.categorySeq)">
 										{{getSpending(month.month(),
 										spending.categorySeq) |
 										numberFormat}}
@@ -39,7 +39,7 @@
 								</tr>
 								<tr class="info" v-for="kindMap in kindList" :key="Object.keys(kindMap)[0]">
 									<td>{{Object.values(kindMap)[0]}}</td>
-									<td class="text-right" v-for="month in monthList" :key="month" @click="viewList(month, Object.keys(kindMap)[0],0)">
+									<td class="text-right" v-for="month in monthList" :key="month.valueOf()" @click="viewList(month, Object.keys(kindMap)[0],0)">
 										{{getKindSum(month.month(),
 										Object.keys(kindMap)[0])|
 										numberFormat}}
@@ -47,7 +47,7 @@
 								</tr>
 								<tr class="success">
 									<td>수입-지출</td>
-									<td class="text-right" v-for="month in monthList" :key="month">
+									<td class="text-right" v-for="month in monthList" :key="month.valueOf()">
 										{{getKindSum(month.month(), 'INCOME') -
 										getKindSum(month.month(), 'SPENDING') |
 										numberFormat}}
@@ -66,10 +66,10 @@
 <script type="text/javascript">
 const currentYear = new Date().getFullYear();
 import recordListComponent from "./recordList.vue";
+import  "../../js/vue-common.js";
 
-let EventBus = new Vue();
 // vue 객체 생성
-const app = new Vue({
+export default {
 	data: function() {
 		return {
 			spendingList: [],
@@ -205,5 +205,5 @@ const app = new Vue({
 		this.listSpending();
 		this.runSettlement();
 	}
-}).$mount("#app");
+};
 </script>

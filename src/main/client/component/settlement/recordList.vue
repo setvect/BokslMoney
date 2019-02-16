@@ -150,10 +150,10 @@ export default {
 	},
 	mounted() {}
 };
+// <style>
+// .modal-lg {
+// 	width: 80%;
+// 	height: 100%;
+// }
+// </style>
 </script>
-<style>
-.modal-lg {
-	width: 80%;
-	height: 100%;
-}
-</style>

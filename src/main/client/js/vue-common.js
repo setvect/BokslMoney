@@ -23,6 +23,11 @@ Vue.filter("dateFormat", (value, format) => {
 	return moment().format(format);
 });
 
+// 계좌 이름
+Vue.filter("accountName", function(accountSeq) {
+	return AppUtil.getAccountName(accountSeq);
+});
+
 // 목록 번호 계산. 내림차순(높은 번호 부터)으로 표시
 Vue.filter("indexSeq", (index, page) => page.totalCount - (page.currentPage - 1) * page.returnCount - index);
 
