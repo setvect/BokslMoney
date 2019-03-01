@@ -43,17 +43,17 @@ let TransactionMixin = {
 				let memo = this.getMemo(this.selectDate);
 				// 해당 날짜에 등록된 메모가 있다면 수정으로 없다면 새롭게 등록
 				if (memo) {
-					EventBus.$emit('editMemoFormEvent', memo);
+					this.$EventBus.$emit('editMemoFormEvent', memo);
 				} else {
-					EventBus.$emit('addMemoFormEvent', this.selectDate);
+					this.$EventBus.$emit('addMemoFormEvent', this.selectDate);
 				}
 			} else {
-				EventBus.$emit('addFormEvent', type, this.selectDate);
+				this.$EventBus.$emit('addFormEvent', type, this.selectDate);
 			}
 		},
 		editForm(item) {
 			var d = $.extend(true, {}, item);
-			EventBus.$emit('editFormEvent', d);
+			this.$EventBus.$emit('editFormEvent', d);
 		},
 		deleteAction(item) {
 			if (!confirm("삭제하시겠습니까?")) {
