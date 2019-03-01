@@ -3,24 +3,15 @@
 		<div class="form-row">
 			<div class="form-group col-md-4">
 				<label for="inputCity">재산(내가 모은 돈)</label>
-				<span class="form-control text-right">
-					{{property
-					| numberFormat}}
-				</span>
+				<span class="form-control text-right">{{property | numberFormat}}</span>
 			</div>
 			<div class="form-group col-md-4">
 				<label for="inputCity">자산(마이너스가 아닌 계좌 합)</label>
-				<span class="form-control text-right">
-					{{asset
-					| numberFormat}}
-				</span>
+				<span class="form-control text-right">{{asset | numberFormat}}</span>
 			</div>
 			<div class="form-group col-md-4">
 				<label for="inputCity">부채(마이너스 계좌 합)</label>
-				<span class="form-control text-right">
-					{{debt
-					| numberFormat}}
-				</span>
+				<span class="form-control text-right">{{debt | numberFormat}}</span>
 			</div>
 		</div>
 		<table class="table table-striped jambo_table bulk_action table-bordered" id="grid">
@@ -58,9 +49,9 @@
 
 <script type="text/javascript">
 import vueUtil from "../../js/vue-util.js";
-import  "../../js/vue-common.js";
+import "../../js/vue-common.js";
 
-export default{
+export default {
 	data() {
 		return {
 			itemList: [],

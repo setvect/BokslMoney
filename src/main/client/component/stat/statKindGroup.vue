@@ -1,11 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
 <template>
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="form-inline" style="padding: 0 10px;">
 			<div class="form-group">
 				<select class="form-control" v-model="yearChoice">
 					<option value="">--결산 년도 선택--</option>
-					<option :value="year" v-for="year in yearList">{{ year }}년</option>
+					<option :value="year" v-for="year in yearList" :key="year">{{ year }}년</option>
 				</select>
 			</div>
 			<button type="submit" class="btn btn-default" style="margin: 0" @click="runStat()">조회</button>

@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
 <template>
 	<div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="form-inline" style="padding: 0 10px;">

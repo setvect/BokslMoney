@@ -33,25 +33,25 @@
 									<td>{{spending.name}}</td>
 									<td class="text-right" v-for="month in monthList" :key="month.valueOf()" @click="viewList(month, spending.kind, spending.categorySeq)">
 										{{getSpending(month.month(),
-										spending.categorySeq) |
-										numberFormat}}
+										spending.categorySeq) | numberFormat}}
 									</td>
 								</tr>
 								<tr class="info" v-for="kindMap in kindList" :key="Object.keys(kindMap)[0]">
 									<td>{{Object.values(kindMap)[0]}}</td>
-									<td class="text-right" v-for="month in monthList" :key="month.valueOf()" @click="viewList(month, Object.keys(kindMap)[0],0)">
-										{{getKindSum(month.month(),
-										Object.keys(kindMap)[0])|
-										numberFormat}}
-									</td>
+									<td
+										class="text-right"
+										v-for="month in monthList"
+										:key="month.valueOf()"
+										@click="viewList(month, Object.keys(kindMap)[0],0)"
+									>{{getKindSum(month.month(), Object.keys(kindMap)[0])| numberFormat}}</td>
 								</tr>
 								<tr class="success">
 									<td>수입-지출</td>
-									<td class="text-right" v-for="month in monthList" :key="month.valueOf()">
-										{{getKindSum(month.month(), 'INCOME') -
-										getKindSum(month.month(), 'SPENDING') |
-										numberFormat}}
-									</td>
+									<td
+										class="text-right"
+										v-for="month in monthList"
+										:key="month.valueOf()"
+									>{{getKindSum(month.month(), 'INCOME') - getKindSum(month.month(), 'SPENDING') | numberFormat}}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -66,7 +66,7 @@
 <script type="text/javascript">
 const currentYear = new Date().getFullYear();
 import recordListComponent from "./recordList.vue";
-import  "../../js/vue-common.js";
+import "../../js/vue-common.js";
 
 // vue 객체 생성
 export default {
