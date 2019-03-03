@@ -148,10 +148,6 @@
 		</div>
 	</div>
 </template>
-
-<jsp:include page="transaction_category.inc.jsp"></jsp:include>
-<jsp:include page="transaction_often.inc.jsp"></jsp:include>
-
 <script type="text/javascript">
 	import categoryComponent from './transactionCategory.vue';
 	import oftenComponent from './transactionOften.vue';

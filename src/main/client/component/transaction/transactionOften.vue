@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
 <template>
 	<div id="addOftenItem" class="modal fade" role="dialog">
 		<div class="modal-dialog">
