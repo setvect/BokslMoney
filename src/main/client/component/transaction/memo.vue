@@ -71,7 +71,7 @@ export default {
 				let url = this.actionType == "add" ? "/memo/add.do" : "/memo/edit.do";
 				VueUtil.post(url, this.item, result => {
 					$("#addMemo").modal("hide");
-					EventBus.$emit("reloadEvent");
+					this.$EventBus.$emit("reloadEvent");
 				});
 			});
 		},
@@ -82,14 +82,14 @@ export default {
 			}
 			VueUtil.post("/memo/delete.do", { memoSeq: memoSeq }, result => {
 				$("#addMemo").modal("hide");
-				EventBus.$emit("reloadEvent");
+				this.$EventBus.$emit("reloadEvent");
 			});
 		}
 	},
 	mounted() {},
 	created() {
-		EventBus.$on("addMemoFormEvent", this.addForm);
-		EventBus.$on("editMemoFormEvent", this.editForm);
+		this.$EventBus.$on("addMemoFormEvent", this.addForm);
+		this.$EventBus.$on("editMemoFormEvent", this.editForm);
 	}
 };
 </script>

@@ -106,6 +106,7 @@ Vue.use(VeeValidate, {
 });
 import itemAddComponent from "./transactionAdd.vue";
 import memoComponent from "./memo.vue";
+import "../../js/vue-common.js";
 
 // vue 객체 생성
 export default {

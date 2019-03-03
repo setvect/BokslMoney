@@ -18,7 +18,7 @@ module.exports = env => {
 			"assets/bundle/js/app/settlement": clientPath + "/js/app/settlement.js",
 			"assets/bundle/js/app/loginUserEdit": clientPath + "/js/app/loginUserEdit.js",
 			"assets/bundle/js/app/grid": clientPath + "/js/app/grid.js",
-			// "assets/bundle/js/app/calendar": clientPath + "/js/app/calendar.js"
+			"assets/bundle/js/app/calendar": clientPath + "/js/app/calendar.js"
 		},
 		devtool: false,
 		output: {
