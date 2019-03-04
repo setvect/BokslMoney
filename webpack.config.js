@@ -26,17 +26,19 @@ module.exports = env => {
 			filename: "[name].js",
 			pathinfo: true
 		},
-		// optimization: {
-		// 	splitChunks: {
-		// 		chunks: "all",
-		// 		cacheGroups: {
-		// 			vendors: {
-		// 				test: /[\\/]node_modules[\\/]/,
-		// 				name: "assets/bundle/js/vendors"
-		// 			}
-		// 		}
-		// 	}
-		// },
+		optimization: {
+			// minimize: true
+			splitChunks: {
+				chunks: "all",
+				minSize: 3000000,
+				cacheGroups: {
+					vendors: {
+						test: /[\\/]node_modules[\\/]/,
+						name: "assets/bundle/js/vendors"
+					}
+				}
+			}
+		},
 		devServer: {
 			contentBase: outputPath,
 			publicPath: "/",
