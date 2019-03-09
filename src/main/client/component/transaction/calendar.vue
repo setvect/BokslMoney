@@ -102,12 +102,12 @@
 <script type="text/javascript">
 import Vue from "vue";
 import VeeValidate from "vee-validate";
-
-import itemAddComponent from "./transactionAdd.vue";
-import memoComponent from "./memo.vue";
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
+
+import memoComponent from "./memo.vue";
+import itemAddComponent from "./transactionAdd.vue";
 
 Vue.use(VeeValidate, {
 	locale: "ko",

@@ -155,13 +155,19 @@
 	</div>
 </template>
 <script type="text/javascript">
+import Vue from "vue";
+import VeeValidate from "vee-validate";
+import VueUtil from "../../js/vue-util.js";
+import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
+import "../../js/vue-common.js";
+
+import itemAddComponent from "./transactionAdd.vue";
+
 Vue.use(VeeValidate, {
 	locale: "ko",
 	events: "blur"
 });
 const NOW_DATE = new Date();
-import itemAddComponent from "./transactionAdd.vue";
-import "../../js/vue-common.js";
 
 // vue 객체 생성
 export default {
