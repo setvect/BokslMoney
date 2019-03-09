@@ -151,6 +151,7 @@
 <script type="text/javascript">
 	import categoryComponent from './transactionCategory.vue';
 	import oftenComponent from './transactionOften.vue';
+	import VueUtil from "../../js/vue-util.js";
 
 	export default {
 		data() {

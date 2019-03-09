@@ -1,4 +1,5 @@
 import commonUtil from "./common-util.js";
+import axios from "axios"
 
 /*****
  * Vue 관련 공통 함수.

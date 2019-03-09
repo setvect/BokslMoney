@@ -7,10 +7,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery-twbsPagination/jquery.twbsPagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery-ui/jquery-ui.js"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/vue/vue.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/vue/vue.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/vue/vue-router.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/vue/axios.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/vee-validate/vee-validate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/vee-validate/vee-validate.js"></script> -->
 
 <!-- cookie -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery.cookie/jquery.cookie.js"></script>
@@ -35,9 +35,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-lunar/moment-lunar.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/common-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/vue-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/vue-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script> -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/calendar-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/bokslmoney.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/bokslmoney.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script> -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
 <!-- 오른쪽 마우스 클릭, 메뉴 -->
