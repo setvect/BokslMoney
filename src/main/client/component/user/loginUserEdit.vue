@@ -1,5 +1,5 @@
 <template>
-	<form class="form-horizontal form-label-left" @submit.prevent="onSubmit()">
+	<form class="form-horizontal form-label-left" id="passwd-change-form" @submit.prevent="onSubmit()">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">&times;</button>
 			<h4 class="modal-title">비밀번호 수정</h4>
@@ -21,7 +21,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-primary">확인</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-default _close_passwd" data-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</form>
@@ -29,9 +29,9 @@
 <script type="text/javascript">
 import $ from "jquery";
 import Vue from "vue";
+import VueUtil from "../../js/vue-util.js";
 import VeeValidate from "vee-validate";
 import VueValidationKo from "vee-validate/dist/locale/ko";
-import "bootstrap";
 
 Vue.use(VeeValidate, {
 	// locale: "ko",
@@ -54,7 +54,7 @@ export default {
 				}
 				VueUtil.post("/user/edit.do", this.item, result => {
 					alert("비밀번호 수정이 완료되었습니다.");
-					$("#myinfo-edit-dialog").modal("hide");
+					$("._close_passwd").trigger("click");
 				});
 			});
 		}

@@ -64,9 +64,13 @@
 </template>
 
 <script type="text/javascript">
+import Vue from "vue";
+import VueUtil from "../../js/vue-util.js";
+import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
+import "../../js/vue-common.js";
+
 const currentYear = new Date().getFullYear();
 import recordListComponent from "./recordList.vue";
-import "../../js/vue-common.js";
 
 // vue 객체 생성
 export default {

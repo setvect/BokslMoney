@@ -91,7 +91,14 @@
 	</div>
 </template>
 <script type="text/javascript">
-import vueUtil from "../../js/vue-util.js";
+import Vue from "vue";
+import VeeValidate from "vee-validate";
+import VueUtil from "../../js/vue-util.js";
+
+Vue.use(VeeValidate, {
+	locale: "ko",
+	events: "blur"
+});
 
 // vue 객체 생성
 export default {
@@ -109,7 +116,7 @@ export default {
 		// 리스트
 		list() {
 			let param = { codeMainId: this.codeMainId };
-			vueUtil.get("/code/list.json", param, result => {
+			VueUtil.get("/code/list.json", param, result => {
 				this.itemList = result.data;
 			});
 		},
@@ -144,7 +151,7 @@ export default {
 				}
 				delete this.formItem.codeItemKey;
 				let url = this.actionType == "add" ? "/code/add.do" : "/code/edit.do";
-				vueUtil.post(url, this.formItem, result => {
+				VueUtil.post(url, this.formItem, result => {
 					$("#addItem").modal("hide");
 					this.list();
 				});
@@ -157,7 +164,7 @@ export default {
 				downCodeItemSeq: downCodeItemSeq,
 				upCodeItemSeq: upCodeItemSeq
 			};
-			vueUtil.post("/code/changeOrder.do", param, result => {
+			VueUtil.post("/code/changeOrder.do", param, result => {
 				this.list();
 			});
 		},
@@ -167,7 +174,7 @@ export default {
 				return;
 			}
 			let param = { codeMainId: this.codeMainId, codeItemSeq: codeItemSeq };
-			vueUtil.post("/code/delete.do", param, result => {
+			VueUtil.post("/code/delete.do", param, result => {
 				this.list();
 			});
 		},
@@ -185,7 +192,7 @@ export default {
 		},
 		// 메인코드
 		loadCodeMain() {
-			vueUtil.get(
+			VueUtil.get(
 				"/code/getCodeMain.json",
 				{ codeMainId: this.codeMainId },
 				result => {

@@ -10,9 +10,17 @@
 				<div class="modal-body">
 					<form onsubmit="return false;">
 						<div class="form-group">
-							<label>이름: </label><input type="text" class="form-control" name="name" v-model="item.name" v-validate="'required|max:20'"
-							 data-vv-as="이름 " v-on:keyup.13="addAction()">
-							<span class="error" v-if="errors.has('name')">{{errors.first('name')}}</span>
+							<label>이름:</label>
+							<input
+								type="text"
+								class="form-control"
+								name="name"
+								v-model="item.name"
+								v-validate="'required|max:20'"
+								data-vv-as="이름 "
+								v-on:keyup.13="addAction()"
+							>
+							<!-- <span class="error" v-if="errors.has('name')">{{errors.first('name')}}</span> -->
 						</div>
 					</form>
 				</div>
@@ -26,48 +34,51 @@
 </template>
 
 <script type="text/javascript">
-	export default {
-		data() {
-			return {
-				item: { name: "" },
-				afterEventCallback: null,
-				actionType: 'add'
-			};
+import VueUtil from "../../js/vue-util.js";
+
+export default {
+	data() {
+		return {
+			item: { name: "" },
+			afterEventCallback: null,
+			actionType: "add"
+		};
+	},
+	methods: {
+		// 등록 폼
+		addForm(item, afterEventCallback) {
+			this.actionType = "add";
+			this.openForm(item, afterEventCallback);
 		},
-		methods: {
-			// 등록 폼
-			addForm(item, afterEventCallback) {
-				this.actionType = 'add';
-				this.openForm(item, afterEventCallback);
-			},
-			//수정 폼
-			editForm(item, afterEventCallback) {
-				this.actionType = 'edit';
-				this.openForm(item, afterEventCallback);
-			},
-			openForm(item, afterEventCallback) {
-				this.item = $.extend(true, {}, item);
-				this.afterEventCallback = afterEventCallback;
-				$("#addItem").modal();
-			},
-			// 등록 또는 수정
-			addAction() {
-				this.$validator.validateAll().then((result) => {
-					if (!result) {
-						return;
-					}
-					let url = this.actionType == 'add' ? '/category/add.do' : '/category/edit.do'
-					VueUtil.post(url, this.item, (result) => {
-						$("#addItem").modal('hide');
-						this.afterEventCallback();
-						this.item.name = "";
-					});
+		//수정 폼
+		editForm(item, afterEventCallback) {
+			this.actionType = "edit";
+			this.openForm(item, afterEventCallback);
+		},
+		openForm(item, afterEventCallback) {
+			this.item = $.extend(true, {}, item);
+			this.afterEventCallback = afterEventCallback;
+			$("#addItem").modal();
+		},
+		// 등록 또는 수정
+		addAction() {
+			this.$validator.validateAll().then(result => {
+				if (!result) {
+					return;
+				}
+				let url =
+					this.actionType == "add" ? "/category/add.do" : "/category/edit.do";
+				VueUtil.post(url, this.item, result => {
+					$("#addItem").modal("hide");
+					this.afterEventCallback();
+					this.item.name = "";
 				});
-			},
-		},
-		created() {
-			this.$EventBus.$on('addFormEvent', this.addForm);
-			this.$EventBus.$on('editFormEvent', this.editForm);
-		},
-	};
+			});
+		}
+	},
+	created() {
+		this.$EventBus.$on("addFormEvent", this.addForm);
+		this.$EventBus.$on("editFormEvent", this.editForm);
+	}
+};
 </script>

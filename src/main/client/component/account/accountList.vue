@@ -48,8 +48,15 @@
 </template>
 
 <script type="text/javascript">
+import Vue from "vue";
+import VeeValidate from "vee-validate";
 import vueUtil from "../../js/vue-util.js";
 import "../../js/vue-common.js";
+
+Vue.use(VeeValidate, {
+	locale: "ko",
+	events: "blur"
+});
 
 export default {
 	data() {
@@ -88,11 +95,11 @@ export default {
 		// 리스트
 		list() {
 			vueUtil.get("/account/list.json", {}, result => {
+				if (this.gridTable != null) {
+					this.gridTable.destroy();
+				}
 				this.itemList = result.data;
 				this.$nextTick(() => {
-					if (this.gridTable != null) {
-						this.gridTable.destroy();
-					}
 					this.gridTable = $("#grid").DataTable({
 						paging: false,
 						bInfo: false,
