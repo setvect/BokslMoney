@@ -28,14 +28,4 @@
 	</div>
 </div>
 <!-- /top navigation -->
-<script type="text/javascript">
-	$("._edit-my").click(function() {
-		if ($("#passwd-change-form").length) {
-			$("#myinfo-edit-dialog").modal();
-		} else {
-			$("#myinfo-edit-dialog .modal-content").load(CommonUtil.getContextPath() + "/user/loginUserEdit.do", function() {
-				$("#myinfo-edit-dialog").modal();
-			});
-		}
-	});
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/app/user.js"></script>

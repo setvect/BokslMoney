@@ -1,5 +1,6 @@
 import Vue from "vue";
 import { AppUtil } from "./bokslmoney.js";
+import CommonUtil from "./common-util.js"
 
 // 숫자 (,)콤마 추가
 Vue.filter("numberFormat", value => {

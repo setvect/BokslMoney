@@ -1,4 +1,4 @@
-import commonUtil from "./common-util.js";
+import CommonUtil from "./common-util.js";
 import axios from "axios"
 
 /*****
@@ -56,7 +56,7 @@ VueUtil._ajaxCall = function (callType, url, _param, _callback, _option) {
 		waitDialog.show(waitMsg, { dialogSize: "sm" });
 	}
 
-	axiosMethod(commonUtil.appendContextRoot(url), sendParam)
+	axiosMethod(CommonUtil.appendContextRoot(url), sendParam)
 		.then((result) => callback(result))
 		.catch((err) => errorCall(err))
 		.finally(() => {

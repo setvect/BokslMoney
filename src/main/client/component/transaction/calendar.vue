@@ -104,6 +104,7 @@ import Vue from "vue";
 import VeeValidate from "vee-validate";
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
+import CommonUtil from "../../js/common-util.js";
 import "../../js/vue-common.js";
 
 import memoComponent from "./memo.vue";

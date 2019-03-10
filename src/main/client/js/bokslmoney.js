@@ -1,4 +1,7 @@
 import Vue from "vue";
+import CommonUtil from "./common-util.js";
+import VueUtil from "./vue-util.js";
+
 // 사용 안함.
 const TYPE_VALUE = {
 	SPENDING: {
