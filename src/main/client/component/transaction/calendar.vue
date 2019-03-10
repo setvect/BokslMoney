@@ -106,6 +106,7 @@ import VueUtil from "../../js/vue-util.js";
 import CommonUtil from "../../js/common-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
+import _ from 'lodash';
 
 import memoComponent from "./memo.vue";
 import itemAddComponent from "./transactionAdd.vue";

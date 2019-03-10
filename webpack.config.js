@@ -9,7 +9,7 @@ module.exports = env => {
 	return {
 		mode: !env ? "development" : env,
 		entry: {
-			"assets/bundle/js/vendors": ["jquery", "vue", "axios", "vue-axios", "bootstrap", "vee-validate"],
+			"assets/bundle/js/vendors": ["jquery", "vue", "axios", "vue-axios", "bootstrap", "vee-validate", "lodash"],
 			"assets/bundle/js/app/login": clientPath + "/js/app/login.js",
 			"assets/bundle/js/app/code": clientPath + "/js/app/code.js",
 			"assets/bundle/js/app/account": clientPath + "/js/app/account.js",

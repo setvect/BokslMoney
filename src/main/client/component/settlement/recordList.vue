@@ -57,6 +57,7 @@ import VeeValidate from "vee-validate";
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
+import _ from 'lodash';
 
 // vue 객체 생성
 export default {

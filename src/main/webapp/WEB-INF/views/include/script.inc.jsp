@@ -36,7 +36,6 @@
 <script src="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.contextMenu.js"></script>
 <script src="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.ui.position.js"></script>
 
-
 <!-- 테이블 정렬 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.js"></script>
 
@@ -46,12 +45,6 @@
 
 <!-- 차트 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/Chart.js/dist/Chart.js"></script>
-
-<!-- functional library -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/lodash/lodash.min.js"></script>
-
-<!-- inputpicker -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/inputpicker-master/jquery.inputpicker.js"></script>
 
 <!-- webpack bundle -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/vendors.js"></script>
