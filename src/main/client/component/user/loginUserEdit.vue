@@ -28,18 +28,7 @@
 </template>
 <script type="text/javascript">
 import $ from "jquery";
-import Vue from "vue";
 import VueUtil from "../../js/vue-util.js";
-import VeeValidate from "vee-validate";
-import VueValidationKo from "vee-validate/dist/locale/ko";
-
-Vue.use(VeeValidate, {
-	// locale: "ko",
-	events: "blur",
-	dictionary: {
-		ko: { messages: VueValidationKo, attributes: VueValidationKo }
-	}
-});
 
 export default {
 	data: function() {

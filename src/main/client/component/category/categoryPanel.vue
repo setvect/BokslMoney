@@ -10,15 +10,7 @@
 </template>
 
 <script type="text/javascript">
-import Vue from "vue";
-import VeeValidate from "vee-validate";
-
 import listComponent from "./categoryList.vue";
-
-Vue.use(VeeValidate, {
-	locale: "ko",
-	events: "blur"
-});
 
 export default {
 	data() {

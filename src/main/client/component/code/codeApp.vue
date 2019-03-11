@@ -91,14 +91,7 @@
 	</div>
 </template>
 <script type="text/javascript">
-import Vue from "vue";
-import VeeValidate from "vee-validate";
 import VueUtil from "../../js/vue-util.js";
-
-Vue.use(VeeValidate, {
-	locale: "ko",
-	events: "blur"
-});
 
 // vue 객체 생성
 export default {

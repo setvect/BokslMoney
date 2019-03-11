@@ -48,15 +48,8 @@
 </template>
 
 <script type="text/javascript">
-import Vue from "vue";
-import VeeValidate from "vee-validate";
 import vueUtil from "../../js/vue-util.js";
 import "../../js/vue-common.js";
-
-Vue.use(VeeValidate, {
-	locale: "ko",
-	events: "blur"
-});
 
 export default {
 	data() {
