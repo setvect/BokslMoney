@@ -20,9 +20,6 @@
 <!-- bootstrap-daterangepicker -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-<!-- FullCalendar -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/fullcalendar/locale/ko.js"></script>
 <!-- icheck-bootstrap -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/iCheck/icheck.js"></script>
 
@@ -31,10 +28,6 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/calendar-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
-
-<!-- 오른쪽 마우스 클릭, 메뉴 -->
-<script src="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.contextMenu.js"></script>
-<script src="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.ui.position.js"></script>
 
 <!-- 테이블 정렬 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.js"></script>
