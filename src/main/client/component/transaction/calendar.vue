@@ -113,7 +113,7 @@ import itemAddComponent from "./transactionAdd.vue";
 export default {
 	mixins: [TransactionMixin],
 
-	data: function() {
+	data: function () {
 		return {
 			calendar: null,
 			currentMonth: null,
@@ -129,8 +129,7 @@ export default {
 		listSelectDayTransfer() {
 			let r = this.transactionList.filter(t => {
 				return (
-					this.selectDate.toDate().getDate() ==
-					new Date(t.transactionDate).getDate()
+					this.selectDate.toDate().getDate() == new Date(t.transactionDate).getDate()
 				);
 			});
 			return r;
@@ -182,14 +181,7 @@ export default {
 						let t = TYPE_VALUE[event.type];
 						element
 							.find(".fc-title")
-							.prepend(
-								"<i class='fa " +
-									t.icon +
-									"'></i>" +
-									t.title +
-									" : " +
-									CommonUtil.toComma(event.cost)
-							);
+							.prepend("<i class='fa " + t.icon + "'></i>" + t.title + " : " + CommonUtil.toComma(event.cost));
 					}
 					// 메모
 					if (event.text) {
@@ -218,7 +210,7 @@ export default {
 			// 오른쪽 마우스 클릭
 			$.contextMenu({
 				selector: "#calendar",
-				callback: function(type, options) {
+				callback: function (type, options) {
 					self.addItemForm(type);
 				},
 				items: {
@@ -292,7 +284,7 @@ export default {
 			let transactionGroupDate = _.chain(transactionSet)
 				.groupBy("date")
 				.map((listGroupByDate, date) => {
-					var listGroupByDate = _.map(listGroupByDate, function(c) {
+					var listGroupByDate = _.map(listGroupByDate, function (c) {
 						return _.omit(c, ["date"]);
 					});
 					listGroupByDate = _.chain(listGroupByDate)
