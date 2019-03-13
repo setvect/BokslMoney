@@ -25,8 +25,6 @@
 
 <!-- 양.음력 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-lunar/moment-lunar.js"></script>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/calendar-util.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
 <!-- 테이블 정렬 -->

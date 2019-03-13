@@ -102,6 +102,7 @@
 <script type="text/javascript">
 import VueUtil from "../../js/vue-util.js";
 import CommonUtil from "../../js/common-util.js";
+import CalendarUtil from "../../js/calendar-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
 import _ from 'lodash';
