@@ -10,29 +10,29 @@
 <!-- cookie -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery.cookie/jquery.cookie.js"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-develop/moment.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-develop/moment.js"></script> -->
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/js-xlsx-master/xlsx.full.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/js-xlsx-master/shim.min.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/js-xlsx-master/xlsx.full.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/js-xlsx-master/shim.min.js"></script> -->
 
 <!-- bootstrap -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <!-- bootstrap-daterangepicker -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.js"></script> -->
 
 <!-- icheck-bootstrap -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/iCheck/icheck.js"></script>
 
 <!-- 양.음력 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-lunar/moment-lunar.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/moment-lunar/moment-lunar.js"></script> -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
 
 <!-- 테이블 정렬 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.js"></script> -->
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jszip/dist/jszip.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/dataTables.buttons.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/buttons.html5.js"></script>
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/dataTables.buttons.js"></script> -->
+<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/datatables.net-buttons/js/buttons.html5.js"></script> -->
 
 <!-- 차트 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/Chart.js/dist/Chart.js"></script>
@@ -41,7 +41,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/vendors.js"></script>
 
 <script type="text/javascript">
-	moment.locale('ko');
+	// moment.locale('ko');
 
 	// 좌측 메뉴 활성화
 	// 현재 보고 있는 페이지에 따라 메뉴 활성화 처리

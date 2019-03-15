@@ -1,4 +1,5 @@
 import Vue from "vue";
+import moment from "moment";
 import CommonUtil from "./common-util.js";
 import VueUtil from "./vue-util.js";
 
