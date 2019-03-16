@@ -106,9 +106,11 @@ import CalendarUtil from "../../js/calendar-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
 import _ from 'lodash';
-import $ from "jquery";
+import $ from "jquery"
+import moment from "moment";
 import 'fullcalendar';
 import "fullcalendar/dist/locale/ko";
+import "fullcalendar/dist/fullcalendar.min.css";
 
 import 'jquery-contextmenu';
 

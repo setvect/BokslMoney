@@ -156,14 +156,15 @@
 </template>
 <script type="text/javascript">
 import $ from "jquery";
-import "icheck";
 import "datatables";
 import moment from "moment";
-// import * as JSZip from 'jszip';
-// window.JSZip = JSZip;
-// console.log('window.JSZip##################### :', window.JSZip);
 
 import "daterangepicker";
+import 'daterangepicker/daterangepicker.css';
+
+import "../../js/module/iCheck/icheck.js";
+import "../../js/module/iCheck/skins/flat/green.css";
+
 import "datatables.net-buttons";
 import "datatables.net-buttons/js/buttons.html5.js";
 import VueUtil from "../../js/vue-util.js";
@@ -171,7 +172,9 @@ import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
 import itemAddComponent from "./transactionAdd.vue";
 
+
 const NOW_DATE = new Date();
+moment.locale('ko');
 
 // vue 객체 생성
 export default {
@@ -203,9 +206,9 @@ export default {
 		initUi() {
 			let self = this;
 
-			// $("input.flat").iCheck({
-			// 	checkboxClass: "icheckbox_flat-green"
-			// });
+			$("input.flat").iCheck({
+				checkboxClass: "icheckbox_flat-green"
+			});
 
 			let kind = self.condition.kindTypeSet;
 			$("input.flat").on("ifChecked", function(e) {
@@ -219,7 +222,6 @@ export default {
 		},
 		// datepicker 선택
 		initDatepicker() {
-			console.log('this.condition.from :', this.condition.from);
 			$("._datepicker_from").daterangepicker(
 				{
 					singleDatePicker: true,
@@ -329,14 +331,11 @@ export default {
 		},
 		// 엑셀 다운로드
 		exportExcel() {
-			console.log('$(".buttons-excel") :', $(".buttons-excel"));
 			// datatables에 있는 버튼 클릭
 			$(".buttons-excel").trigger("click");
 		}
 	},
 	mounted() {
-		console.log('$("input.flat").iCheck :', $("input.flat").iCheck);
-
 		this.initUi();
 		this.loadTransaction();
 		this.loadAccount();

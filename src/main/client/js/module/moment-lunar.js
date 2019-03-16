@@ -9,10 +9,7 @@
 
 (function () {
     var moment;
-    moment = (typeof require !== 'undefined' && require !== null)
-    && !require.amd
-    ? require('moment')
-    : this.moment;
+    moment = require('moment')
 
     var lunarMonthday =  [
         1887, 0x1694, 0x16aa, 0x4ad5,

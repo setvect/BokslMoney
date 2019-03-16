@@ -1,3 +1,6 @@
+import moment from "moment";
+import "./module/moment-lunar";
+
 var CalendarUtil = {};
 
 // 해당 년 주요 기념일 반환

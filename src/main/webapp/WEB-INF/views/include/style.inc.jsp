@@ -2,8 +2,6 @@
 
 <!-- Bootstrap -->
 <link href="${pageContext.request.contextPath}/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!-- bootstrap-daterangepicker -->
-<link href="${pageContext.request.contextPath}/assets/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 <!-- Font Awesome -->
 <link href="${pageContext.request.contextPath}/assets/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -14,15 +12,6 @@
 <link href="${pageContext.request.contextPath}/assets/css/app.css" rel="stylesheet">
 
 <link href="${pageContext.request.contextPath}/assets/lib/jquery-ui/jquery-ui.css" rel="stylesheet">
-
-<!-- FullCalendar -->
-<link href="${pageContext.request.contextPath}/assets/lib/fullcalendar/fullcalendar.min.css" rel="stylesheet">
-
-<!-- icheck-bootstrap -->
-<link href="${pageContext.request.contextPath}/assets/lib/iCheck/skins/flat/green.css" rel="stylesheet">
-
-<!-- 오른쪽 마우스 클릭, 메뉴 -->
-<link href="${pageContext.request.contextPath}/assets/lib/jQuery-contextMenu-master/jquery.contextMenu.css" rel="stylesheet">
 
 <!-- 테이블 정렬 -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/lib/DataTables/datatables.min.css"/>
