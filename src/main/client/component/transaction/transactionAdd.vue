@@ -153,6 +153,12 @@
 	import oftenComponent from './transactionOften.vue';
 	import VueUtil from "../../js/vue-util.js";
 
+	import $ from "jquery";
+	import "jquery-ui";
+	import "bootstrap";
+	import "daterangepicker";
+	import 'daterangepicker/daterangepicker.css';
+
 	export default {
 		data() {
 			return {

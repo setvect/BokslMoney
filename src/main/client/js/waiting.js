@@ -6,8 +6,8 @@
 
 var waitDialog = waitDialog || (function ($) {
 	'use strict';
-	
-	// 두개 이상의 ajax 호출 시 close 되는 시점을 정확히 판단하기 위해 오픈 횟수를 저장 
+
+	// 두개 이상의 ajax 호출 시 close 되는 시점을 정확히 판단하기 위해 오픈 횟수를 저장
 	var watingOpenCount = 0;
 
 	// Creating modal dialog's DOM
@@ -56,7 +56,7 @@ var waitDialog = waitDialog || (function ($) {
 					settings.onHide.call($dialog);
 				});
 			}
-			
+
 			watingOpenCount++;
 			// Opening dialog
 			$dialog.modal();
@@ -78,3 +78,5 @@ var waitDialog = waitDialog || (function ($) {
 	};
 
 })(jQuery);
+
+export default waitDialog;

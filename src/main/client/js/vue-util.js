@@ -1,5 +1,6 @@
 import CommonUtil from "./common-util.js";
 import axios from "axios"
+import waitDialog from './waiting.js'
 
 /*****
  * Vue 관련 공통 함수.

@@ -13,9 +13,6 @@
 <!-- bootstrap -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap/js/bootstrap.min.js"></script>
 
-<!-- 양.음력 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/waiting.js?<%=com.setvect.bokslmoney.BokslMoneyConstant.CACHE_VER%>"></script>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jszip/dist/jszip.js"></script>
 
 <!-- 차트 -->
