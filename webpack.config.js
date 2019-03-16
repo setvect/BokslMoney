@@ -91,8 +91,7 @@ module.exports = env => {
           test: /\.css$/,
           use: ["style-loader", "css-loader"]
         }
-			]
-			.concat([
+      ].concat([
         env == "production"
           ? {
               test: /\.(jpe?g|png|gif|svg)$/i,
@@ -130,7 +129,13 @@ module.exports = env => {
       new webpack.SourceMapDevToolPlugin({
         filename: "[name].js.map"
       }),
-      new webpack.DefinePlugin({ "global.GENTLY": false })
+      new webpack.DefinePlugin({ "global.GENTLY": false }),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jquery: "jquery",
+        "window.jQuery": "jquery",
+        jQuery: "jquery"
+      })
     ]
   };
 };

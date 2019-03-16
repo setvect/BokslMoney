@@ -33,6 +33,7 @@
 </template>
 
 <script type="text/javascript">
+import "bootstrap";
 export default {
 	data() {
 		return {
@@ -86,7 +87,7 @@ export default {
 			});
 		}
 	},
-	mounted() {},
+	mounted() { },
 	created() {
 		this.$EventBus.$on("addMemoFormEvent", this.addForm);
 		this.$EventBus.$on("editMemoFormEvent", this.editForm);

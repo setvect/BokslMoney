@@ -4,6 +4,8 @@
  * @author Eugene Maslovich <ehpc@em42.ru>
  */
 
+import "bootstrap";
+
 var waitDialog = waitDialog || (function ($) {
 	'use strict';
 

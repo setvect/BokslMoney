@@ -27,7 +27,6 @@
 	</form>
 </template>
 <script type="text/javascript">
-import $ from "jquery";
 import VueUtil from "../../js/vue-util.js";
 
 export default {

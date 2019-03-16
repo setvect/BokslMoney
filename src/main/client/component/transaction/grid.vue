@@ -155,18 +155,15 @@
 	</div>
 </template>
 <script type="text/javascript">
-import $ from "jquery";
-import "datatables";
 import moment from "moment";
-
+import "datatables";
+import "datatables.net-buttons";
+import "datatables.net-buttons/js/buttons.html5.js";
 import "daterangepicker";
 import 'daterangepicker/daterangepicker.css';
-
 import "../../js/module/iCheck/icheck.js";
 import "../../js/module/iCheck/skins/flat/green.css";
 
-import "datatables.net-buttons";
-import "datatables.net-buttons/js/buttons.html5.js";
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";

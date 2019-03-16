@@ -106,7 +106,6 @@ import CalendarUtil from "../../js/calendar-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
 import _ from 'lodash';
-import $ from "jquery"
 import moment from "moment";
 import 'fullcalendar';
 import "fullcalendar/dist/locale/ko";
@@ -274,10 +273,6 @@ export default {
 		// 해당 날짜에 등록된 메모 항목 반환
 		getMemo(date) {
 			let memo = this.memoList.find(memo => {
-				console.log(
-					moment(memo.memoDate).format("YYYYMMDD"),
-					date.format("YYYYMMDD")
-				);
 				return (
 					moment(memo.memoDate).format("YYYYMMDD") == date.format("YYYYMMDD")
 				);

@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import $ from "jquery";
 import CommonUtil from "../../js/common-util.js";
 
 export default {

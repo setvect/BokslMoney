@@ -48,6 +48,10 @@
 </template>
 
 <script type="text/javascript">
+import "datatables";
+import "datatables.net-buttons";
+import "datatables.net-buttons/js/buttons.html5.js";
+
 import vueUtil from "../../js/vue-util.js";
 import "../../js/vue-common.js";
 
