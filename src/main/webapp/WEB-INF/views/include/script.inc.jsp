@@ -17,7 +17,7 @@
 <script type="text/javascript">
 	// 좌측 메뉴 활성화
 	// 현재 보고 있는 페이지에 따라 메뉴 활성화 처리
-	$(()=>{
+	$(function(){
 		let url = new URL(location.href);
 		if(url.pathname === "/"){
 			return;
@@ -25,8 +25,6 @@
 		let aTag = $("#sidebar-menu > div > ul > li > a[href^='" + url.pathname + "']");
 		aTag.parent().addClass("active");
 		aTag.parent().find("ul").css("display", "block");
-
-
 	});
 
 	<sec:authorize access="isAuthenticated()">
