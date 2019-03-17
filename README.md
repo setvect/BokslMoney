@@ -14,8 +14,8 @@
 * 수입/지출/이체 내역 및 자산 변동 통계
 
 ### 빌드 방법
-* `maven clean`
-* `maven install`
+* `gradle clean`
+* `gradle bootWar`
 * 빌드 결과: bokslmoney-0.0.1.war
 
 ### 실행방법

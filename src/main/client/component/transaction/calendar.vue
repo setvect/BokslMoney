@@ -106,6 +106,7 @@ import 'fullcalendar';
 import "fullcalendar/dist/locale/ko";
 import "fullcalendar/dist/fullcalendar.min.css";
 import 'jquery-contextmenu';
+import 'jquery-contextmenu/dist/jquery.contextMenu.css';
 
 import VueUtil from "../../js/vue-util.js";
 import CommonUtil from "../../js/common-util.js";

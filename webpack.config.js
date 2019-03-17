@@ -94,7 +94,7 @@ module.exports = env => {
       ].concat([
         env == "production"
           ? {
-              test: /\.(jpe?g|png|gif|svg)$/i,
+              test: /\.(jpe?g|png|gif|svg|ttf|woff|woff2|eot)$/i,
               use: [
                 {
                   loader: "url-loader",
@@ -110,7 +110,7 @@ module.exports = env => {
               ]
             }
           : {
-              test: /\.(jpe?g|png|gif|svg)$/i,
+              test: /\.(jpe?g|png|gif|svg|ttf|woff|woff2|eot)$/i,
               use: [
                 {
                   loader: "url-loader",
