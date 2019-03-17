@@ -51,6 +51,7 @@
 import "datatables";
 import "datatables.net-buttons";
 import "datatables.net-buttons/js/buttons.html5.js";
+import "datatables/media/css/jquery.dataTables.css";
 
 import vueUtil from "../../js/vue-util.js";
 import "../../js/vue-common.js";

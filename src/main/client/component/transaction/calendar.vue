@@ -100,21 +100,20 @@
 	</div>
 </template>
 <script type="text/javascript">
-import VueUtil from "../../js/vue-util.js";
-import CommonUtil from "../../js/common-util.js";
-import CalendarUtil from "../../js/calendar-util.js";
-import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
-import "../../js/vue-common.js";
 import _ from 'lodash';
 import moment from "moment";
 import 'fullcalendar';
 import "fullcalendar/dist/locale/ko";
 import "fullcalendar/dist/fullcalendar.min.css";
-
 import 'jquery-contextmenu';
 
+import VueUtil from "../../js/vue-util.js";
+import CommonUtil from "../../js/common-util.js";
+import CalendarUtil from "../../js/calendar-util.js";
+import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import memoComponent from "./memo.vue";
 import itemAddComponent from "./transactionAdd.vue";
+import "../../js/vue-common.js";
 
 // vue 객체 생성
 export default {

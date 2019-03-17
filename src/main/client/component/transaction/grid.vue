@@ -157,6 +157,7 @@
 <script type="text/javascript">
 import moment from "moment";
 import "datatables";
+import "datatables/media/css/jquery.dataTables.css";
 import "datatables.net-buttons";
 import "datatables.net-buttons/js/buttons.html5.js";
 import "daterangepicker";
@@ -166,9 +167,8 @@ import "../../js/module/iCheck/skins/flat/green.css";
 
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
-import "../../js/vue-common.js";
 import itemAddComponent from "./transactionAdd.vue";
-
+import "../../js/vue-common.js";
 
 const NOW_DATE = new Date();
 moment.locale('ko');

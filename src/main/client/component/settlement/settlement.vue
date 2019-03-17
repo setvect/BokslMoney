@@ -69,9 +69,9 @@ import moment from "moment";
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 import "../../js/vue-common.js";
+import recordListComponent from "./recordList.vue";
 
 const currentYear = new Date().getFullYear();
-import recordListComponent from "./recordList.vue";
 
 // vue 객체 생성
 export default {

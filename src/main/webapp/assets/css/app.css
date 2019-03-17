@@ -46,3 +46,8 @@ body {
 .ui-autocomplete {
   z-index: 9999 !important;
 }
+
+/* datatables 테이블 스타일 조정 */
+table.dataTable{
+  border-collapse: collapse !important;
+}

@@ -33,7 +33,6 @@
 </template>
 
 <script type="text/javascript">
-import "bootstrap";
 export default {
 	data() {
 		return {

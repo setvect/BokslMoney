@@ -4,13 +4,9 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery/jquery-1.12.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery-twbsPagination/jquery.twbsPagination.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery-ui/jquery-ui.js"></script>
 
-<!-- cookie -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jquery.cookie/jquery.cookie.js"></script>
 
-<!-- bootstrap -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jszip/dist/jszip.js"></script>

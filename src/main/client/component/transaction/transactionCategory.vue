@@ -34,6 +34,7 @@
 
 <script type="text/javascript">
 import VueUtil from "../../js/vue-util.js";
+
 export default {
 	data() {
 		return {

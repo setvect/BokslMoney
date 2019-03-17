@@ -149,16 +149,17 @@
 	</div>
 </template>
 <script type="text/javascript">
+	import "daterangepicker";
+	import 'daterangepicker/daterangepicker.css';
+	import 'jquery-ui/ui/core';
+	import 'jquery-ui/ui/widgets/autocomplete.js'
+	import 'jquery-ui/themes/base/all.css'
+
 	import categoryComponent from './transactionCategory.vue';
 	import oftenComponent from './transactionOften.vue';
 	import VueUtil from "../../js/vue-util.js";
 
-	import "jquery-ui";
-	import "bootstrap";
-	import "daterangepicker";
-	import 'daterangepicker/daterangepicker.css';
-
-	export default {
+export default {
 		data() {
 			return {
 				item: { money: 0, fee: 0, kind: null },
@@ -270,23 +271,23 @@
 				$("#addItem").modal();
 
 				// 메모 입력시 관련 카테고리 추천
-				// $("._note").autocomplete({
-				// 	source: (request, response) => {
-				// 		let note = request.term;
-				// 		VueUtil.get("/category/listRecommend.json", { note: note, kind: this.item.kind }, (result) => {
-				// 			response(result.data);
-				// 		}, { waitDialog: false });
-				// 	},
-				// 	focus: () => false,
-				// 	select: (event, ui) => {
-				// 		this.insertCategory(ui.item.parentCategory, ui.item);
-				// 		return false;
-				// 	},
-				// }).data("ui-autocomplete")._renderItem = function (ul, item) {
-				// 	return $("<li>")
-				// 		.append("<div>" + item.parentCategory.name + " > " + item.name + "</div>")
-				// 		.appendTo(ul);
-				// };
+				$("._note").autocomplete({
+					source: (request, response) => {
+						let note = request.term;
+						VueUtil.get("/category/listRecommend.json", { note: note, kind: this.item.kind }, (result) => {
+							response(result.data);
+						}, { waitDialog: false });
+					},
+					focus: () => false,
+					select: (event, ui) => {
+						this.insertCategory(ui.item.parentCategory, ui.item);
+						return false;
+					},
+				}).data("ui-autocomplete")._renderItem = function (ul, item) {
+					return $("<li>")
+						.append("<div>" + item.parentCategory.name + " > " + item.name + "</div>")
+						.appendTo(ul);
+				};
 			},
 			// 등록 또는 수정
 			// cont. true: 연속입력, false: 입력후 모달 닫기
