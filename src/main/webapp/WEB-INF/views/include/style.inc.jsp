@@ -10,6 +10,3 @@
 
 <!-- App -->
 <link href="${pageContext.request.contextPath}/assets/css/app.css" rel="stylesheet">
-
-<!-- inputpicker -->
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/lib/inputpicker-master/jquery.inputpicker.css"/>

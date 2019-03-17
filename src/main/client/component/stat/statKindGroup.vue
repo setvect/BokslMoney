@@ -14,6 +14,7 @@
 	</div>
 </template>
 <script type="text/javascript">
+import Chart from "chart.js"
 import VueUtil from "../../js/vue-util.js";
 import { TransactionMixin, AppUtil, TYPE_VALUE } from "../../js/bokslmoney.js";
 

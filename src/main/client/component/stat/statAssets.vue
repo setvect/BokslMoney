@@ -16,6 +16,7 @@
 
 <script type="text/javascript">
 import moment from "moment";
+import Chart from "chart.js"
 
 import VueUtil from "../../js/vue-util.js";
 

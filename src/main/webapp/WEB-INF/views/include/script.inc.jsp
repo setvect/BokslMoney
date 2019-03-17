@@ -11,9 +11,6 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/jszip/dist/jszip.js"></script>
 
-<!-- 차트 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/lib/Chart.js/dist/Chart.js"></script>
-
 <!-- webpack bundle -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/bundle/js/vendors.js"></script>
 
