@@ -13,11 +13,6 @@
 * 분류 및 각종 코드관리
 * 수입/지출/이체 내역 및 자산 변동 통계
 
-### 빌드 방법
-* `gradle clean`
-* `gradle bootWar`
-* 빌드 결과: bokslmoney-0.0.1.war
-
 ### 실행방법
 * `java -jar bokslmoney-0.0.1.war`
 
@@ -55,6 +50,22 @@
 이클립스
 
 - 추가 예정
+
+### Webpack
+1. `npm install`
+2. `npm run prod`
+
+### 빌드 방법
+1. `gradle clean`
+2. `gradle bootWar`
+
+빌드 결과: bokslmoney-0.0.1.war 파일 생성
+
+### 개발 실행
+1. BokslMoneyApplication 실행
+2. `npm start` 실행
+3. http://localhost:8081 접속
+4. 로그인. 기본 비밀번호 `boksl`
 
 ### 주요 화면
 * 달력 보기
