@@ -45,6 +45,17 @@
 * Chart.js
 * lodash
 
+### IDE 셋팅 방법
+인텔리제이(IDEA 2018.3.2 기준)
+
+1. lombok plugin 설치
+1. project settings -> Build, Execution, Deployment -> Compiler에서 Build Project automatically 체크
+1. ject settings -> Build, Execution, Deployment -> Compiler -> Annotation Processors에서 Enable annontation processing 체크  
+
+이클립스
+
+- 추가 예정
+
 ### 주요 화면
 * 달력 보기
 ![Server Map](readme/pic1.png)

@@ -3,7 +3,7 @@ buildscript {
         springBootPlugin = 'org.springframework.boot:spring-boot-gradle-plugin'
         springBootVersion = '2.0.5.RELEASE'
         thinPlugin = 'org.springframework.boot.experimental:spring-boot-thin-gradle-plugin'
-        thinVersion = '1.0.11.RELEASE'        
+        thinVersion = '1.0.11.RELEASE'
     }
     repositories {
         mavenCentral()
