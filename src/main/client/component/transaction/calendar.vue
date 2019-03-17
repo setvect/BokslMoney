@@ -161,40 +161,25 @@ export default {
 				selectable: true,
 				selectHelper: true,
 				showNonCurrentDates: false,
-				option: {
-					locale: "ko"
-				},
-				header: {
-					left: "prevYear,prev,next,nextYear today",
-					center: "title",
-					right: ""
-				},
-				selectConstraint: {
-					start: "00:00",
-					end: "24:00"
-				},
+				option: { locale: "ko" },
+				header: { left: "prevYear,prev,next,nextYear today", center: "title", right: "" },
+				selectConstraint: { start: "00:00", end: "24:00" },
 				// 달력에서 셀(날짜) 하나를 선택했을 때
 				select(start, end, allDay) {
 					self.selectDate = start;
 					$(".fc-day").removeClass("cal-select");
-					$(
-						".fc-day[data-date='" + self.selectDate.format("YYYY-MM-DD") + "']"
-					).addClass("cal-select");
+					$(".fc-day[data-date='" + self.selectDate.format("YYYY-MM-DD") + "']").addClass("cal-select");
 				},
 				// 이벤트를 달력 셀에 표시
 				eventRender(event, element) {
 					// 거래별 합산
 					if (event.type) {
 						let t = TYPE_VALUE[event.type];
-						element
-							.find(".fc-title")
-							.prepend("<i class='fa " + t.icon + "'></i>" + t.title + " : " + CommonUtil.toComma(event.cost));
+						element.find(".fc-title").prepend("<i class='fa " + t.icon + "'></i>" + t.title + " : " + CommonUtil.toComma(event.cost));
 					}
 					// 메모
 					if (event.text) {
-						element
-							.find(".fc-title")
-							.prepend("<i class='fa fa-sticky-note-o'></i>" + event.text);
+						element.find(".fc-title").prepend("<i class='fa fa-sticky-note-o'></i>" + event.text);
 					}
 				},
 				// 이벤트 항목 클릭 시 달력 셀(날짜) 클릭 효과 부여
@@ -245,11 +230,7 @@ export default {
 					this.transactionList = result.data;
 
 					let transactionSet = this.transactionList.map(t => {
-						return {
-							date: moment(t.transactionDate).format("YYYY-MM-DD"),
-							kind: t.kind,
-							money: t.money
-						};
+						return { date: moment(t.transactionDate).format("YYYY-MM-DD"), kind: t.kind, money: t.money };
 					});
 					this.multiUpdate(transactionSet);
 
@@ -299,53 +280,36 @@ export default {
 				tranDate["listGroupByDate"].forEach(tranKind => {
 					let kind = tranKind["kind"];
 					let money = tranKind["money"];
-					events.push({
-						type: kind,
-						color: TYPE_VALUE[kind].color,
-						cost: money,
-						start: date
-					});
+					events.push({ type: kind, color: TYPE_VALUE[kind].color, cost: money, start: date });
 				});
 			});
 			this.calendar.fullCalendar("addEventSource", events);
 		},
 		// 달력 셀에 메모 표시 값 지정
 		displayMemo(memo) {
-			this.calendar.fullCalendar("renderEvent", {
-				text: memo.note,
-				color: "#aaa",
-				start: moment(memo.memoDate).format("YYYY-MM-DD")
-			});
+			this.calendar.fullCalendar("renderEvent",
+				{ text: memo.note, color: "#aaa", start: moment(memo.memoDate).format("YYYY-MM-DD") }
+			);
 		},
 		kindMapValue(kind) {
 			return TYPE_VALUE[kind];
 		},
 		// 현재 보고 있는 달력 거래 내역 다시 읽기.
 		reload() {
-			this.loadMonthData(
-				this.currentMonth.toDate().getFullYear(),
-				this.currentMonth.toDate().getMonth() + 1
-			);
+			this.loadMonthData(this.currentMonth.toDate().getFullYear(), this.currentMonth.toDate().getMonth() + 1);
 		},
 		// 달력에 공휴일, 주요 행사 정보 표시
 		holiydayDisplay() {
-			let dayList = CalendarUtil.getAnniversary(
-				this.currentMonth.toDate().getFullYear()
-			);
+			let dayList = CalendarUtil.getAnniversary(this.currentMonth.toDate().getFullYear());
 			dayList.forEach(value => {
 				if (value.event.holiday) {
 					$("td[data-date='" + value.date + "']").addClass("fc-holiday");
 				}
-				if (
-					$("td[data-date='" + value.date + "'] span._day-label").length == 0
-				) {
-					$("td[data-date='" + value.date + "']").prepend(
-						"<span class='_day-label'>" + value.event.name + "</span>"
-					);
+
+				if ($("td[data-date='" + value.date + "'] span._day-label").length == 0) {
+					$("td[data-date='" + value.date + "']").prepend("<span class='_day-label'>" + value.event.name + "</span>");
 				} else {
-					$("td[data-date='" + value.date + "'] span._day-label").append(
-						", " + value.event.name
-					);
+					$("td[data-date='" + value.date + "'] span._day-label").append(", " + value.event.name);
 				}
 			});
 		}
