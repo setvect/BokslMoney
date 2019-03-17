@@ -259,10 +259,10 @@ export default {
 				});
 				this.$validator.reset();
 
-				$('#addItem').on('shown.bs.modal', () => {
+				$('#addItem').off().on('shown.bs.modal', () => {
 					$("._note").focus();
 				});
-				$('#addItem').on('hidden.bs.modal', () => {
+				$('#addItem').off().on('hidden.bs.modal', () => {
 					if (this.closeReload) {
 						this.$EventBus.$emit('reloadEvent');
 					}

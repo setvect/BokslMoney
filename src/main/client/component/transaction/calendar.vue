@@ -239,9 +239,7 @@ export default {
 		// 해당 월에 거래 내역 및 메모 조회
 		loadMonthData(year, month) {
 			// 해당 월에 등록된 지출,수입,이체 항목 조회
-			VueUtil.get(
-				"/transaction/listByMonth.json",
-				{ year: year, month: month },
+			VueUtil.get("/transaction/listByMonth.json", { year: year, month: month },
 				result => {
 					this.calendar.fullCalendar("removeEvents");
 					this.transactionList = result.data;
@@ -256,9 +254,7 @@ export default {
 					this.multiUpdate(transactionSet);
 
 					// 해당 월에 등록된 메모 조회
-					VueUtil.get(
-						"/memo/listByMonth.json",
-						{ year: year, month: month },
+					VueUtil.get("/memo/listByMonth.json", { year: year, month: month },
 						result => {
 							this.memoList = result.data;
 							for (let idx in this.memoList) {
@@ -294,11 +290,9 @@ export default {
 						.groupBy("kind")
 						.map((listGroupByKind, kind) => {
 							return { money: _.sumBy(listGroupByKind, "money"), kind };
-						})
-						.value();
+						}).value();
 					return { listGroupByDate, date };
-				})
-				.value();
+				}).value();
 			let events = [];
 			transactionGroupDate.forEach(tranDate => {
 				let date = tranDate["date"];
