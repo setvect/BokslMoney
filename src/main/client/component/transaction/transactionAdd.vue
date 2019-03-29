@@ -19,8 +19,8 @@
 									</div>
 									<div class="col-md-4 col-sm-4 col-xs-4" style="padding:0;">
 										<div class="btn-group" style="float:right;">
-											<button type="button" class="btn btn-default">이전</button>
-											<button type="button" class="btn btn-default">이후</button>
+											<button type="button" class="btn btn-default" @click="addDate(-1)">전날</button>
+											<button type="button" class="btn btn-default" @click="addDate(1)">다음날</button>
 										</div>
 									</div>
 								</div>
@@ -154,6 +154,7 @@
 	</div>
 </template>
 <script type="text/javascript">
+import moment from "moment";
 import "daterangepicker";
 import 'daterangepicker/daterangepicker.css';
 import 'jquery-ui/ui/core';
@@ -243,8 +244,14 @@ export default {
 			this.openForm(this.item.kind);
 		},
 		// datepicker
-		updateDate: function (d) {
+		updateDate(d) {
 			this.item.transactionDate = d;
+		},
+		// 현재 날짜 조정
+		addDate(diff) {
+			this.selectDate.add(diff, "days");
+			this.item.transactionDate = this.selectDate.format("YYYY-MM-DD");
+			$('._datepicker').data('daterangepicker').setStartDate(this.selectDate.format("YYYY-MM-DD"))
 		},
 		// 계좌 입력 팝업창.
 		openForm(kind) {
@@ -260,6 +267,7 @@ export default {
 				showDropdowns: true,
 				startDate: this.selectDate.format("YYYY-MM-DD")
 			}, (start) => {
+				console.log('start.format("YYYY-MM-DD") :', start.format("YYYY-MM-DD"));
 				this.item.transactionDate = start.format("YYYY-MM-DD");
 			});
 			this.$validator.reset();
