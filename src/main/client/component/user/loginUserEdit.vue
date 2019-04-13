@@ -15,7 +15,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">비밀번호(확인)</label>
 				<div class="col-md-9 col-sm-9 col-xs-12">
-					<input type="password" class="form-control" name="re-password" v-validate="'confirmed:password'" data-vv-as="비밀번호 ">
+					<input type="password" class="form-control" name="re-password" v-validate="'required|confirmed:password'" data-vv-as="비밀번호 ">
 					<span class="error" v-if="errors.has('re-password')">{{errors.first('re-password')}}</span>
 				</div>
 			</div>

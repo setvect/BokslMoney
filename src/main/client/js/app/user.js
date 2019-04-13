@@ -1,4 +1,5 @@
 import CommonUtil from "../common-util.js";
+import "bootstrap";
 
 $(function() {
 	$("._edit-my").click(function() {
