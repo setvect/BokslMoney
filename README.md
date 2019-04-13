@@ -61,7 +61,7 @@
 
 ### 빌드 방법
 1. `gradle clean`
-2. `gradle bootWar`
+2. `gradle bootWar` 이게 잘 안되면 `gradlew wrapper --gradle-version 4.10 bootWar`
 
 빌드 결과: bokslmoney-0.0.1.war 파일 생성
 

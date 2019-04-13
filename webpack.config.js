@@ -15,6 +15,7 @@ module.exports = env => {
       "assets/bundle/js/vendors": [
         "jquery",
         "vue",
+        "vuex",
         "axios",
         "vue-axios",
         "bootstrap",
