@@ -2,7 +2,7 @@
 ==================================================
 
 개인용 가계부 입니다.<br>
-현재 버전: 0.0.1 
+현재 버전: 0.0.2
  
 ### 주요기능
 * 계좌(통장, 카드, 주식 등) 등록 및 관리
@@ -14,13 +14,15 @@
 * 수입/지출/이체 내역 및 자산 변동 통계
 
 ### 실행방법
-* `java -jar bokslmoney-0.0.1.war`
+* java 명령을 이용해 war를 실행
+* 예: `java -jar bokslmoney-0.0.1.war`
 
 ### 주요 프레임워크 및 라이브러리
 * Spring Boot: 2.0.5
 * JPA
 * H2 Database
 * lombok
+* webpack 4.29
 * [UI 템플릿 - gentelella](https://github.com/puikinsh/gentelella)
 * Vue.js
 * Jquery 
@@ -63,7 +65,7 @@
 1. `gradle clean`
 2. `gradle bootWar` 이게 잘 안되면 `gradlew wrapper --gradle-version 4.10 bootWar`
 
-빌드 결과: bokslmoney-0.0.1.war 파일 생성
+빌드 결과: build/libs/bokslmoney-x.x.x.war 파일 생성
 
 ### 개발 실행
 1. BokslMoneyApplication 실행
