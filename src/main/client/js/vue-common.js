@@ -1,5 +1,6 @@
 import Vue from "vue";
 import moment from "moment";
+import $ from "jquery"
 import { AppUtil } from "./bokslmoney.js";
 import CommonUtil from "./common-util.js"
 
@@ -40,7 +41,7 @@ Vue.filter("indexSeq", (index, page) => page.totalCount - (page.currentPage - 1)
 
 // 줄바꿈 -> br 태그 적용
 Vue.directive("br", {
-	inserted: (el, binding, vnode) => {
+	update: (el, binding) => {
 		$(el).html(CommonUtil.toBr(binding.value));
 	}
 });

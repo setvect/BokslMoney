@@ -42,11 +42,9 @@
 							</tr>
 							<tr>
 								<th scope="row">이체일</th>
-								<td>{{item.transactionDate}}</td>
+								<td>{{item.transferDate}}</td>
 								<th scope="row">메모 내용</th>
-								<td>
-									<span v-br="item.note"/>
-								</td>
+								<td><span v-br="item.note"/></td>
 							</tr>
 						</tbody>
 					</table>
@@ -63,6 +61,7 @@
 
 <script type="text/javascript">
 import VueUtil from "../../js/vue-util.js";
+import "../../js/vue-common.js";
 
 export default {
 	data() {
