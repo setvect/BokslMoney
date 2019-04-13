@@ -67,7 +67,7 @@ public final class BokslMoneyConstant {
 	 */
 	public static class CategoryRecommend {
 		/** 현재를 기준으로 과거 거래 내역을 어디까지 조회 할 지 일(day)로 범위 지정 */
-		public static final int DAYS = 50;
+		public static final int DAYS = 100;
 		/** 최대 조회 건수 */
 		public static final int MAX_ITEM_COUNT = 1000;
 		/** 후보 추천 갯수 */

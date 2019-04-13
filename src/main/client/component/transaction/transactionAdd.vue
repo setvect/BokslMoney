@@ -59,7 +59,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-2">지출계좌:</label>
 								<div class="col-md-10 col-sm-10 col-xs-10">
-									<select class="form-control" v-model="item.payAccount" name="receiveAccount" v-validate="validatePay" data-vv-as="지출계좌 " :disabled="disablePay">
+									<select class="form-control" v-model="item.payAccount" name="payAccount" v-validate="validatePay" data-vv-as="지출계좌 " :disabled="disablePay">
 										<option v-for="account in accountList" v-bind:value="account.accountSeq" :key="account.accountSeq">{{account.name}} : {{account.balance | numberFormat}}원 ({{account.accountNumber}})</option>
 									</select>
 									<span class="error" v-if="errors.has('payAccount')">{{errors.first('payAccount')}}</span>
