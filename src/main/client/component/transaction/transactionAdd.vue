@@ -164,6 +164,7 @@ import 'jquery-ui/themes/base/all.css'
 import categoryComponent from './transactionCategory.vue';
 import oftenComponent from './transactionOften.vue';
 import VueUtil from "../../js/vue-util.js";
+import { debug } from 'util';
 
 export default {
 	data() {
@@ -232,6 +233,7 @@ export default {
 			this.insertCategory(this.item.parentCategory, this.item.category);
 			this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
 			this.item.kind = kind;
+			delete this.item.transactionSeq;
 			this.openForm(this.item.kind);
 		},
 		//수정 폼
@@ -239,6 +241,7 @@ export default {
 			this.actionType = 'edit';
 			this.selectDate = moment(transaction.transactionDate);
 			this.item = transaction;
+			console.log('this.item :', this.item);
 			this.item.transactionDate = this.selectDate.format("YYYY-MM-DD")
 			this.insertCategory(transaction.parentCategory, transaction.category);
 			this.openForm(this.item.kind);
