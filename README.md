@@ -59,11 +59,10 @@
 
 ### Webpack
 1. `npm install`
-2. `npm run prod`
-
 ### 빌드 방법
+1. `npm run prod`
 1. `gradle clean`
-2. `gradle bootWar` 이게 잘 안되면 `gradlew wrapper --gradle-version 4.10 bootWar`
+1. `gradle bootWar` 이게 잘 안되면 `gradlew wrapper --gradle-version 4.10 bootWar`
 
 빌드 결과: build/libs/bokslmoney-x.x.x.war 파일 생성
 
