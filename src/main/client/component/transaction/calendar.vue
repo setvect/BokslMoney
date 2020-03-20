@@ -10,10 +10,10 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div v-cloak>
-						<div class="col-md-8 col-sm-8 col-xs-12">
+						<div class="col-md-6 col-sm-6 col-xs-12">
 							<div id="calendar"></div>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="col-md-6 col-sm-6 col-xs-12">
 							<div class="page-header">
 								<button type="button" data-type="SPENDING" class="btn btn-info _input">지출</button>
 								<button type="button" data-type="INCOME" class="btn btn-info _input">수입</button>
@@ -24,17 +24,21 @@
 								<h4>{{selectDate | dateFormat("YYYY년 MM월 DD일")}} 내역</h4>
 								<table class="table table-bordered">
 									<colgroup>
-										<col width="12%">
-										<col width="30%">
-										<col width="17%">
-										<col width="16%">
-										<col width="25%">
+										<col width="10%">
+										<col width="20%">
+										<col width="15%">
+										<col width="10%">
+										<col width="15%">
+										<col width="15%">
+										<col width="15%">
 									</colgroup>
 									<thead>
 										<th>유형</th>
 										<th>분류</th>
 										<th>내용</th>
 										<th>금액</th>
+										<th>출금계좌</th>
+										<th>입금계좌</th>
 										<th>기능</th>
 									</thead>
 									<tbody>
@@ -43,6 +47,8 @@
 											<td>{{t.parentCategory.name}} > {{t.category.name}}</td>
 											<td>{{t.note}}</td>
 											<td class="text-right">{{t.money | numberFormat}}</td>
+											<td>{{t.payAccount | accountName}}</td>
+											<td>{{t.receiveAccount | accountName}}</td>
 											<td class="text-center">
 												<div class="btn-group btn-group-xs">
 													<button type="button" class="btn btn-success btn-xs" @click="editForm(t)">수정</button>
