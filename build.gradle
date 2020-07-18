@@ -21,9 +21,9 @@ repositories {
 }
 
 // 테스트 skip
-test {
-    exclude '**/*'
-}
+//test {
+// \   exclude '**/*'
+//}
 configurations {
     // 안 빼면 stackover flow 발생
     compile.exclude module: 'log4j-slf4j-impl'
@@ -46,6 +46,7 @@ dependencies {
     compile 'com.h2database:h2'
     compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
     compile 'org.springframework.boot:spring-boot-starter-tomcat'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3'
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.4'
     testCompile 'org.springframework.boot:spring-boot-starter-test'

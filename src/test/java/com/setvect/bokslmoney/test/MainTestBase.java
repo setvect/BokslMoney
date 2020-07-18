@@ -24,7 +24,7 @@ import com.setvect.bokslmoney.BokslMoneyConstant;
 @RunWith(SpringRunner.class)
 @Transactional
 @SpringBootTest(classes = { BokslMoneyApplication.class })
-@TestPropertySource(locations = "classpath:application.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 @Rollback(false)
 public class MainTestBase {
 	static {
