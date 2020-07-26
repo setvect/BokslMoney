@@ -55,6 +55,7 @@ import "datatables/media/css/jquery.dataTables.css";
 
 import vueUtil from "../../js/vue-util.js";
 import "../../js/vue-common.js";
+window.JSZip = jsZip;
 
 export default {
 	data() {

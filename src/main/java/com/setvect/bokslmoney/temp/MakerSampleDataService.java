@@ -79,7 +79,7 @@ public class MakerSampleDataService {
 		List<Consumer<LocalDate>> inserter = makeTransactionInserts();
 
 		LocalDate currentDate = LocalDate.of(2014, 8, 1);
-		LocalDate endDate = LocalDate.of(2019, 5, 10);
+		LocalDate endDate = LocalDate.of(2021, 12, 31);
 		long endStamp = DateUtil.toDate(endDate).getTime();
 
 		while (true) {
@@ -430,7 +430,7 @@ public class MakerSampleDataService {
 		account.setTerm("2019-04-03 ~ 2021-04-02");
 		account.setMonthlyPay("50만원");
 		account.setTransferDate("매월 10일");
-		account.setNote("집주인: 복슬이(011-486-0000");
+		account.setNote("집주인: 복슬이(011-486-0000)");
 		acccuntRepository.saveAndFlush(account);
 
 		account = new AccountVo();
