@@ -46,7 +46,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-standalone": "^6.26.0",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.8.0",
