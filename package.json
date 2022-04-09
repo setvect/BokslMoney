@@ -60,7 +60,7 @@
     "jquery-ui": "^1.12.1",
     "jszip": "^3.2.0",
     "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-lunar": "0.0.3",
     "shims": "^1.0.0",
     "vee-validate": "^2.1.7",
